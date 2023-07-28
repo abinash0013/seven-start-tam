@@ -25,14 +25,14 @@ const _nav = [
       color: 'info',
       // text: 'NEW',
     },
-  }, {
-    component: CNavItem,
-    name: 'Agents',
-    to: '/agents',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-    },
+    // }, {
+    //   component: CNavItem,
+    //   name: 'Agents',
+    //   to: '/agents',
+    //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    //   badge: {
+    //     color: 'info',
+    //   },
   }, {
     component: CNavItem,
     name: 'Users',
@@ -41,22 +41,22 @@ const _nav = [
     badge: {
       color: 'info',
     },
-  }, {
-    component: CNavItem,
-    name: 'Ticket',
-    to: '/ticket',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-    },
-  }, {
-    component: CNavItem,
-    name: 'Game',
-    to: '/games',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-    },
+    // }, {
+    //   component: CNavItem,
+    //   name: 'Ticket',
+    //   to: '/ticket',
+    //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    //   badge: {
+    //     color: 'info',
+    //   },
+    // }, {
+    //   component: CNavItem,
+    //   name: 'Game',
+    //   to: '/game',
+    //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    //   badge: {
+    //     color: 'info',
+    //   },
   },
   // {
   //   component: CNavTitle,

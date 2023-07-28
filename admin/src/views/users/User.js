@@ -8,6 +8,8 @@ import {
   CForm,
   CFormInput,
   CFormLabel,
+  CFormSelect,
+  CFormSwitch,
   CFormTextarea,
   CModal,
   CModalBody,
@@ -23,11 +25,15 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
-import { getApiCall, postApiCall } from 'src/services/AppSetting';
+import { getApiCall, postApiCall, putApiCall } from 'src/services/AppSetting';
 import { base } from 'src/constants/Data.constant';
+import Toast from 'src/components/toast/Toast';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const User = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [itemValue, setItemValue] = useState("");
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [usersData, setUserData] = useState([]);
   const [visible, setVisible] = useState(false)
@@ -56,26 +62,40 @@ const User = () => {
     console.log("saveUserApiCallreq", req);
     let result = await postApiCall(base.saveUser, req)
     console.log("saveUserApiCall", result);
-    if (result.length > 0) {
+    if (result.code == 200) {
       setVisible(false);
-      alert("User Save Successfully");
+      successToast();
+      // <Toast />
     }
   }
 
-  const delete_user = async (id) => {
+  const successToast = () => {
+    toast.success('Success !', {
+      position: toast.POSITION.TOP_RIGHT
+    })
+  }
+
+  // const showToasts = () => {
+  //   //     toast.success("Successfully Created.!");
+  //   //     toast.error("I'm never gonna toast you!");
+  //   //     toast.warning("I'm never gonna toast you!");
+  //   //     toast.info("I'm never gonna toast you!");
+  // }
+
+  const delete_user = async (value) => {
     let req = {
-      id: id,
+      id: value.users_id,
       status: "1"
     }
-    let result = await postApiCall(base.deleteUser, req)
-    if (result.length > 0) {
-      alert("Deleted Successfully...");
+    let result = await putApiCall(base.deleteUser, req)
+    if (result.code == 200) {
+      toast.error("Deleted Successfully..!");
     }
   }
 
   const get_edit_value = async (item) => {
-    console.log("itemmm", item);
-    setEditModalVisible(true)
+    console.log("getEditValueitemmm", item);
+    setEditModalVisible(true);
     setId(item.users_id);
     setName(item.users_name);
     setEmail(item.users_email);
@@ -89,20 +109,23 @@ const User = () => {
       name: name.target.value,
       email: email.target.value,
       phone: phone.target.value,
-      Gender: gender.target.value,
+      gender: gender.target.value,
     }
     console.log("reqofedituser", req);
-    let result = await postApiCall(base.editUser, req)
+    let result = await putApiCall(base.editUser, req)
     console.log("resultofedituser", result);
-    if (result.length > 0) {
-      alert("Updated Successfully...");
+    if (result.code == 200) {
+      setEditModalVisible(false);
+      successToast();
     }
   }
 
   return (
     <CRow>
       <CCol xs={12} className='mb-4'>
+        {/* <CButton color="primary" onClick={() => { showToasts(); }} onClose={() => setVisible(false)}>Add</CButton> */}
         <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Add</CButton>
+        <ToastContainer />
         <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
           <CModalHeader>
             <CModalTitle>Add</CModalTitle>
@@ -115,6 +138,7 @@ const User = () => {
                   type="text"
                   id="name"
                   placeholder="User Name"
+                  minLength={3}
                   onChange={(e) => { setName(e) }}
                 />
                 <CFormLabel htmlFor="email">Email address</CFormLabel>
@@ -129,15 +153,16 @@ const User = () => {
                   type="text"
                   id="phone"
                   placeholder="User Phone"
+                  maxLength={10}
                   onChange={(e) => { setPhone(e) }}
                 />
                 <CFormLabel htmlFor="gender">Gender</CFormLabel>
-                <CFormInput
-                  type="text"
-                  id="gender"
-                  placeholder="User Gender"
-                  onChange={(e) => { setGender(e) }}
-                />
+                <CFormSelect value={gender} id="gender" onChange={(e) => { setGender(e) }}>
+                  <option value="" selected disabled>Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Others">Others</option>
+                </CFormSelect>
               </div>
             </CForm>
           </CModalBody>
@@ -194,7 +219,7 @@ const User = () => {
                               />
                               <CFormLabel htmlFor="email">Email address</CFormLabel>
                               <CFormInput
-                                typedefaultValue="email"
+                                type="email"
                                 id="email"
                                 placeholder="user@example.com"
                                 onChange={(e) => { setEmail(e) }}
@@ -209,13 +234,11 @@ const User = () => {
                                 defaultValue={phone}
                               />
                               <CFormLabel htmlFor="gender">Gender</CFormLabel>
-                              <CFormInput
-                                type="text"
-                                id="gender"
-                                placeholder="User Gender"
-                                onChange={(e) => { setGender(e) }}
-                                defaultValue={gender}
-                              />
+                              <CFormSelect defaultValue={gender} id="gender" onChange={(e) => { setGender(e) }}>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Others">Others</option>
+                              </CFormSelect>
                             </div>
                           </CForm>
                         </CModalBody>
@@ -226,7 +249,7 @@ const User = () => {
                           <CButton color="primary" onClick={() => edit_user()}>Update</CButton>
                         </CModalFooter>
                       </CModal>
-                      <CButton color="danger" onClick={() => { setDeleteModalVisible(true) }}>Delete</CButton>
+                      <CButton color="danger" onClick={() => { setItemValue(item); setDeleteModalVisible(true) }}>Delete</CButton>
                       <CModal alignment="center" visible={deleteModalVisible} onClose={() => setDeleteModalVisible(false)}>
                         <CModalHeader>
                           <CModalTitle>Do You Want to Delete..</CModalTitle>
@@ -235,7 +258,7 @@ const User = () => {
                           <CButton color="secondary" onClick={() => setVisible(false)}>
                             Cancel
                           </CButton>
-                          <CButton color="primary" onClick={() => delete_user(item.users_id)}>yes.,Delete</CButton>
+                          <CButton color="primary" onClick={() => delete_user(itemValue)}>yes.,Delete</CButton>
                         </CModalFooter>
                       </CModal>
                     </CTableDataCell>

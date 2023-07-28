@@ -23,11 +23,14 @@ import {
   CTableHeaderCell,
   CTableRow,
 } from '@coreui/react'
-import { getApiCall, postApiCall } from 'src/services/AppSetting';
+import { getApiCall, postApiCall, putApiCall } from 'src/services/AppSetting';
 import { base } from 'src/constants/Data.constant';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Agents = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [itemValue, setItemValue] = useState("");
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [agentsData, setAgentsData] = useState([]);
   const [visible, setVisible] = useState(false)
@@ -54,20 +57,22 @@ const Agents = () => {
       Gender: gender.target.value,
     }
     let result = await postApiCall(base.saveAgent, req)
-    if (result.length > 0) {
+    if (result.code == 200) {
       setVisible(false);
-      alert("agent save successfully");
+      toast.success("Successfully Created..!");
     }
   }
 
-  const delete_agent = async (id) => {
+  const delete_agent = async (value) => {
     let req = {
-      id: id,
+      id: value.agents_id,
       status: "1"
     }
-    let result = await postApiCall(base.deleteAgent, req)
-    if (result.length > 0) {
-      alert("Deleted Successfully...");
+    console.log("iddddAgentreq", req);
+    let result = await putApiCall(base.deleteAgent, req)
+    console.log("iddddAgentresult", result);
+    if (result.code == 200) {
+      toast.error("Deleted Successfully..!");
     }
   }
 
@@ -89,20 +94,18 @@ const Agents = () => {
       phone: phone.target.value,
       Gender: gender.target.value,
     }
+    console.log("agentLogreqed", req);
     let result = await postApiCall(base.editAgent, req)
-    if (result.length > 0) {
-      alert("Updated Successfully...");
+    if (result.code == 200) {
+      toast.error("Deleted Created..!");
     }
   }
-
-  // const deleteModalOpen = () => {
-  //   return 
-  // }
 
   return (
     <CRow>
       <CCol xs={12} className='mb-4'>
         <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Add</CButton>
+        <ToastContainer />
         <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
           <CModalHeader>
             <CModalTitle>Add</CModalTitle>
@@ -196,7 +199,7 @@ const Agents = () => {
                                 id="email"
                                 placeholder="agent@example.com"
                                 onChange={(e) => { setEmail(e) }}
-                                value={email}
+                                defaultValue={email}
                               />
                               <CFormLabel htmlFor="phone">Phone</CFormLabel>
                               <CFormInput
@@ -204,7 +207,7 @@ const Agents = () => {
                                 id="phone"
                                 placeholder="Agent Phone"
                                 onChange={(e) => { setPhone(e) }}
-                                value={phone}
+                                defaultValue={phone}
                               />
                               <CFormLabel htmlFor="gender">Gender</CFormLabel>
                               <CFormInput
@@ -212,7 +215,7 @@ const Agents = () => {
                                 id="gender"
                                 placeholder="Agent Gender"
                                 onChange={(e) => { setGender(e) }}
-                                value={gender}
+                                defaultValue={gender}
                               />
                             </div>
                           </CForm>
@@ -224,7 +227,7 @@ const Agents = () => {
                           <CButton color="primary" onClick={() => edit_agent()}>Update</CButton>
                         </CModalFooter>
                       </CModal>
-                      <CButton color="danger" onClick={() => { setDeleteModalVisible(true) }}>Delete</CButton>
+                      <CButton color="danger" onClick={() => { setItemValue(item); setDeleteModalVisible(true) }}>Delete</CButton>
                       <CModal alignment="center" visible={deleteModalVisible} onClose={() => setDeleteModalVisible(false)}>
                         <CModalHeader>
                           <CModalTitle>Do You Want to Delete..</CModalTitle>
@@ -233,7 +236,7 @@ const Agents = () => {
                           <CButton color="secondary" onClick={() => setVisible(false)}>
                             Cancel
                           </CButton>
-                          <CButton color="primary" onClick={() => delete_agent(item.agents_id)}>yes.,Delete</CButton>
+                          <CButton color="primary" onClick={() => delete_agent(itemValue)}>yes.,Delete</CButton>
                         </CModalFooter>
                       </CModal>
                     </CTableDataCell>

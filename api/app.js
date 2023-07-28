@@ -178,6 +178,122 @@ app.put('/deleteUser', async (req, res) => {
 })
 
 
+// ::::::::::::::::::::::::::::::::::::::::: ticket api code
+app.get('/ticketList', async (req, res) => {
+  ex_query("SELECT * FROM tbl_ticket", req, res)
+})
+
+app.post('/saveTicket', async (req, res) => {
+  con.query('INSERT INTO `tbl_ticket` SET `ticket_serial_number`=?, `ticket_number`=?, `ticket_amount`=?, `ticket_status`=?',
+    [req.body.ticketSerialNumber, req.body.ticketNumber, req.body.ticketAmount, req.body.ticketStatus],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result)
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Save Successfully..", result)
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Save..", result)
+        }
+      }
+    });
+})
+
+app.put('/editTicket', async (req, res) => {
+  con.query('UPDATE `tbl_ticket` SET `ticket_serial_number`=?, `ticket_number`=?, `ticket_amount`=?, `ticket_status`=? WHERE `ticket_id`=?',
+    [req.body.ticketSerialNumber, req.body.ticketNumber, req.body.ticketAmount, req.body.ticketStatus, req.body.id],
+    function (error, result, fields) {
+      if (error) throw error;
+      console.log("pppp", result);
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result)
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Update Successfully..", result)
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Update..", result)
+        }
+      }
+    });
+})
+
+app.put('/deleteTicket', async (req, res) => {
+  con.query('UPDATE `tbl_ticket` SET `ticket_status`=? WHERE `ticket_id`=?',
+    [req.body.status, req.body.id],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Deleted Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  )
+})
+
+// ::::::::::::::::::::::::::::::::::::::::: ticket api code
+app.get('/gameList', async (req, res) => {
+  ex_query("SELECT * FROM tbl_game", req, res)
+})
+
+app.post('/saveGame', async (req, res) => {
+  con.query('INSERT INTO `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=?',
+    [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result)
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Save Successfully..", result)
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Save..", result)
+        }
+      }
+    });
+})
+
+app.put('/editGame', async (req, res) => {
+  con.query('UPDATE `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=? WHERE `game_id`',
+    [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus, req.body.gameId],
+    function (error, result, fields) {
+      if (error) throw error;
+      console.log("pppp", result);
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result)
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Update Successfully..", result)
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Update..", result)
+        }
+      }
+    });
+})
+
+app.put('/deleteGame', async (req, res) => {
+  con.query('UPDATE `tbl_game` SET `game_status`=? WHERE `game_id`=?',
+    [req.body.gameStatus, req.body.gameId],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Deleted Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  )
+})
+
 app.listen(3000, function () {
   console.log('Server is up and Rudding on port 3000!');
 });
