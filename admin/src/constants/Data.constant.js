@@ -13,6 +13,7 @@ const base = {
     ticketList: mainUrl + `ticketList`,
     editTicket: mainUrl + `editTicket`,
     deleteTicket: mainUrl + `deleteTicket`,
+    ticketCardView: mainUrl + `ticketCardView`,
     gameList: mainUrl + `gameList`,
     saveGame: mainUrl + `saveGame`,
     editGame: mainUrl + `editGame`,

@@ -6,6 +6,7 @@ import {
   CCardHeader,
   CCol,
   CForm,
+  CFormCheck,
   CFormInput,
   CFormLabel,
   CFormSwitch,
@@ -29,25 +30,30 @@ import { base } from 'src/constants/Data.constant';
 import Toast from 'src/components/toast/Toast';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import TicketView from './TicketView';
+import { Link } from 'react-router-dom';
+
 const Game = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editOption, setEditOption] = useState(false);
   const [gameData, setGameData] = useState([]);
   const [visible, setVisible] = useState(false);
   const [gameId, setGameId] = useState("");
+  const [id, setId] = useState("");
   const [gameName, setGameName] = useState("");
   const [gameStartDate, setGameStartDate] = useState("");
   const [gameStartTime, setGameStartTime] = useState("");
   const [gameMaximumTicketSell, setGameMaximumTicketSell] = useState("");
   const [gameAmount, setGameAmount] = useState("");
-  const [gameQuickFire, setGameQuickFire] = useState(true);
-  const [gameStar, setGameStar] = useState(true);
-  const [gameTopLine, setGameTopLine] = useState(true);
-  const [gameMiddleLine, setGameMiddleLine] = useState(true);
-  const [gameBottomLine, setGameBottomLine] = useState(true);
-  const [gameCorner, setGameCorner] = useState(true);
-  const [gameHalfSheet, setGameHalfSheet] = useState(true);
-  const [gameHousefull, setGameHousefull] = useState(true);
+  const [gameQuickFire, setGameQuickFire] = useState(false);
+  const [gameStar, setGameStar] = useState(false);
+  const [gameTopLine, setGameTopLine] = useState(false);
+  const [gameMiddleLine, setGameMiddleLine] = useState(false);
+  const [gameBottomLine, setGameBottomLine] = useState(false);
+  const [gameCorner, setGameCorner] = useState(false);
+  const [gameHalfSheet, setGameHalfSheet] = useState(false);
+  const [gameHousefull, setGameHousefull] = useState(false);
   const [gameStatus, setGameStatus] = useState("");
 
   useEffect(() => {
@@ -66,19 +72,19 @@ const Game = () => {
       gameStartTime: gameStartTime.target.value,
       gameMaximumTicketSell: gameMaximumTicketSell.target.value,
       gameAmount: gameAmount.target.value,
-      gameQuickFire: gameQuickFire.target.value,
-      gameStar: gameStar.target.value,
-      gameTopLine: gameTopLine.target.value,
-      gameMiddleLine: gameMiddleLine.target.value,
-      gameBottomLine: gameBottomLine.target.value,
-      gameCorner: gameCorner.target.value,
-      gameHalfSheet: gameHalfSheet.target.value,
-      gameHousefull: gameHousefull.target.value,
-      gameStatus: gameStatus.target.value,
+      gameQuickFire: gameQuickFire,
+      gameStar: gameStar,
+      gameTopLine: gameTopLine,
+      gameMiddleLine: gameMiddleLine,
+      gameBottomLine: gameBottomLine,
+      gameCorner: gameCorner,
+      gameHalfSheet: gameHalfSheet,
+      gameHousefull: gameHousefull,
+      gameStatus: gameStatus.target.value
     }
-    console.log("saveGameApiCallreq", req);
+    // console.log("saveGameApiCallreq", req);
     let result = await postApiCall(base.saveGame, req)
-    console.log("saveGameApiCall", result);
+    // console.log("saveGameApiCall", result);
     if (result.code == 200) {
       setVisible(false);
       successToast();
@@ -114,30 +120,54 @@ const Game = () => {
   }
 
   const get_edit_value = async (item) => {
-    console.log("getEditValueitemmm", item);
+    console.log("get_edit_valueeee", item);
     setEditModalVisible(true)
     setId(item.users_id);
-    setName(item.users_name);
-    setEmail(item.users_email);
-    setPhone(item.users_phone);
-    setGender(item.users_gender);
+    setGameName(item.game_name)
+    setGameStartDate(item.game_start_date)
+    setGameStartTime(item.game_start_time)
+    setGameMaximumTicketSell(item.game_maximum_ticket_sell)
+    setGameAmount(item.game_amount)
+    setGameQuickFire(item.game_quick_fire)
+    setGameStar(item.game_star)
+    setGameTopLine(item.game_top_line)
+    setGameMiddleLine(item.game_middle_line)
+    setGameBottomLine(item.game_bottom_line)
+    setGameCorner(item.game_corner)
+    setGameHalfSheet(item.game_half_sheet)
+    setGameHousefull(item.game_housefull)
+    setGameStatus(item.game_status)
   }
+
+  // const go_to_ticket_view = async (item) = {
+  //   <Ticket />
+  // }
 
   const edit_game = async () => {
     let req = {
       id: id,
-      name: name.target.value,
-      email: email.target.value,
-      phone: phone.target.value,
-      Gender: gender.target.value,
+      gameName: gameName,
+      gameStartDate: gameStartDate,
+      gameStartTime: gameStartTime,
+      gameMaximumTicketSell: gameMaximumTicketSell,
+      gameAmount: gameAmount,
+      gameQuickFire: gameQuickFire,
+      gameStar: gameStar,
+      gameTopLine: gameTopLine,
+      gameMiddleLine: gameMiddleLine,
+      gameBottomLine: gameBottomLine,
+      gameCorner: gameCorner,
+      gameHalfSheet: gameHalfSheet,
+      gameHousefull: gameHousefull,
+      gameStatus: gameStatus,
     }
     console.log("reqofedituser", req);
     let result = await putApiCall(base.editGame, req)
     console.log("resultofedituser", result);
-    // if (result.length > 0) {
     if (result.code == 200) {
-      // alert("Updated Successfully...");
       successToast();
+      setEditModalVisible(false);
+      setEditOption(false);
     }
   }
 
@@ -145,7 +175,7 @@ const Game = () => {
     <CRow>
       <CCol xs={12} className='mb-4'>
         {/* <CButton color="primary" onClick={() => { showToasts(); }} onClose={() => setVisible(false)}>Add</CButton> */}
-        <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Add</CButton>
+        <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Create Game</CButton>
         <ToastContainer />
         <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
           <CModalHeader>
@@ -154,10 +184,10 @@ const Game = () => {
           <CModalBody>
             <CForm>
               <div className="mb-3">
-                <CFormLabel htmlFor="name">Game Name</CFormLabel>
+                <CFormLabel htmlFor="gameName">Game Name</CFormLabel>
                 <CFormInput
                   type="text"
-                  id="name"
+                  id="gameName"
                   placeholder="Game Name"
                   onChange={(e) => { setGameName(e) }}
                 />
@@ -168,19 +198,12 @@ const Game = () => {
                   placeholder="Game Start Date"
                   onChange={(e) => { setGameStartDate(e) }}
                 />
-                <CFormLabel htmlFor="gameStartDate">Game Start Time</CFormLabel>
+                <CFormLabel htmlFor="gameStartTime">Game Start Time</CFormLabel>
                 <CFormInput
                   type="text"
-                  id="gameStartDate"
-                  placeholder="Game Start Date"
+                  id="gameStartTime"
+                  placeholder="Game Start Time"
                   onChange={(e) => { setGameStartTime(e) }}
-                />
-                <CFormLabel htmlFor="gameAmount">Game Amount Per Ticket</CFormLabel>
-                <CFormInput
-                  type="text"
-                  id="gameAmount"
-                  placeholder="Game Amount Per Ticket"
-                  onChange={(e) => { setGameAmount(e) }}
                 />
                 <CFormLabel htmlFor="gameMaximumTicketSell">Game Maximum Ticket Sell</CFormLabel>
                 <CFormInput
@@ -189,15 +212,62 @@ const Game = () => {
                   placeholder="Game Maximum Ticket Sell"
                   onChange={(e) => { setGameMaximumTicketSell(e) }}
                 />
-                <CFormSwitch label="Game Quick Fire" id="gameQuickFire" onChange={() => setGameQuickFire(!gameQuickFire)} />
-                <CFormSwitch label="Game Star" id="gameStar" onChange={() => setGameStar(!gameStar)} />
-                <CFormSwitch label="Game Top Line" id="gameTopLine" onChange={() => setGameTopLine(!gameTopLine)} />
-                <CFormSwitch label="Game Middle Line" id="gameMiddleLine" onChange={() => setGameMiddleLine(!gameMiddleLine)} />
-                <CFormSwitch label="Game Bottom Line" id="gameBottomLine" onChange={() => setGameBottomLine(!gameBottomLine)} />
-                <CFormSwitch label="Game Corner" id="gameCorner" onChange={() => setGameCorner(!gameCorner)} />
-                <CFormSwitch label="Game Half Sheet" id="gameHalfSheet" onChange={() => setGameHalfSheet(!gameHalfSheet)} />
-                <CFormSwitch label="Game Housefull" id="gameHousefull" onChange={() => setGameHousefull(!gameHousefull)} />
-                <CFormLabel htmlFor="gameStatus">Game Status</CFormLabel>
+                <CFormLabel htmlFor="gameAmount">Game Amount Per Ticket</CFormLabel>
+                <CFormInput
+                  type="text"
+                  id="gameAmount"
+                  placeholder="Game Amount Per Ticket"
+                  onChange={(e) => { setGameAmount(e) }}
+                />
+                <CFormSwitch
+                  label="Game Quick Fire"
+                  id="gameQuickFire"
+                  defaultChecked={gameQuickFire}
+                  onChange={() => setGameQuickFire(!gameQuickFire)}
+                />
+                <CFormSwitch
+                  label="Game Star"
+                  id="gameStar"
+                  defaultChecked={gameStar}
+                  onChange={() => setGameStar(!gameStar)}
+                />
+                <CFormSwitch
+                  label="Game Top Line"
+                  id="gameTopLine"
+                  defaultChecked={gameTopLine}
+                  onChange={() => setGameTopLine(!gameTopLine)}
+                />
+                <CFormSwitch
+                  label="Game Middle Line"
+                  id="gameMiddleLine"
+                  defaultChecked={gameMiddleLine}
+                  onChange={() => setGameMiddleLine(!gameMiddleLine)}
+                />
+                <CFormSwitch
+                  label="Game Bottom Line"
+                  id="gameBottomLine"
+                  defaultChecked={gameBottomLine}
+                  onChange={() => setGameBottomLine(!gameBottomLine)}
+                />
+                <CFormSwitch
+                  label="Game Corner"
+                  id="gameCorner"
+                  defaultChecked={gameCorner}
+                  onChange={() => setGameCorner(!gameCorner)}
+                />
+                <CFormSwitch
+                  label="Game Half Sheet"
+                  id="gameHalfSheet"
+                  defaultChecked={gameHalfSheet}
+                  onChange={() => setGameHalfSheet(!gameHalfSheet)}
+                />
+                <CFormSwitch
+                  label="Game Housefull"
+                  id="gameHousefull"
+                  defaultChecked={gameHousefull}
+                  onChange={() => setGameHousefull(!gameHousefull)}
+                />
+                <CFormLabel htmlFor="gameHousefull">Game Status</CFormLabel>
                 <CFormInput
                   type="text"
                   id="gameStatus"
@@ -218,7 +288,7 @@ const Game = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardBody>
-            <CTable hover>
+            <CTable hover responsive>
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -227,15 +297,16 @@ const Game = () => {
                   <CTableHeaderCell scope="col">Game Start Time</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Game Maximum Ticket</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Amount Per Ticket</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Quick Fire</CTableHeaderCell>
+                  {/* <CTableHeaderCell scope="col">Quick Fire</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Game Star</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Top Line</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Middle Line</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Bottom Line</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Corner</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Half Sheet</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Housefull</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Housefull</CTableHeaderCell> */}
                   <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Ticket</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
@@ -249,60 +320,267 @@ const Game = () => {
                     <CTableDataCell>{item.game_start_time}</CTableDataCell>
                     <CTableDataCell>{item.game_maximum_ticket_sell}</CTableDataCell>
                     <CTableDataCell>{item.game_amount}</CTableDataCell>
-                    <CTableDataCell>{item.game_quick_fire}</CTableDataCell>
+                    {/* <CTableDataCell>{item.game_quick_fire}</CTableDataCell>
                     <CTableDataCell>{item.game_star}</CTableDataCell>
                     <CTableDataCell>{item.game_top_line}</CTableDataCell>
                     <CTableDataCell>{item.game_middle_line}</CTableDataCell>
                     <CTableDataCell>{item.game_bottom_line}</CTableDataCell>
                     <CTableDataCell>{item.game_corner}</CTableDataCell>
                     <CTableDataCell>{item.game_half_sheet}</CTableDataCell>
-                    <CTableDataCell>{item.game_housefull}</CTableDataCell>
+                    <CTableDataCell>{item.game_housefull}</CTableDataCell> */}
                     <CTableDataCell>{item.game_status}</CTableDataCell>
                     <CTableDataCell>
+                      {/* <CButton color="info" className='me-2' onClick={() => { <TicketView /> }}>Ticket</CButton> */}
+                      <Link to={`/ticketView/${item.game_id}`}><CButton color="info" className='me-2'>Ticket</CButton></Link>
+                      {/* <CButton color="info" className='me-2' onClick={() => { go_to_ticket_view(item) }}>Ticket</CButton> */}
+                    </CTableDataCell>
+                    <CTableDataCell>
+                      <CButton color="warning" className='me-2' onClick={() => { get_edit_value(item) }}>More</CButton>
+                      <CModal alignment="center" visible={editModalVisible}>
+                        <CModalHeader>
+                          <CModalTitle>View</CModalTitle>
+                        </CModalHeader>
+                        <CModalBody>
+                          <CForm>
+                            {editOption == false ? (
+                              <div className="mb-3">
+                                <CFormLabel htmlFor="gameName">Game Name</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="gameName"
+                                  placeholder="Game Name"
+                                  defaultValue={gameName}
+                                  disabled
+                                />
+                                <CFormLabel htmlFor="gameStartDate">Game Start Date</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="gameStartDate"
+                                  placeholder="Game Start Date"
+                                  defaultValue={gameStartDate}
+                                  disabled
+                                />
+                                <CFormLabel htmlFor="gameStartTime">Game Start Time</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="gameStartTime"
+                                  placeholder="Game Start Time"
+                                  defaultValue={gameStartTime}
+                                  disabled
+                                />
+                                <CFormLabel htmlFor="gameMaximumTicketSell">Game Maximum Ticket Sell</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="gameMaximumTicketSell"
+                                  placeholder="Game Maximum Ticket Sell"
+                                  defaultValue={gameMaximumTicketSell}
+                                  disabled
+                                />
+                                <CFormLabel htmlFor="gameAmount">Game Amount</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="gameAmount"
+                                  placeholder="Game Amount"
+                                  defaultValue={gameAmount}
+                                  disabled
+                                />
+                                <CFormSwitch
+                                  label="Game Quick Fire"
+                                  id="gameQuickFire"
+                                  defaultChecked={gameQuickFire}
+                                  onChange={() => setGameQuickFire(!gameQuickFire)}
+                                  disabled
+                                />
+                                <CFormSwitch
+                                  label="Game Star"
+                                  id="gameStar"
+                                  defaultChecked={gameStar}
+                                  onChange={() => setGameStar(!gameStar)}
+                                  disabled
+                                />
+                                <CFormSwitch
+                                  label="Game Top Line"
+                                  id="gameTopLine"
+                                  defaultChecked={gameTopLine}
+                                  onChange={() => setGameTopLine(!gameTopLine)}
+                                  disabled
+                                />
+                                <CFormSwitch
+                                  label="Game Middle Line"
+                                  id="gameMiddleLine"
+                                  defaultChecked={gameMiddleLine}
+                                  onChange={() => setGameMiddleLine(!gameMiddleLine)}
+                                  disabled
+                                />
+                                <CFormSwitch
+                                  label="Game Bottom Line"
+                                  id="gameBottomLine"
+                                  defaultChecked={gameBottomLine}
+                                  onChange={() => setGameBottomLine(!gameBottomLine)}
+                                  disabled
+                                />
+                                <CFormSwitch
+                                  label="Game Corner"
+                                  id="gameCorner"
+                                  defaultChecked={gameCorner}
+                                  onChange={() => setGameCorner(!gameCorner)}
+                                  disabled
+                                />
+                                <CFormSwitch
+                                  label="Game Half Sheet"
+                                  id="gameHalfSheet"
+                                  defaultChecked={gameHalfSheet}
+                                  onChange={() => setGameHalfSheet(!gameHalfSheet)}
+                                  disabled
+                                />
+                                <CFormSwitch
+                                  label="Game Housefull"
+                                  id="gameHousefull"
+                                  defaultChecked={gameHousefull}
+                                  onChange={() => setGameHousefull(!gameHousefull)}
+                                  disabled
+                                />
+                                <CFormLabel htmlFor="gameStatus">Game Status</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="gameStatus"
+                                  placeholder="Game Status"
+                                  defaultValue={gameStatus}
+                                  disabled
+                                />
+                              </div>
+                            ) : (
+                              <div className="mb-3">
+                                <CFormLabel htmlFor="gameName">Game Name</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="gameName"
+                                  placeholder="Game Name"
+                                  onChange={(e) => { setGameName(e) }}
+                                  defaultValue={gameName}
+                                />
+                                <CFormLabel htmlFor="gameStartDate">Game Start Date</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="gameStartDate"
+                                  placeholder="Game Start Date"
+                                  onChange={(e) => { setGameStartDate(e) }}
+                                  defaultValue={gameStartDate}
+                                />
+                                <CFormLabel htmlFor="gameStartTime">Game Start Time</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="gameStartTime"
+                                  placeholder="Game Start Time"
+                                  onChange={(e) => { setGameStartTime(e) }}
+                                  defaultValue={gameStartTime}
+                                />
+                                <CFormLabel htmlFor="gameMaximumTicketSell">Game Maximum Ticket Sell</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="gameMaximumTicketSell"
+                                  placeholder="Game Maximum Ticket Sell"
+                                  onChange={(e) => { setGameMaximumTicketSell(e) }}
+                                  defaultValue={gameMaximumTicketSell}
+                                />
+                                <CFormLabel htmlFor="gameAmount">Game Amount</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="gameAmount"
+                                  placeholder="Game Amount"
+                                  onChange={(e) => { setGameAmount(e) }}
+                                  defaultValue={gameAmount}
+                                />
+                                <CFormSwitch
+                                  label="Game Quick Fire"
+                                  id="gameQuickFire"
+                                  defaultChecked={gameQuickFire}
+                                  onChange={() => setGameQuickFire(!gameQuickFire)}
+                                />
+                                <CFormSwitch
+                                  label="Game Star"
+                                  id="gameStar"
+                                  defaultChecked={gameStar}
+                                  onChange={() => setGameStar(!gameStar)}
+                                />
+                                <CFormSwitch
+                                  label="Game Top Line"
+                                  id="gameTopLine"
+                                  defaultChecked={gameTopLine}
+                                  onChange={() => setGameTopLine(!gameTopLine)}
+                                />
+                                <CFormSwitch
+                                  label="Game Middle Line"
+                                  id="gameMiddleLine"
+                                  defaultChecked={gameMiddleLine}
+                                  onChange={() => setGameMiddleLine(!gameMiddleLine)}
+                                />
+                                <CFormSwitch
+                                  label="Game Bottom Line"
+                                  id="gameBottomLine"
+                                  defaultChecked={gameBottomLine}
+                                  onChange={() => setGameBottomLine(!gameBottomLine)}
+                                />
+                                <CFormSwitch
+                                  label="Game Corner"
+                                  id="gameCorner"
+                                  defaultChecked={gameCorner}
+                                  onChange={() => setGameCorner(!gameCorner)}
+                                />
+                                <CFormSwitch
+                                  label="Game Half Sheet"
+                                  id="gameHalfSheet"
+                                  defaultChecked={gameHalfSheet}
+                                  onChange={() => setGameHalfSheet(!gameHalfSheet)}
+                                />
+                                <CFormSwitch
+                                  label="Game Housefull"
+                                  id="gameHousefull"
+                                  defaultChecked={gameHousefull}
+                                  onChange={() => setGameHousefull(!gameHousefull)}
+                                />
+                                <CFormLabel htmlFor="gameStatus">Game Status</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="gameStatus"
+                                  placeholder="Game Status"
+                                  onChange={(e) => { setGameStatus(e) }}
+                                  defaultValue={gameStatus}
+                                />
+                              </div>)}
+                          </CForm>
+                        </CModalBody>
+                        <CModalFooter>
+                          <CButton color="secondary" onClick={() => setEditModalVisible(false)}>Cancel</CButton>
+                          {/* <CButton color="primary" onClick={() => edit_game()}>Edit</CButton> */}
+                          {editOption == false ? (
+                            <>
+                              <CButton color="primary" onClick={() => setEditOption(true)}>Edit</CButton>
+                              <CButton color="danger" onClick={() => { setDeleteModalVisible(true) }}>Delete</CButton>
+                              <CModal alignment="center" visible={deleteModalVisible} onClose={() => setDeleteModalVisible(false)}>
+                                <CModalHeader>
+                                  <CModalTitle>Do You Want to Delete..</CModalTitle>
+                                </CModalHeader>
+                                <CModalFooter>
+                                  <CButton color="secondary" onClick={() => setVisible(false)}>
+                                    Cancel
+                                  </CButton>
+                                  <CButton color="primary" onClick={() => delete_game(item.users_id)}>Yes.,Delete</CButton>
+                                </CModalFooter>
+                              </CModal>
+                            </>
+                          ) : (
+                            <CButton color="primary" onClick={() => edit_game()}>Update</CButton>
+                          )}
+                        </CModalFooter>
+                      </CModal>
+                    </CTableDataCell>
+                    {/* <CTableDataCell>
                       <CButton color="warning" className='me-2' onClick={() => { get_edit_value(item) }}>Edit</CButton>
-                      {/* <CModal alignment="center" visible={editModalVisible} onClose={() => setEditModalVisible(false)}> */}
                       <CModal alignment="center" visible={editModalVisible}>
                         <CModalHeader>
                           <CModalTitle>Edit</CModalTitle>
                         </CModalHeader>
-                        {/* <CModalBody>
-                          <CForm>
-                            <div className="mb-3">
-                              <CFormLabel htmlFor="name">Name</CFormLabel>
-                              <CFormInput
-                                type="text"
-                                id="name"
-                                placeholder="User Name"
-                                onChange={(e) => { setName(e) }}
-                                defaultValue={name}
-                              />
-                              <CFormLabel htmlFor="email">Email address</CFormLabel>
-                              <CFormInput
-                                typedefaultValue="email"
-                                id="email"
-                                placeholder="user@example.com"
-                                onChange={(e) => { setEmail(e) }}
-                                defaultValue={email}
-                              />
-                              <CFormLabel htmlFor="phone">Phone</CFormLabel>
-                              <CFormInput
-                                type="text"
-                                id="phone"
-                                placeholder="User Phone"
-                                onChange={(e) => { setPhone(e) }}
-                                defaultValue={phone}
-                              />
-                              <CFormLabel htmlFor="gender">Gender</CFormLabel>
-                              <CFormInput
-                                type="text"
-                                id="gender"
-                                placeholder="User Gender"
-                                onChange={(e) => { setGender(e) }}
-                                defaultValue={gender}
-                              />
-                            </div>
-                          </CForm>
-                        </CModalBody> */}
                         <CModalFooter>
                           <CButton color="secondary" onClick={() => setEditModalVisible(false)}>
                             Cancel
@@ -319,10 +597,10 @@ const Game = () => {
                           <CButton color="secondary" onClick={() => setVisible(false)}>
                             Cancel
                           </CButton>
-                          <CButton color="primary" onClick={() => delete_game(item.users_id)}>yes.,Delete</CButton>
+                          <CButton color="primary" onClick={() => delete_game(item.users_id)}>Yes.,Delete</CButton>
                         </CModalFooter>
                       </CModal>
-                    </CTableDataCell>
+                    </CTableDataCell> */}
                   </CTableRow>
                 })}
               </CTableBody>

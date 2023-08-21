@@ -57,7 +57,7 @@ const User = () => {
       name: name.target.value,
       email: email.target.value,
       phone: phone.target.value,
-      gender: gender.target.value,
+      gender: gender
     }
     console.log("saveUserApiCallreq", req);
     let result = await postApiCall(base.saveUser, req)
@@ -106,10 +106,10 @@ const User = () => {
   const edit_user = async () => {
     let req = {
       id: id,
-      name: name.target.value,
-      email: email.target.value,
-      phone: phone.target.value,
-      gender: gender.target.value,
+      name: name,
+      email: email,
+      phone: phone,
+      gender: gender,
     }
     console.log("reqofedituser", req);
     let result = await putApiCall(base.editUser, req)
@@ -123,7 +123,6 @@ const User = () => {
   return (
     <CRow>
       <CCol xs={12} className='mb-4'>
-        {/* <CButton color="primary" onClick={() => { showToasts(); }} onClose={() => setVisible(false)}>Add</CButton> */}
         <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Add</CButton>
         <ToastContainer />
         <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
@@ -157,7 +156,7 @@ const User = () => {
                   onChange={(e) => { setPhone(e) }}
                 />
                 <CFormLabel htmlFor="gender">Gender</CFormLabel>
-                <CFormSelect value={gender} id="gender" onChange={(e) => { setGender(e) }}>
+                <CFormSelect defaultValue={gender} id="gender" onChange={(e) => { setGender(e.target.value) }}>
                   <option value="" selected disabled>Select Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
@@ -177,7 +176,7 @@ const User = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardBody>
-            <CTable hover>
+            <CTable hover responsive>
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -234,7 +233,8 @@ const User = () => {
                                 defaultValue={phone}
                               />
                               <CFormLabel htmlFor="gender">Gender</CFormLabel>
-                              <CFormSelect defaultValue={gender} id="gender" onChange={(e) => { setGender(e) }}>
+                              <CFormSelect defaultValue={gender} id="gender" onChange={(e) => { setGender(e.target.value) }}>
+                                <option value="" selected disabled>Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                                 <option value="Others">Others</option>

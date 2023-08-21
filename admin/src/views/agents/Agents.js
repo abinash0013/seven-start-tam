@@ -8,6 +8,7 @@ import {
   CForm,
   CFormInput,
   CFormLabel,
+  CFormSelect,
   CFormTextarea,
   CModal,
   CModalBody,
@@ -54,8 +55,9 @@ const Agents = () => {
       name: name.target.value,
       email: email.target.value,
       phone: phone.target.value,
-      Gender: gender.target.value,
+      gender: gender,
     }
+    console.log("saveAgentApiCallreq", req);
     let result = await postApiCall(base.saveAgent, req)
     if (result.code == 200) {
       setVisible(false);
@@ -89,15 +91,17 @@ const Agents = () => {
   const edit_agent = async () => {
     let req = {
       id: id,
-      name: name.target.value,
-      email: email.target.value,
-      phone: phone.target.value,
-      Gender: gender.target.value,
+      name: name,
+      email: email,
+      phone: phone,
+      Gender: gender,
     }
-    console.log("agentLogreqed", req);
-    let result = await postApiCall(base.editAgent, req)
+    console.log("reqreq", req);
+    let result = await putApiCall(base.editAgent, req)
+    console.log("resultresult", result);
     if (result.code == 200) {
-      toast.error("Deleted Created..!");
+      setEditModalVisible(false)
+      toast.success("Updated Successfully..!");
     }
   }
 
@@ -133,14 +137,15 @@ const Agents = () => {
                   id="phone"
                   placeholder="Agent Phone"
                   onChange={(e) => { setPhone(e) }}
+                  maxLength={10}
                 />
                 <CFormLabel htmlFor="gender">Gender</CFormLabel>
-                <CFormInput
-                  type="text"
-                  id="gender"
-                  placeholder="Agent Gender"
-                  onChange={(e) => { setGender(e) }}
-                />
+                <CFormSelect defaultValue={gender} id="gender" onChange={(e) => { setGender(e.target.value) }}>
+                  <option value="" selected disabled>Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Others">Others</option>
+                </CFormSelect>
               </div>
             </CForm>
           </CModalBody>
@@ -155,7 +160,7 @@ const Agents = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardBody>
-            <CTable hover>
+            <CTable hover responsive>
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -207,16 +212,16 @@ const Agents = () => {
                                 id="phone"
                                 placeholder="Agent Phone"
                                 onChange={(e) => { setPhone(e) }}
+                                maxLength={10}
                                 defaultValue={phone}
                               />
                               <CFormLabel htmlFor="gender">Gender</CFormLabel>
-                              <CFormInput
-                                type="text"
-                                id="gender"
-                                placeholder="Agent Gender"
-                                onChange={(e) => { setGender(e) }}
-                                defaultValue={gender}
-                              />
+                              <CFormSelect defaultValue={gender} id="gender" onChange={(e) => { setGender(e.target.value) }}>
+                                <option value="" selected disabled>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Others">Others</option>
+                              </CFormSelect>
                             </div>
                           </CForm>
                         </CModalBody>
@@ -247,7 +252,7 @@ const Agents = () => {
           </CCardBody>
         </CCard>
       </CCol>
-    </CRow>
+    </CRow >
   )
 }
 

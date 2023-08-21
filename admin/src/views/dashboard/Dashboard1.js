@@ -313,13 +313,13 @@ const Dashboard = (props) => {
         </CCardFooter>
       </CCard> */}
 
-      <CRow>
+      {/* <CRow>
         <CCol xs>
           <CCard className="mb-4">
             <CCardHeader>Agent {' & '} Sales</CCardHeader>
             <CCardBody>
-              <CRow>
-                {/* <CCol xs={12} md={6} xl={6}>
+              <CRow> */}
+      {/* <CCol xs={12} md={6} xl={6}>
                   <CRow>
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-info py-1 px-3">
@@ -349,7 +349,7 @@ const Dashboard = (props) => {
                   ))}
                 </CCol> */}
 
-                {/* <CCol xs={12} md={6} xl={6}>
+      {/* <CCol xs={12} md={6} xl={6}>
                   <CRow>
                     <CCol sm={6}>
                       <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
@@ -398,7 +398,7 @@ const Dashboard = (props) => {
                     </div>
                   ))}
                 </CCol> */}
-              </CRow>
+      {/* </CRow>
 
               <br />
 
@@ -411,9 +411,9 @@ const Dashboard = (props) => {
                     <CTableHeaderCell>Agent Name</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Address</CTableHeaderCell>
                     <CTableHeaderCell>Ticket Sale</CTableHeaderCell>
-                    <CTableHeaderCell className="text-center">Amount</CTableHeaderCell>
-                    {/* <CTableHeaderCell>Activity</CTableHeaderCell> */}
-                  </CTableRow>
+                    <CTableHeaderCell className="text-center">Amount</CTableHeaderCell> */}
+      {/* <CTableHeaderCell>Activity</CTableHeaderCell> */}
+      {/* </CTableRow>
                 </CTableHead>
                 <CTableBody>
                   {tableExample.map((item, index) => (
@@ -444,21 +444,21 @@ const Dashboard = (props) => {
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
                         <CIcon size="xl" icon={item.payment.icon} />
-                      </CTableDataCell>
-                      {/* <CTableDataCell>
+                      </CTableDataCell> */}
+      {/* <CTableDataCell>
                         <div className="small text-medium-emphasis">Last login</div>
                         <strong>{item.activity}</strong>
                       </CTableDataCell> */}
-                    </CTableRow>
+      {/* </CTableRow>
                   ))}
                 </CTableBody>
               </CTable>
             </CCardBody>
           </CCard>
         </CCol>
-      </CRow>
+      </CRow> */}
 
-      <WidgetsBrand withCharts />
+      {/* <WidgetsBrand withCharts /> */}
     </>
   )
 }

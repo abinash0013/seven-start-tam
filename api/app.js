@@ -177,7 +177,6 @@ app.put('/deleteUser', async (req, res) => {
   )
 })
 
-
 // ::::::::::::::::::::::::::::::::::::::::: ticket api code
 app.get('/ticketList', async (req, res) => {
   ex_query("SELECT * FROM tbl_ticket", req, res)
@@ -234,6 +233,65 @@ app.put('/deleteTicket', async (req, res) => {
       }
     }
   )
+})
+
+app.get('/ticketCardView', async (req, res) => {
+  ex_query('SELECT * FROM `tbl_ticket` WHERE `game_id`=11', req, res)
+  //   function (error, result, fields) {
+  //     if (error) throw error;
+  //     console.log("pppp", result);
+  //     if (error) {
+  //       ResponseHandler(res, false, "Api Issue", result)
+  //     } else {
+  //       if (result) {
+  //         ResponseHandler(res, true, "Update Successfully..", result)
+  //       } else {
+  //         ResponseHandler(res, false, "Sorry., Unable to Update..", result)
+  //       }
+  //     }
+  // });
+})
+
+app.post('/addTicket', async (req, res) => {
+  let mainArr = [];
+  for (i = 1; i <= 10; i++) {
+    let arr = [];
+    for (j = 1; j <= 27; j++) {
+      let x = Math.floor(Math.random() * 99);
+      let y = Math.floor(Math.random() * 3);
+      if (y === 0 || x == 0) {
+        arr.push({ status: false, number: 0, line: j < 10 ? 'top' : j > 9 && j < 18 ? "middle" : "bottom" });
+      } else {
+        arr.push({ status: false, number: x, line: j < 10 ? 'top' : j > 9 && j < 18 ? "middle" : "bottom" })
+      }
+    }
+    let gameId = 1;
+    let jsonset = {
+      id: i,
+      gameId: gameId,
+      userId: "",
+      userName: "",
+      ticketUniquieId: gameId + "" + i + new Date().getTime(),
+      bookingDateAndTime: new Date().getTime(),
+      dateSet: arr
+    }
+    mainArr.push(jsonset);
+  }
+  con.query('INSERT INTO `tbl_ticket` SET `game_id`=?,`ticket_set`=?', [req.body.gameId, JSON.stringify(mainArr)],
+    // console.log(mainArr)
+    function (error, result, fields) {
+      if (error) throw error;
+      console.log("pppp", result);
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result)
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Update Successfully..", result)
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Update..", result)
+        }
+      }
+    });
 })
 
 // ::::::::::::::::::::::::::::::::::::::::: ticket api code

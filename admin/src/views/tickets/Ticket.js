@@ -56,9 +56,7 @@ const Ticket = () => {
       ticketAmount: ticketAmount.target.value,
       ticketStatus: ticketStatus.target.value
     }
-    console.log("reqreqreq", req);
     let result = await postApiCall(base.saveTicket, req)
-    console.log("reqreqreqresult", result);
     if (result.code == 200) {
       setVisible(false);
       toast.success("Successfully Created..!");
@@ -70,11 +68,10 @@ const Ticket = () => {
       id: value.ticket_id,
       status: "1"
     }
-    console.log("dtreq", req);
     let result = await putApiCall(base.deleteTicket, req)
-    console.log("dtresu", result);
     if (result.code == 200) {
-      toast.error("Deleted Successfully..!");
+      toast.success("Updated Successfully..!");
+      setEditModalVisible(false);
     }
   }
 
@@ -90,16 +87,14 @@ const Ticket = () => {
   const edit_ticket = async () => {
     let req = {
       id: id,
-      ticketSerialNumber: ticketSerialNumber.target.value,
-      ticketNumber: ticketNumber.target.value,
-      ticketAmount: ticketAmount.target.value,
-      ticketStatus: ticketStatus.target.value,
+      ticketSerialNumber: ticketSerialNumber,
+      ticketNumber: ticketNumber,
+      ticketAmount: ticketAmount,
+      ticketStatus: ticketStatus,
     }
-    console.log("esitticreq", req);
-    let result = await postApiCall(base.editTicket, req)
-    console.log("editticresult", result);
+    let result = await putApiCall(base.editTicket, req)
     if (result.code == 200) {
-      toast.success("Edited Successfully..!");
+      toast.error("Deleted Successfully..!");
     }
   }
 
@@ -157,7 +152,7 @@ const Ticket = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardBody>
-            <CTable hover>
+            <CTable hover responsive>
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
