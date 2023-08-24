@@ -53,40 +53,40 @@ const TicketView = () => {
   const _render_ticket_card_view = (data) => {
     return data.map((item, index) => {
       return (
-        <CCol sm={6} key={index}>
+        <CCol sm={6} key={index} style={{ margin: "10px 0" }}>
           <CCard>
             <CCardBody>
               {/* <div className="ticket-container"> */}
               <div style={{
                 display: "flex",
-                flexWrap: "wrap",
                 justifyContent: "center",
-                marginTop: "20px"
+                // marginTop: "20px",
+                // flex: 1
+
               }}>
                 <div style={{
                   display: "flex",
-                  flexDirection: "column",
+                  flexWrap: "wrap",
+                  flexDirection: "row",
+                  justifyContent: "center",
                   alignItems: "center",
                   margin: "10px",
-                  padding: "10px",
-                  border: "1px solid #ccc",
-                }} >
-                  {/* // key={index}> */}
-                  {/* {ticket.map((number, i) => ( */}
+                  // padding: "10px",
+                  // border: "1px solid #ccc",
+                }}>
                   {item.dateSet.map((ticket, index) => (
                     <div style={{
-                      width: "40px",
-                      height: "40px",
+                      width: "50px",
+                      height: "50px",
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
                       border: "1px solid #ccc",
-                      margin: "2px",
+                      // margin: "2px",
                       fontWeight: "bold",
                     }}>{ticket}</div>
                   ))}
                 </div>
-                {/* ))} */}
               </div>
             </CCardBody>
           </CCard>

@@ -1,0 +1,14 @@
+.projectImages {
+  height: 100vh;
+  background-image: url(./../../Images/banner.webp);
+  width: 100%;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-position: center !important;
+  position: relative;
+}
+
+.bannerImage {
+  height: 100vh;
+  width: 100%;
+}
