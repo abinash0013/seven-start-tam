@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import "./Ticket.css"
+import React, { useState, useEffect } from 'react';
+import "./Ticket.css";
 import GameInfo from '../GameInfo/GameInfo'
 
 // import { getApiCall, postApiCall, putApiCall } from './../../../admin/src/services/AppSetting';

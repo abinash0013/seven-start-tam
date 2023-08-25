@@ -1,0 +1,9 @@
+.bookTicketNumberContainer {}
+
+.bookTicketNumberBox {
+  background-color: "red";
+}
+
+.bookTicketNumber {
+  list-style-type: none;
+}
