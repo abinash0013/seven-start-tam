@@ -236,7 +236,8 @@ app.put('/deleteTicket', async (req, res) => {
 })
 
 app.get('/ticketCardView', async (req, res) => {
-  ex_query('SELECT * FROM `tbl_ticket` WHERE `game_id`=11', req, res)
+  ex_query('SELECT * FROM `tbl_ticket` WHERE `game_id`=2', req, res)
+  // ex_query('SELECT * FROM `tbl_ticket`', req, res)
   //   function (error, result, fields) {
   //     if (error) throw error;
   //     console.log("pppp", result);
@@ -317,7 +318,7 @@ app.post('/saveGame', async (req, res) => {
 })
 
 app.put('/editGame', async (req, res) => {
-  con.query('UPDATE `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=? WHERE `game_id`',
+  con.query('UPDATE `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=? WHERE `game_id`=?',
     [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus, req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;
@@ -351,6 +352,69 @@ app.put('/deleteGame', async (req, res) => {
     }
   )
 })
+
+// ::::::::::::::::::::::::::::::::::::::::: announcement api code
+app.get('/announcementList', async (req, res) => {
+  ex_query("SELECT * FROM tbl_announcement", req, res)
+})
+
+app.post('/saveAnnouncement', async (req, res) => {
+  con.query('INSERT INTO `tbl_announcement` SET `announcement_title`=?, `announcement_message`=?, `announcement_status`=?',
+    [req.body.announcementTitle, req.body.announcementMessage, req.body.announcementStatus],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result)
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Save Successfully..", result)
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Save..", result)
+        }
+      }
+    });
+})
+
+app.put('/editAnnouncement', async (req, res) => {
+  con.query('UPDATE `tbl_announcement` SET `announcement_title`=?, `announcement_message`=?, `announcement_status`=? WHERE `announcement_id`=?',
+    [req.body.announcementTitle, req.body.announcementMessage, req.body.announcementStatus, req.body.announcementId],
+    function (error, result, fields) {
+      if (error) throw error;
+      console.log("pppp", result);
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result)
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Update Successfully..", result)
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Update..", result)
+        }
+      }
+    });
+})
+
+app.put('/deleteAnnouncement', async (req, res) => {
+  con.query('UPDATE `tbl_game` SET `game_status`=? WHERE `game_id`=?',
+    [req.body.gameStatus, req.body.gameId],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Deleted Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  )
+})
+
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
+// app.get('/ticketCardView', async (req, res) => {
+//   ex_query("SELECT * FROM tbl_ticket", req, res)
+// })
 
 app.listen(3000, function () {
   console.log('Server is up and Rudding on port 3000!');
