@@ -65,6 +65,14 @@ const _nav = [
     //   // badge: {
     //   //   color: 'info',
     //   // },
+  }, {
+    component: CNavItem,
+    name: 'Announcement',
+    to: '/announcement',
+    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    badge: {
+      color: 'info',
+    },
   },
   // {
   //   component: CNavTitle,

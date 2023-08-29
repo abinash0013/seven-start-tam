@@ -7,3 +7,12 @@
 .bookTicketNumber {
   list-style-type: none;
 }
+
+.customerBoxContainer {
+  display: "flex";
+  flex-Wrap: "wrap"
+}
+
+.customBox {
+  margin: 5px
+}

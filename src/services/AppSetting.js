@@ -1,4 +1,3 @@
-import { base } from "src/constants/Data.constant";
 import * as opsService from "./Ops";
 
 const postApiCall = async (url, request) => {

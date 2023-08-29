@@ -42,18 +42,19 @@ const TicketView = () => {
   const { id } = useParams();
   const ticketCardView = async () => {
     let result = await getApiCall(base.ticketCardView)
-    // console.log("resultcardvieweeq", result[0].ticket_set);
-    // setTicket(result[0].ticket_set)
+    console.log("resulttt", result);
+    console.log("resultcardvieweeqw", result[0].ticket_set);
+    console.log("resultcardvieweeq0000", result[0]);
     let convertJSON = JSON.parse(result[0].ticket_set);
-    console.log("resultcardvieweeqqq", convertJSON);
-
+    console.log("resultcardvieweeqqqw", convertJSON);
     setTicket(convertJSON)
   }
 
   const _render_ticket_card_view = (data) => {
     return data.map((item, index) => {
+      console.log("dataitemm", item);
       return (
-        <CCol sm={6} key={index} style={{ margin: "10px 0" }}>
+        <CCol sm={6} style={{ margin: "10px 0" }} key={index}>
           <CCard>
             <CCardBody>
               {/* <div className="ticket-container"> */}
@@ -61,8 +62,7 @@ const TicketView = () => {
                 display: "flex",
                 justifyContent: "center",
                 // marginTop: "20px",
-                // flex: 1
-
+                // flex: 1 
               }}>
                 <div style={{
                   display: "flex",
@@ -74,7 +74,7 @@ const TicketView = () => {
                   // padding: "10px",
                   // border: "1px solid #ccc",
                 }}>
-                  {item.dateSet.map((ticket, index) => (
+                  {item.dateSet.map((item, index) => (
                     <div style={{
                       width: "50px",
                       height: "50px",
@@ -84,13 +84,18 @@ const TicketView = () => {
                       border: "1px solid #ccc",
                       // margin: "2px",
                       fontWeight: "bold",
-                    }}>{ticket}</div>
+                    }}>
+                      {/* {console.log("dataitemticket", ticket)} */}
+                      {item.number}
+                      {/* {"1"} */}
+                    </div>
                   ))}
                 </div>
               </div>
             </CCardBody>
           </CCard>
-        </CCol>
+        </CCol >
+        // <div>test1</div>
       )
     })
   }

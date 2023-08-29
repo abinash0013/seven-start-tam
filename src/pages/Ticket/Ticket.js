@@ -2,22 +2,25 @@ import React, { useState, useEffect } from 'react';
 import "./Ticket.css";
 import GameInfo from '../GameInfo/GameInfo'
 
-// import { getApiCall, postApiCall, putApiCall } from './../../../admin/src/services/AppSetting';
-// import { base } from './../../../admin/src/services/AppSetting';
+import { getApiCall, postApiCall, putApiCall } from '../../services/AppSetting';
+// import { base } from './../../services/AppSetting';
+import { base } from '../../constants/Data.constant';
 
 const Ticket = () => {
-  // const [ticket, setTicket] = useState([]);
-  // useEffect(() => {
-  //   ticketCardView();
-  // }, []);
-  // const ticketCardView = async () => {
-  //   let result = await getApiCall(base.ticketCardView)
-  //   // console.log("resultcardvieweeq", result[0].ticket_set);
-  //   // setTicket(result[0].ticket_set)
-  //   let convertJSON = JSON.parse(result[0].ticket_set);
-  //   console.log("resultcardvieweeqqq", convertJSON);
-  //   setTicket(convertJSON)
-  // }
+  const [ticket, setTicket] = useState([]);
+  useEffect(() => {
+    ticketCardView();
+  }, []);
+
+  const ticketCardView = async () => {
+    let result = await getApiCall(base.ticketCardView)
+    // console.log("resultcardvieweeq", result[0].ticket_set);
+    // setTicket(result[0].ticket_set)
+    let convertJSON = JSON.parse(result[0].ticket_set);
+    console.log("resultcardvieweeqqq", convertJSON);
+    setTicket(convertJSON)
+  }
+
   return (
     <div class="ticketSection">
       <div class="outerContainer">

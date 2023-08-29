@@ -5,6 +5,7 @@ const Agents = React.lazy(() => import('./views/agents/Agents'))
 const Users = React.lazy(() => import('./views/users/User'))
 const Ticket = React.lazy(() => import('./views/tickets/Ticket'))
 const Game = React.lazy(() => import('./views/game/Game'))
+const Announcement = React.lazy(() => import('./views/announcement/Announcement'))
 const TicketView = React.lazy(() => import('./views/game/TicketView'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -63,6 +64,7 @@ const routes = [
   { path: '/users', name: 'User', element: Users },
   { path: '/ticket', name: 'Ticket', element: Ticket },
   { path: '/game', name: 'Game', element: Game },
+  { path: '/announcement', name: 'Announcement', element: Announcement },
   { path: '/ticketView', name: 'TicketView', element: TicketView },
 
   { path: '/theme/colors', name: 'Colors', element: Colors },
