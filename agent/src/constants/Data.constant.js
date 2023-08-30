@@ -17,5 +17,8 @@ const base = {
     gameList: mainUrl + `gameList`,
     saveGame: mainUrl + `saveGame`,
     editGame: mainUrl + `editGame`,
+
+    viewTicketForAgents: mainUrl + `viewTicketForAgents`
+
 };
 export { base };

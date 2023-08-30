@@ -33,10 +33,8 @@ const postApiCall = async (url, request) => {
     },
     getApiCall = async (url) => {
         try {
-            let result = await opsService.getData(
-                url,
-                false
-            );
+            let result = await opsService.getData(url, false);
+            console.log("resultresultttt", result);
             return result;
         } catch (e) {
             return { status: false, data: {}, message: e.message };

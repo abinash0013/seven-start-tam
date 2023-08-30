@@ -42,11 +42,11 @@ const TicketView = () => {
   const { id } = useParams();
   const ticketCardView = async () => {
     let result = await getApiCall(base.ticketCardView)
-    console.log("resulttt", result);
-    console.log("resultcardvieweeqw", result[0].ticket_set);
-    console.log("resultcardvieweeq0000", result[0]);
+    // console.log("resulttt", result);
+    // console.log("resultcardvieweeqw", result[0].ticket_set);
+    // console.log("resultcardvieweeq0000", result[0]);
     let convertJSON = JSON.parse(result[0].ticket_set);
-    console.log("resultcardvieweeqqqw", convertJSON);
+    // console.log("resultcardvieweeqqqw", convertJSON);
     setTicket(convertJSON)
   }
 

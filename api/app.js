@@ -411,6 +411,11 @@ app.put('/deleteAnnouncement', async (req, res) => {
   )
 })
 
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: agents api
+app.get('/viewTicketForAgents', async (req, res) => {
+  ex_query("SELECT * FROM tbl_ticket WHERE game_id=2", req, res)
+})
+
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
 // app.get('/ticketCardView', async (req, res) => {
 //   ex_query("SELECT * FROM tbl_ticket", req, res)
