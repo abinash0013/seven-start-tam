@@ -52,7 +52,7 @@ const TicketView = () => {
 
   const _render_ticket_card_view = (data) => {
     return data.map((item, index) => {
-      console.log("dataitemm", item);
+      // console.log("dataitemm", item);
       return (
         <CCol sm={6} style={{ margin: "10px 0" }} key={index}>
           <CCard>

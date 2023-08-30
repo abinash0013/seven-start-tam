@@ -241,7 +241,7 @@ const Agents = () => {
                           <CButton color="secondary" onClick={() => setVisible(false)}>
                             Cancel
                           </CButton>
-                          <CButton color="primary" onClick={() => delete_agent(itemValue)}>yes.,Delete</CButton>
+                          <CButton color="primary" onClick={() => delete_agent(itemValue)}>Yes., Delete</CButton>
                         </CModalFooter>
                       </CModal>
                     </CTableDataCell>

@@ -6,22 +6,26 @@ import { base } from 'src/constants/Data.constant';
 
 const BookTicket = () => {
   const [bookTicketNumber, setBookTicketNumber] = useState("");
-  const numbers = [];
-  for (let i = 1; i <= 600; i++) {
-    numbers.push(i);
-  }
+  const [ticketSerialNumber, setTicketSerialNumber] = useState([]);
 
   useEffect(() => {
     viewTicketForAgents();
   }, []);
 
-  const [ticketSerialNumber, setTicketSerialNumber] = useState([]);
   const viewTicketForAgents = async () => {
     let result = await getApiCall(base.viewTicketForAgents)
-    console.log("resultresulteerrr", result);
-    // try({}).catch({})
-    let datamerge = JSON.parse(result.ticket_set)
+    console.log("resultresulteerrrage", result);
+    let datamerge = JSON.parse(result[0].ticket_set)
+    // console.log("datamergeee", datamerge);
     setTicketSerialNumber(datamerge)
+  }
+
+  const bookTicketByAgents = async () => {
+    let result = await postApiCall(base.bookTicketByAgents)
+    console.log("resultresulteerrrage", result);
+    // let datamerge = JSON.parse(result[0].ticket_set)
+    // // console.log("datamergeee", datamerge);
+    // setTicketSerialNumber(datamerge)
   }
 
   return (
@@ -31,15 +35,15 @@ const BookTicket = () => {
           <CWidgetStatsB
             className="mb-3"
             progress={{ color: 'success', value: 75 }}
-            title="Ticket Book"
+            title="Ticket Book isme all ticket aiga per game ka or dusre agent ne jo dicket kata h wo v dikhega"
             value="89.9%"
           />
           <CRow className='mb-3'>
             <CCol xs={12} className='m-1' style={{ display: "flex", flexWrap: "wrap" }}>
               {ticketSerialNumber?.map((item, index) => {
-                console.log("eeerererer", item);
+                console.log("eeerererer", item.userId);
                 return <div className='customBox'>
-                  <CFormCheck button={{ color: 'primary', variant: 'outline' }} id={item.id} autoComplete="off" label={item.id} />
+                  <CFormCheck button={{ color: item.userId != "" ? 'primary' : 'secondary', variant: item.userId != "" ? '' : 'outline' }} id={item.id} autoComplete="off" label={item.id} />
                 </div>
               })}
               {/* <CFormCheck button={{ color: 'primary', variant: 'outline' }} id="number" autoComplete="off" label="Single toggle" /> */}
@@ -62,7 +66,7 @@ const BookTicket = () => {
               <CFormInput type="text" id="phone" placeholder="Enter Phone" />
             </CCol>
             <CCol xs={2}>
-              <CButton type="submit" className="mb-3">
+              <CButton type="submit" className="mb-3" onPress={() => { bookTicketByAgents() }}>
                 Book
               </CButton>
             </CCol>

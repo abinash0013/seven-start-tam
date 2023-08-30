@@ -231,7 +231,7 @@ const Ticket = () => {
                           <CButton color="secondary" onClick={() => setVisible(false)}>
                             Cancel
                           </CButton>
-                          <CButton color="primary" onClick={() => delete_ticket(itemValue)}>yes.,Delete</CButton>
+                          <CButton color="primary" onClick={() => delete_ticket(itemValue)}>Yes., Delete</CButton>
                         </CModalFooter>
                       </CModal>
                     </CTableDataCell>

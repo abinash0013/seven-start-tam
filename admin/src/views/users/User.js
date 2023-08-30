@@ -94,7 +94,7 @@ const User = () => {
   }
 
   const get_edit_value = async (item) => {
-    console.log("getEditValueitemmm", item);
+    // console.log("getEditValueitemmm", item);
     setEditModalVisible(true);
     setId(item.users_id);
     setName(item.users_name);
@@ -111,9 +111,9 @@ const User = () => {
       phone: phone,
       gender: gender,
     }
-    console.log("reqofedituser", req);
+    // console.log("reqofedituser", req);
     let result = await putApiCall(base.editUser, req)
-    console.log("resultofedituser", result);
+    // console.log("resultofedituser", result);
     if (result.code == 200) {
       setEditModalVisible(false);
       successToast();
@@ -258,7 +258,7 @@ const User = () => {
                           <CButton color="secondary" onClick={() => setVisible(false)}>
                             Cancel
                           </CButton>
-                          <CButton color="primary" onClick={() => delete_user(itemValue)}>yes.,Delete</CButton>
+                          <CButton color="primary" onClick={() => delete_user(itemValue)}>Yes., Delete</CButton>
                         </CModalFooter>
                       </CModal>
                     </CTableDataCell>

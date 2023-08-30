@@ -394,8 +394,8 @@ app.put('/editAnnouncement', async (req, res) => {
 })
 
 app.put('/deleteAnnouncement', async (req, res) => {
-  con.query('UPDATE `tbl_game` SET `game_status`=? WHERE `game_id`=?',
-    [req.body.gameStatus, req.body.gameId],
+  con.query('UPDATE `tbl_announcement` SET `announcement_status`=? WHERE `announcement_id`=?',
+    [req.body.announcementStatus, req.body.announcementId],
     function (error, result, fields) {
       if (error) throw error;
       if (error) {
@@ -411,10 +411,37 @@ app.put('/deleteAnnouncement', async (req, res) => {
   )
 })
 
-// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: agents api
+// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
+// ::::::::::::::::::::::::::::::::::::: || agents api || :::::::::::::::::::::::::::::::::::::: // 
+// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
+
+// ::::::::::::::::::::::::::::::::::::: viewTicketForAgents
 app.get('/viewTicketForAgents', async (req, res) => {
   ex_query("SELECT * FROM tbl_ticket WHERE game_id=2", req, res)
 })
+
+app.post('/bookTicketByAgents', async (req, res) => {
+  con.query('UPDATE `tbl_ticket` SET `announcement_status`=? WHERE `announcement_id`=?',
+    [req.body.announcementStatus, req.body.announcementId],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Deleted Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  )
+})
+// ::::::::::::::::::::::::::::::::::::: bookTicketByAgentsForUser
+// app.put  ('/bookTicketByAgentsForUser', async (req, res)=>{
+//   con.query('')
+// })
+
 
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
 // app.get('/ticketCardView', async (req, res) => {

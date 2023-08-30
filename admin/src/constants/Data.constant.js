@@ -17,7 +17,9 @@ const base = {
     gameList: mainUrl + `gameList`,
     saveGame: mainUrl + `saveGame`,
     editGame: mainUrl + `editGame`,
-
-
+    saveAnnouncement: mainUrl + `saveAnnouncement`,
+    announcementList: mainUrl + `announcementList`,
+    editAnnouncement: mainUrl + `editAnnouncement`,
+    deleteAnnouncement: mainUrl + `deleteAnnouncement`,
 };
 export { base };

@@ -33,27 +33,29 @@ const Announcement = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [itemValue, setItemValue] = useState("");
   const [editModalVisible, setEditModalVisible] = useState(false);
-  const [agentsData, setAgentsData] = useState([]);
+  const [announcementData, setAnnouncementData] = useState([]);
   const [visible, setVisible] = useState(false)
   const [announcementId, setAnnouncementId] = useState("");
   const [announcementTitle, setAnnouncementTitle] = useState("");
   const [announcementMessage, setAnnouncementMessage] = useState("");
+  const [announcementStatus, setAnnouncementStatus] = useState("");
 
   useEffect(() => {
     announcement_list();
   }, []);
 
   const announcement_list = async () => {
-    let result = await getApiCall(base.agentsList)
-    setAgentsData(result)
+    let result = await getApiCall(base.announcementList)
+    console.log("resultresultresult", result);
+    setAnnouncementData(result)
   }
 
   const save_announcement = async () => {
     let req = {
-      title: title.target.value,
-      message: message.target.value,
+      announcementTitle: announcementTitle.target.value,
+      announcementMessage: announcementMessage.target.value,
+      announcementStatus: announcementStatus
     }
-    console.log("saveAgentApiCallreq", req);
     let result = await postApiCall(base.saveAnnouncement, req)
     if (result.code == 200) {
       setVisible(false);
@@ -63,11 +65,11 @@ const Announcement = () => {
 
   const delete_announcement = async (value) => {
     let req = {
-      id: value.announcement_id,
-      status: "1"
+      announcementId: value.announcement_id,
+      announcementStatus: "DeActive"
     }
     console.log("iddddAgentreq", req);
-    let result = await putApiCall(base.deleteAgent, req)
+    let result = await putApiCall(base.deleteAnnouncement, req)
     console.log("iddddAgentresult", result);
     if (result.code == 200) {
       toast.error("Deleted Successfully..!");
@@ -77,21 +79,21 @@ const Announcement = () => {
   const get_edit_value = async (item) => {
     console.log("itemmm", item);
     setEditModalVisible(true)
-    setId(item.announcement_id);
-    setTitle(item.announcement_title);
-    setMessage(item.announcement_message);
+    setAnnouncementId(item.announcement_id)
+    setAnnouncementTitle(item.announcement_title)
+    setAnnouncementMessage(item.announcement_message)
+    setAnnouncementStatus(item.announcement_status)
   }
 
-  const edit_agent = async () => {
+  const edit_announcement = async () => {
     let req = {
-      id: id,
-      name: name,
-      email: email,
-      phone: phone,
-      Gender: gender,
+      announcementId: announcementId,
+      announcementTitle: announcementTitle,
+      announcementMessage: announcementMessage,
+      announcementStatus: announcementStatus,
     }
     console.log("reqreq", req);
-    let result = await putApiCall(base.editAgent, req)
+    let result = await putApiCall(base.editAnnouncement, req)
     console.log("resultresult", result);
     if (result.code == 200) {
       setEditModalVisible(false)
@@ -125,6 +127,12 @@ const Announcement = () => {
                   placeholder="Announcement Message"
                   onChange={(e) => { setAnnouncementMessage(e) }}
                 />
+                <CFormLabel htmlFor="announcementStatus">Announcement Status</CFormLabel>
+                <CFormSelect defaultValue={announcementStatus} id="announcementStatus" onChange={(e) => { setAnnouncementStatus(e.target.value) }}>
+                  <option value="" selected disabled>Select Announcement Status</option>
+                  <option value="Active">Active</option>
+                  <option value="DeActive">DeActive</option>
+                </CFormSelect>
               </div>
             </CForm>
           </CModalBody>
@@ -143,22 +151,20 @@ const Announcement = () => {
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Gender</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Title</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Message</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {agentsData.map((item, index) => {
-                  console.log("agentlistitem", item);
+                {announcementData.map((item, index) => {
+                  console.log("agentlistitemmmm", item);
                   return <CTableRow key={index}>
                     <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                    <CTableDataCell>{item.agents_name}</CTableDataCell>
-                    <CTableDataCell>{item.agents_email}</CTableDataCell>
-                    <CTableDataCell>{item.agents_phone}</CTableDataCell>
-                    <CTableDataCell>{item.agents_gender}</CTableDataCell>
+                    <CTableDataCell>{item.announcement_title}</CTableDataCell>
+                    <CTableDataCell>{item.announcement_message}</CTableDataCell>
+                    <CTableDataCell>{item.announcement_status}</CTableDataCell>
                     <CTableDataCell>
                       <CButton color="warning" className='me-2' onClick={() => { get_edit_value(item) }}>Edit</CButton>
                       <CModal alignment="center" visible={editModalVisible}>
@@ -168,38 +174,28 @@ const Announcement = () => {
                         <CModalBody>
                           <CForm>
                             <div className="mb-3">
-                              <CFormLabel htmlFor="name">Name</CFormLabel>
+                              <CFormLabel htmlFor="Announcement Title">Announcement Title</CFormLabel>
                               <CFormInput
                                 type="text"
-                                id="name"
-                                placeholder="Agent Name"
-                                onChange={(e) => { setName(e.target.value) }}
+                                id="announcementTitle"
+                                placeholder="Announcement Title"
+                                onChange={(e) => { setAnnouncementTitle(e.target.value) }}
                                 // name={name}
-                                defaultValue={name}
+                                defaultValue={announcementTitle}
                               />
-                              <CFormLabel htmlFor="email">Email address</CFormLabel>
-                              <CFormInput
-                                type="email"
-                                id="email"
-                                placeholder="agent@example.com"
-                                onChange={(e) => { setEmail(e) }}
-                                defaultValue={email}
-                              />
-                              <CFormLabel htmlFor="phone">Phone</CFormLabel>
+                              <CFormLabel htmlFor="email">Announcement Message</CFormLabel>
                               <CFormInput
                                 type="text"
-                                id="phone"
-                                placeholder="Agent Phone"
-                                onChange={(e) => { setPhone(e) }}
-                                maxLength={10}
-                                defaultValue={phone}
+                                id="announcementMessage"
+                                placeholder="Announcement Message"
+                                onChange={(e) => { setAnnouncementMessage(e) }}
+                                defaultValue={announcementMessage}
                               />
-                              <CFormLabel htmlFor="gender">Gender</CFormLabel>
-                              <CFormSelect defaultValue={gender} id="gender" onChange={(e) => { setGender(e.target.value) }}>
-                                <option value="" selected disabled>Select Gender</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Others">Others</option>
+                              <CFormLabel htmlFor="announcementStatus">Announcement Status</CFormLabel>
+                              <CFormSelect defaultValue={announcementStatus} id="announcementStatus" onChange={(e) => { setAnnouncementStatus(e.target.value) }}>
+                                <option value="" selected disabled>Select Announcement Status</option>
+                                <option value="Active">Active</option>
+                                <option value="DeActive">DeActive</option>
                               </CFormSelect>
                             </div>
                           </CForm>
@@ -208,7 +204,7 @@ const Announcement = () => {
                           <CButton color="secondary" onClick={() => setEditModalVisible(false)}>
                             Cancel
                           </CButton>
-                          <CButton color="primary" onClick={() => edit_agent()}>Update</CButton>
+                          <CButton color="primary" onClick={() => edit_announcement()}>Update</CButton>
                         </CModalFooter>
                       </CModal>
                       <CButton color="danger" onClick={() => { setItemValue(item); setDeleteModalVisible(true) }}>Delete</CButton>
@@ -220,7 +216,7 @@ const Announcement = () => {
                           <CButton color="secondary" onClick={() => setVisible(false)}>
                             Cancel
                           </CButton>
-                          <CButton color="primary" onClick={() => delete_agent(itemValue)}>yes.,Delete</CButton>
+                          <CButton color="primary" onClick={() => delete_announcement(itemValue)}>Yes., Delete</CButton>
                         </CModalFooter>
                       </CModal>
                     </CTableDataCell>
