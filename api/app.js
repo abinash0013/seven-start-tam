@@ -12,15 +12,16 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 const ex_query = (sql, req, res, fields) => {
-  con.query(sql, [req.body.userName, req.body.password], function (error, result, fields) {
-    if (error) throw error;
-    console.log(result);
-    if (error) {
-      res.status(400).send('Error in database operation');
-    } else {
-      res.send(result);
-    }
-  });
+  con.query(sql, [req.body.userName, req.body.password],
+    function (error, result, fields) {
+      if (error) throw error;
+      console.log(result);
+      if (error) {
+        res.status(400).send('Error in database operation');
+      } else {
+        res.send(result);
+      }
+    });
 }
 
 // app.get('/list', (req, res) => {
@@ -270,8 +271,9 @@ app.post('/addTicket', async (req, res) => {
     let jsonset = {
       id: i,
       gameId: gameId,
-      userId: "",
+      agentId: "",
       userName: "",
+      userPhone: "",
       ticketUniquieId: gameId + "" + i + new Date().getTime(),
       bookingDateAndTime: new Date().getTime(),
       dateSet: arr
@@ -416,13 +418,26 @@ app.put('/deleteAnnouncement', async (req, res) => {
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
 
 // ::::::::::::::::::::::::::::::::::::: viewTicketForAgents
-app.get('/viewTicketForAgents', async (req, res) => {
-  ex_query("SELECT * FROM tbl_ticket WHERE game_id=2", req, res)
+app.post('/viewTicketForAgents', async (req, res) => {
+  con.query("SELECT * FROM tbl_ticket WHERE game_id=?", [req.body.gameId],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Fetch Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  )
 })
 
 app.post('/bookTicketByAgents', async (req, res) => {
-  con.query('UPDATE `tbl_ticket` SET `announcement_status`=? WHERE `announcement_id`=?',
-    [req.body.announcementStatus, req.body.announcementId],
+  con.query('UPDATE `tbl_ticket` SET `ticket_set`=? WHERE `game_id`=?',
+    [req.body.ticketSet, req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;
       if (error) {

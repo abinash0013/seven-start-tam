@@ -87,6 +87,7 @@ const Game = () => {
     // console.log("saveGameApiCall", result);
     if (result.code == 200) {
       setVisible(false);
+
       successToast();
       // <Toast />
     }
