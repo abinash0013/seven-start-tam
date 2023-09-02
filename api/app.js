@@ -435,7 +435,7 @@ app.post('/viewTicketForAgents', async (req, res) => {
   )
 })
 
-app.post('/bookTicketByAgents', async (req, res) => {
+app.put('/bookTicketByAgents', async (req, res) => {
   con.query('UPDATE `tbl_ticket` SET `ticket_set`=? WHERE `game_id`=?',
     [req.body.ticketSet, req.body.gameId],
     function (error, result, fields) {
@@ -444,9 +444,9 @@ app.post('/bookTicketByAgents', async (req, res) => {
         ResponseHandler(res, false, "Api Issue", result);
       } else {
         if (result) {
-          ResponseHandler(res, true, "Deleted Successfully..", result);
+          ResponseHandler(res, true, "Ticket Booked Successfully..", result);
         } else {
-          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+          ResponseHandler(res, false, "Sorry., Unable to Booked Ticket", result);
         }
       }
     }

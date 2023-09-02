@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "./BookTicket.css"
 import { CButton, CCard, CCol, CForm, CFormCheck, CFormInput, CFormLabel, CFormTextarea, CRow, CWidgetStatsB } from '@coreui/react';
-import { getApiCall, postApiCall } from 'src/services/AppSetting';
+import { getApiCall, postApiCall, putApiCall } from 'src/services/AppSetting';
 import { base } from 'src/constants/Data.constant';
 
 const BookTicket = () => {
@@ -16,35 +16,53 @@ const BookTicket = () => {
   }, []);
 
   const viewTicketForAgents = async () => {
-    let result = await getApiCall(base.viewTicketForAgents)
-    console.log("resultresulteerrrage", result);
-    let datamerge = JSON.parse(result[0].ticket_set)
-    // console.log("datamergeee", datamerge);
+    let req = {
+      gameId: "1"
+    }
+    let result = await postApiCall(base.viewTicketForAgents, req)
+    let datamerge = JSON.parse(result.data[0].ticket_set)
     setTicketSerialNumber(datamerge)
   }
 
   const selectTicketForBookByAgent = async (data) => {
     // setTicketSelectByAgent(data.userId = "5");
-    data.agentId = "5";
+    // data.agentId = "5";
     console.log("dataaaaDat", data);
-    ticketSelectByAgent.push(data)
+    ticketSelectByAgent.push(data);
     // data.userId="5"
     // let ticketSelectByAgentArr = [];
     // data.map((item,index)=>{
     // })
   }
 
+  const requestForTicketBook = async (ticketSerialNumberVal) => {
+    console.log("ticketSerialNumberVallll", ticketSerialNumberVal);
+    let req = {
+      ticketSet: JSON.stringify(ticketSerialNumberVal),
+      gameId: "1"
+    }
+    console.log("stringreq", req);
+    let result = await putApiCall(base.bookTicketByAgents, req)
+    console.log("resultresulteerrrage", result);
+  }
+
   const bookTicketByAgents = async () => {
     ticketSelectByAgent.map((item, index) => {
       console.log("itemmmmmtes", item);
+      item.agentId = "5";
       item.userName = userName.target.value;
       item.userPhone = userPhone.target.value;
-    })
-    ticketSelectByAgent.map((item, index) => {
-      console.log("ticketSelectByAgenttt", item);
+
+      ticketSerialNumber.map((serialItem, index) => {
+        if (serialItem.id == item.id) {
+          serialItem = item
+        }
+      })
+      requestForTicketBook(ticketSerialNumber);
     });
-    let result = await postApiCall(base.bookTicketByAgents)
-    console.log("resultresulteerrrage", JSON.stringify(ticketSelectByAgent));
+
+
+
     // let datamerge = JSON.parse(result[0].ticket_set)
     // // console.log("datamergeee", datamerge);
     // setTicketSerialNumber(datamerge)
