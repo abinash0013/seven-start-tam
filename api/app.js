@@ -303,8 +303,14 @@ app.get('/gameList', async (req, res) => {
 })
 
 app.post('/saveGame', async (req, res) => {
-  con.query('INSERT INTO `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=?',
-    [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus],
+  const numbersWithStatus = Array.from({ length: 100 }, (_, i) => ({
+    number: i + 1,
+    status: 'false'
+  }));
+  const numberSetJsonString = JSON.stringify(numbersWithStatus, null, 2); // The third argument is for pretty formatting (2 spaces for indentation)
+  // console.log("numbersrrrjsonString", numberSetJsonString);
+  con.query('INSERT INTO `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_number_set`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=?',
+    [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, numberSetJsonString.toString(), req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus],
     function (error, result, fields) {
       if (error) throw error;
       if (error) {
@@ -314,6 +320,112 @@ app.post('/saveGame', async (req, res) => {
           ResponseHandler(res, true, "Save Successfully..", result)
         } else {
           ResponseHandler(res, false, "Sorry., Unable to Save..", result)
+        }
+      }
+    });
+})
+
+app.get('/getNumberOneToHundredForCalling', async (req, res) => {
+  ex_query('SELECT * FROM `tbl_game` WHERE `game_id`=8', req, res)
+})
+
+app.post('/countDownStartForLiveGame', async (req, res) => {
+  // Function to generate and log a random number from 1 to 100
+  // Function to generate a random number between min and max (inclusive)
+  function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  // Array to store unique random numbers
+  const uniqueRandomNumbers = [];
+
+  // Function to generate and log unique random numbers
+  function generateUniqueRandomNumber() {
+    if (uniqueRandomNumbers.length < 100) {
+      let randomNumber;
+      do {
+        randomNumber = getRandomNumber(1, 100);
+      } while (uniqueRandomNumbers.includes(randomNumber));
+
+      uniqueRandomNumbers.push(randomNumber);
+      console.log(randomNumber);
+    } else {
+      clearInterval(interval); // Stop the timer when 100 unique numbers are generated
+      console.log("Timer stopped.");
+    }
+  }
+
+  // Set a timer to call the function every 100 milliseconds
+  const interval = setInterval(generateUniqueRandomNumber, 10000);
+})
+
+app.post('/matchedTicketForBooking', async (req, res) => {
+  const currentDate = new Date();
+  // Extracting Date Components
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1; // Months are zero-indexed, so add 1
+  const day = currentDate.getDate();
+
+  // Extracting Time Components
+  const hours = currentDate.getHours();
+  const minutes = currentDate.getMinutes();
+  const seconds = currentDate.getSeconds();
+  const milliseconds = currentDate.getMilliseconds();
+
+  const fullDate = `${year}-${month > 9 ? month : `0` + month}-${day > 9 ? day : `0` + day}`
+  const fullTime = `${hours}:${minutes}`
+  console.log("Date & Time:", fullDate, fullTime);
+
+  con.query('SELECT `game_id`,`game_number_set` FROM `tbl_game` WHERE game_start_date=? AND game_start_time < ?',
+    [fullDate, fullTime],
+    // date_ob = new Date()
+
+    function (error, result, fields) {
+      if (error) throw error;
+      //  console.log("pppp", result);
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result)
+      } else {
+        if (result) {
+          let numberData = result.data;
+          console.log(numberData[0])
+          // function getRandomNumber(min, max) {
+          //   return Math.floor(Math.random() * (max - min + 1)) + min;
+          // }
+
+          // // Array to store unique random numbers
+          // const uniqueRandomNumbers = [];
+
+          // // Function to generate and log unique random numbers
+          // let randomNumber;
+          // function generateUniqueRandomNumber() {
+          //   if (uniqueRandomNumbers.length < 100) {
+          //     do {
+          //       randomNumber = getRandomNumber(1, 100);
+          //     } while (uniqueRandomNumbers.includes(randomNumber));
+
+          //     uniqueRandomNumbers.push(randomNumber);
+          //     console.log(randomNumber);
+          //     numberData.map((item, index) => {
+          //       if (item.number == randomNumber) {
+          //         item.status == "true";
+          //       }
+          //     })
+
+          //     /////update api call/////////
+          //   } else {
+          //     clearInterval(interval); // Stop the timer when 100 unique numbers are generated
+          //     console.log("Timer stopped.");
+          //   }
+          // }
+
+          // // Set a timer to call the function every 100 milliseconds
+          // const interval = setInterval(generateUniqueRandomNumber, 10000);
+
+
+          ResponseHandler(res, true, "Successfully..", result)
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to..", result)
         }
       }
     });
@@ -452,6 +564,7 @@ app.put('/bookTicketByAgents', async (req, res) => {
     }
   )
 })
+
 // ::::::::::::::::::::::::::::::::::::: bookTicketByAgentsForUser
 // app.put  ('/bookTicketByAgentsForUser', async (req, res)=>{
 //   con.query('')

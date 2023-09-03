@@ -20,6 +20,7 @@ const BookTicket = () => {
       gameId: "1"
     }
     let result = await postApiCall(base.viewTicketForAgents, req)
+    console.log("resulttt", result);
     let datamerge = JSON.parse(result.data[0].ticket_set)
     setTicketSerialNumber(datamerge)
   }

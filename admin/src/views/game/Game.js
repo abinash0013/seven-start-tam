@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
+  CInput,
   CButton,
   CCard,
   CCardBody,
@@ -32,6 +33,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import TicketView from './TicketView';
 import { Link } from 'react-router-dom';
+import TimePicker from 'react-time-picker';
 
 const Game = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -55,6 +57,11 @@ const Game = () => {
   const [gameHalfSheet, setGameHalfSheet] = useState(false);
   const [gameHousefull, setGameHousefull] = useState(false);
   const [gameStatus, setGameStatus] = useState("");
+  const [time, setTime] = useState(new Date());
+
+  const handleTimeChange = (newTime) => {
+    setTime(newTime);
+  };
 
   useEffect(() => {
     game_list();
@@ -82,7 +89,7 @@ const Game = () => {
       gameHousefull: gameHousefull,
       gameStatus: gameStatus.target.value
     }
-    // console.log("saveGameApiCallreq", req);
+    console.log("saveGameApiCallreq", req);
     let result = await postApiCall(base.saveGame, req)
     // console.log("saveGameApiCall", result);
     if (result.code == 200) {
@@ -194,18 +201,36 @@ const Game = () => {
                 />
                 <CFormLabel htmlFor="gameStartDate">Game Start Date</CFormLabel>
                 <CFormInput
-                  type="text"
+                  type="date"
                   id="gameStartDate"
                   placeholder="Game Start Date"
                   onChange={(e) => { setGameStartDate(e) }}
                 />
+                {/* <input
+                  type="time"
+                  id="gameStartTime"
+                  placeholder="Game Start Time"
+                // onChange={(e) => { setGameStartTime(e) }}
+                /> */}
                 <CFormLabel htmlFor="gameStartTime">Game Start Time</CFormLabel>
+                {/* <CTimePicker label="Game Start Time" locale="en-US" time="02:17:35 PM" />*/}
                 <CFormInput
-                  type="text"
+                  type="time"
                   id="gameStartTime"
                   placeholder="Game Start Time"
                   onChange={(e) => { setGameStartTime(e) }}
                 />
+                {/* <div> */}
+                {/* <CInput
+                  type="text"
+                  value={time.toString()} // Display the selected time
+                  readOnly // Ensure the input is read-only
+                />
+                <TimePicker
+                  onChange={handleTimeChange}
+                  value={time}
+                /> */}
+                {/* </div> */}
                 <CFormLabel htmlFor="gameMaximumTicketSell">Game Maximum Ticket Sell</CFormLabel>
                 <CFormInput
                   type="text"
