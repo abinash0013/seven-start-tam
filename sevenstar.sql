@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 02, 2023 at 08:12 AM
+-- Generation Time: Sep 03, 2023 at 12:58 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -125,6 +125,8 @@ CREATE TABLE `tbl_game` (
   `game_name` varchar(255) DEFAULT NULL,
   `game_start_date` varchar(255) DEFAULT NULL,
   `game_start_time` varchar(255) DEFAULT NULL,
+  `game_end_date` varchar(500) DEFAULT NULL,
+  `game_end_time` varchar(500) DEFAULT NULL,
   `game_maximum_ticket_sell` varchar(1000) DEFAULT NULL,
   `game_amount` varchar(1000) DEFAULT NULL,
   `game_quick_fire` varchar(1000) DEFAULT NULL,
@@ -136,6 +138,7 @@ CREATE TABLE `tbl_game` (
   `game_half_sheet` varchar(1000) DEFAULT NULL,
   `game_housefull` varchar(1000) DEFAULT NULL,
   `game_status` varchar(255) DEFAULT NULL,
+  `game_number_set` longtext DEFAULT NULL,
   `updated_at` varchar(255) DEFAULT NULL,
   `created_at` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -144,9 +147,15 @@ CREATE TABLE `tbl_game` (
 -- Dumping data for table `tbl_game`
 --
 
-INSERT INTO `tbl_game` (`game_id`, `game_name`, `game_start_date`, `game_start_time`, `game_maximum_ticket_sell`, `game_amount`, `game_quick_fire`, `game_star`, `game_top_line`, `game_middle_line`, `game_bottom_line`, `game_corner`, `game_half_sheet`, `game_housefull`, `game_status`, `updated_at`, `created_at`) VALUES
-(1, 'asdfasdf', 'asdfasd', '1111', '1111', '1111', '1111', '1111', '1111', '1111', '1111', '1111', '1111', '1111', '1', NULL, NULL),
-(2, 'testing', '31', '12:00', '30', '10', '0', '0', '0', '0', '0', '0', '0', '0', 'ok', NULL, NULL);
+INSERT INTO `tbl_game` (`game_id`, `game_name`, `game_start_date`, `game_start_time`, `game_end_date`, `game_end_time`, `game_maximum_ticket_sell`, `game_amount`, `game_quick_fire`, `game_star`, `game_top_line`, `game_middle_line`, `game_bottom_line`, `game_corner`, `game_half_sheet`, `game_housefull`, `game_status`, `game_number_set`, `updated_at`, `created_at`) VALUES
+(1, 'asdfasdf', 'asdfasd', '1111', NULL, NULL, '1111', '1111', '1111', '1111', '1111', '1111', '1111', '1111', '1111', '1111', '1', NULL, NULL, NULL),
+(2, 'testing', '31', '12:00', NULL, NULL, '30', '10', '0', '0', '0', '0', '0', '0', '0', '0', 'ok', NULL, NULL, NULL),
+(3, 'test', '2023-09-02', '23:20', NULL, NULL, '1', '100', '1', '1', '1', '1', '1', '1', '1', '1', 'test', NULL, NULL, NULL),
+(4, 'saunday', '2023-09-02', '14:00', NULL, NULL, '10', '10', '0', '0', '0', '0', '0', '0', '0', '0', 'test', NULL, NULL, NULL),
+(5, 'asdfasdf', 'asdfasd', '1111', NULL, NULL, '1111', '1111', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(6, 'w', '2023-09-02', '14:00', NULL, NULL, '10', '1', '1', '0', '0', '0', '0', '0', '0', '0', 'test', NULL, NULL, NULL),
+(7, 'test', '2023-09-02', '13:34', NULL, NULL, '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', 'test', NULL, NULL, NULL),
+(8, 'tessss', '2023-09-03', '13:45', NULL, NULL, '10', '5', '1', '1', '1', '1', '1', '1', '1', '1', 'test', '[\n  {\n    \"number\": 1,\n    \"status\": \"true\"\n  },\n  {\n    \"number\": 2,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 3,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 4,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 5,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 6,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 7,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 8,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 9,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 10,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 11,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 12,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 13,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 14,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 15,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 16,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 17,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 18,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 19,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 20,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 21,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 22,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 23,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 24,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 25,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 26,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 27,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 28,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 29,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 30,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 31,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 32,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 33,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 34,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 35,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 36,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 37,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 38,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 39,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 40,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 41,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 42,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 43,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 44,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 45,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 46,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 47,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 48,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 49,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 50,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 51,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 52,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 53,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 54,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 55,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 56,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 57,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 58,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 59,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 60,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 61,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 62,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 63,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 64,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 65,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 66,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 67,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 68,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 69,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 70,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 71,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 72,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 73,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 74,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 75,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 76,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 77,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 78,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 79,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 80,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 81,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 82,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 83,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 84,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 85,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 86,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 87,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 88,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 89,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 90,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 91,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 92,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 93,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 94,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 95,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 96,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 97,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 98,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 99,\n    \"status\": \"false\"\n  },\n  {\n    \"number\": 100,\n    \"status\": \"false\"\n  }\n]', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -317,7 +326,7 @@ ALTER TABLE `tbl_announcement`
 -- AUTO_INCREMENT for table `tbl_game`
 --
 ALTER TABLE `tbl_game`
-  MODIFY `game_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `game_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_ticket`

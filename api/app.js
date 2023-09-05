@@ -2,6 +2,18 @@ const express = require("express")
 // const app = express.Router();
 const { con } = require('./sqlConfig/connection');
 var bodyParser = require('body-parser')
+var firebase = require('firebase')
+var firebaseConfig = {
+  apiKey: "AIzaSyAHTly3YJDEfgw4-LjpOGLdbsK43iCodec",
+  authDomain: "sevenstarttambola.firebaseapp.com",
+  projectId: "sevenstarttambola",
+  storageBucket: "sevenstarttambola.appspot.com",
+  messagingSenderId: "58410367493",
+  appId: "1:58410367493:web:5f11a4d6d5a5922ed27a6c",
+  measurementId: "G-BS4T9F2MK2"
+}
+firebase.initializeApp(firebaseConfig)
+let database = firebase.database()
 
 var app = express();
 var cors = require('cors');
@@ -387,40 +399,74 @@ app.post('/matchedTicketForBooking', async (req, res) => {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
         if (result) {
-          let numberData = result.data;
-          console.log(numberData[0])
-          // function getRandomNumber(min, max) {
-          //   return Math.floor(Math.random() * (max - min + 1)) + min;
-          // }
+          console.log("qqqwwwse", result)
+          console.log("qqqwwwse", result[0].game_number_set)
+          let numberData = JSON.parse(result[0].game_number_set);
+          let gameIdVar = result[0].game_id;
+          console.log("qqqwwwq", numberData)
 
-          // // Array to store unique random numbers
-          // const uniqueRandomNumbers = [];
+          function getRandomNumber(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+          }
 
-          // // Function to generate and log unique random numbers
-          // let randomNumber;
-          // function generateUniqueRandomNumber() {
-          //   if (uniqueRandomNumbers.length < 100) {
-          //     do {
-          //       randomNumber = getRandomNumber(1, 100);
-          //     } while (uniqueRandomNumbers.includes(randomNumber));
+          // Array to store unique random numbers
+          const uniqueRandomNumbers = [];
 
-          //     uniqueRandomNumbers.push(randomNumber);
-          //     console.log(randomNumber);
-          //     numberData.map((item, index) => {
-          //       if (item.number == randomNumber) {
-          //         item.status == "true";
-          //       }
-          //     })
+          // Function to generate and log unique random numbers
+          let randomNumber;
+          function generateUniqueRandomNumber() {
+            if (uniqueRandomNumbers.length < 100) {
+              do {
+                randomNumber = getRandomNumber(1, 100);
+              } while (uniqueRandomNumbers.includes(randomNumber));
 
-          //     /////update api call/////////
-          //   } else {
-          //     clearInterval(interval); // Stop the timer when 100 unique numbers are generated
-          //     console.log("Timer stopped.");
-          //   }
-          // }
+              uniqueRandomNumbers.push(randomNumber);
+              console.log(randomNumber);
+              numberData?.map((item, index) => {
+                if (item.number == randomNumber) {
+                  console.log("randomif", item.number, randomNumber);
+                  numberData[index].status = "true";
+                }
+              })
+              console.log("numberDataaaa", numberData);
+              let obj = {
+                gameId: gameIdVar,
+                numberSet: numberData
+              }
+              database.ref("https://sevenstarttambola-default-rtdb.firebaseio.com").set(obj, function (error) {
+                if (error) {
+                  // The write failed...
+                  console.log("Failed with error: " + error)
+                } else {
+                  // The write was successful...
+                  console.log("success")
+                }
+              })
 
-          // // Set a timer to call the function every 100 milliseconds
-          // const interval = setInterval(generateUniqueRandomNumber, 10000);
+              ///update api call/////////
+              con.query('UPDATE `tbl_game` SET `game_number_set`=? WHERE `game_id`=?',
+                [JSON.stringify(numberData), gameIdVar],
+                // function (error, result, fields) {
+                //   if (error) throw error;
+                //   // if (error) {
+                //   //   ResponseHandler(res, false, "Api Issue", result);
+                //   // } else {
+                //   //   if (result) {
+                //   //     ResponseHandler(res, true, "Game Status Updated Successfully..", result);
+                //   //   } else {
+                //   //     ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+                //   //   }
+                //   // }
+                // }
+              )
+            } else {
+              clearInterval(interval); // Stop the timer when 100 unique numbers are generated
+              console.log("Timer stopped.");
+            }
+          }
+
+          // Set a timer to call the function every 100 milliseconds
+          const interval = setInterval(generateUniqueRandomNumber, 10000);
 
 
           ResponseHandler(res, true, "Successfully..", result)
