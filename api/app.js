@@ -1,20 +1,22 @@
+var firebase = require("firebase-admin");
+
+var serviceAccount = require("./serviceAccountKey.json");
+
+firebase.initializeApp({
+  credential: firebase.credential.cert(serviceAccount),
+  databaseURL: "https://sevenstarttambola-default-rtdb.firebaseio.com"
+});
+
+var db = firebase.database();
+var ref = db.ref('game')
+
+var userRef = ref.child('gameSet')
+
 const express = require("express")
+
 // const app = express.Router();
 const { con } = require('./sqlConfig/connection');
 var bodyParser = require('body-parser')
-var firebase = require('firebase')
-var firebaseConfig = {
-  apiKey: "AIzaSyAHTly3YJDEfgw4-LjpOGLdbsK43iCodec",
-  authDomain: "sevenstarttambola.firebaseapp.com",
-  projectId: "sevenstarttambola",
-  storageBucket: "sevenstarttambola.appspot.com",
-  messagingSenderId: "58410367493",
-  appId: "1:58410367493:web:5f11a4d6d5a5922ed27a6c",
-  measurementId: "G-BS4T9F2MK2"
-}
-firebase.initializeApp(firebaseConfig)
-let database = firebase.database()
-
 var app = express();
 var cors = require('cors');
 const ResponseHandler = require("./utils/responseHelper");
@@ -414,7 +416,7 @@ app.post('/matchedTicketForBooking', async (req, res) => {
 
           // Function to generate and log unique random numbers
           let randomNumber;
-          function generateUniqueRandomNumber() {
+          async function generateUniqueRandomNumber() {
             if (uniqueRandomNumbers.length < 100) {
               do {
                 randomNumber = getRandomNumber(1, 100);
@@ -429,21 +431,32 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                 }
               })
               console.log("numberDataaaa", numberData);
-              let obj = {
-                gameId: gameIdVar,
-                numberSet: numberData
-              }
-              database.ref("https://sevenstarttambola-default-rtdb.firebaseio.com").set(obj, function (error) {
-                if (error) {
-                  // The write failed...
-                  console.log("Failed with error: " + error)
-                } else {
-                  // The write was successful...
-                  console.log("success")
+
+
+              userRef.set({
+                gameIdVar: {
+                  game_id: gameIdVar,
+                  number_set: JSON.stringify(numberData)
                 }
               })
 
-              ///update api call/////////
+              // const batch = db.batch();
+              // const snapshot = await db.collection("gameIdVarSet").where("game_id", "==", gameIdVar).get();
+              // snapshot.forEach(doc => {
+              //   batch.update(doc.ref, { watched: false });
+              // });
+
+
+              // userRef.set({
+              //   alanisawesome: {
+              //     date_of_birth: "12",
+              //     full_name: "34"
+              //   },
+              //   test: {
+              //     hello: "testting"
+              //   }
+              // })
+
               con.query('UPDATE `tbl_game` SET `game_number_set`=? WHERE `game_id`=?',
                 [JSON.stringify(numberData), gameIdVar],
                 // function (error, result, fields) {
