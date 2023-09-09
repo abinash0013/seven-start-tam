@@ -10,7 +10,7 @@ firebase.initializeApp({
 var db = firebase.database();
 var ref = db.ref('game')
 
-var userRef = ref.child('gameSet')
+// var userRef = ref.child('gameSet')
 
 const express = require("express")
 
@@ -340,7 +340,7 @@ app.post('/saveGame', async (req, res) => {
 })
 
 app.get('/getNumberOneToHundredForCalling', async (req, res) => {
-  ex_query('SELECT * FROM `tbl_game` WHERE `game_id`=8', req, res)
+  ex_query('SELECT * FROM `tbl_game` WHERE `game_id`=10', req, res)
 })
 
 app.post('/countDownStartForLiveGame', async (req, res) => {
@@ -432,12 +432,16 @@ app.post('/matchedTicketForBooking', async (req, res) => {
               })
               console.log("numberDataaaa", numberData);
 
-
-              userRef.set({
-                gameIdVar: {
+              let data = {
+                [gameIdVar]: {
                   game_id: gameIdVar,
                   number_set: JSON.stringify(numberData)
                 }
+              }
+              // userRef.set(data)
+              ref.set({
+                game_id: gameIdVar,
+                number_set: JSON.stringify(numberData)
               })
 
               // const batch = db.batch();
