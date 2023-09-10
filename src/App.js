@@ -11,8 +11,8 @@ function App() {
     <div className="App">
       {/* <Header /> */}
       <Banner />
-      {/* <Ticket /> */}
       <GameStart />
+      {/* <Ticket /> */}
     </div>
   );
 }

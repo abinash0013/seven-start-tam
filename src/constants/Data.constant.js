@@ -2,6 +2,7 @@ const mainUrl = `http://localhost:3000/`
 const base = {
     getNumberOneToHundredForCalling: mainUrl + `getNumberOneToHundredForCalling`,
     ticketCardView: mainUrl + `ticketCardView`,
+    updateTicketStatus: mainUrl + `updateTicketStatus`,
     // adminLogin: mainUrl + `adminLogin`,
     // saveAgent: mainUrl + `saveAgent`,
     // agentsList: mainUrl + `agentsList`,

@@ -6,11 +6,32 @@ import { getApiCall, postApiCall, putApiCall } from '../../services/AppSetting';
 // import { base } from './../../services/AppSetting';
 import { base } from '../../constants/Data.constant';
 
-const Ticket = () => {
+const Ticket = (props) => {
+  const { number, gameId } = props;
   const [ticket, setTicket] = useState([]);
+  const [ticket1, setTicket1] = useState([]);
+
   useEffect(() => {
     ticketCardView();
-  }, []);
+    number.map((numberData, index) => {
+      // console.log("numberDataaaa", numberData);
+      ticket?.map((ticketData) => {
+        // console.log("sssss", ticketData)
+        ticketData?.dateSet?.map((ticketDataNumber, index) => {
+          // console.log("ticketDataNumberrrr", ticketDataNumber);
+          if (numberData.number == ticketDataNumber.number && numberData.status == "true") {
+            ticketDataNumber.status = "true"
+          }
+        })
+        setTicket1(ticketData)
+        console.log("logticketData", JSON.stringify(ticketData));
+      })
+    })
+  }, [number]);
+
+  // const updateTicketStatus = async () => {
+  //   let result = await putApiCall(base.updateTicketStatus)
+  // }
 
   const ticketCardView = async () => {
     let result = await getApiCall(base.ticketCardView)
@@ -20,6 +41,22 @@ const Ticket = () => {
     console.log("resultcardvieweeqqq", convertJSON);
     setTicket(convertJSON)
   }
+
+  // const ticketNumberUpdate = async () => {
+  //   number.map((numberData, index) => {
+  //     console.log("one");
+  //     ticket.map((ticketData) => {
+  //       console.log("two");
+  //       JSON.parse(ticketData.dateSet).map((ticketDataNumber) => {
+  //         console.log("logticketData", JSON.stringify(ticketDataNumber));
+  //         // if (numberData.number == ticketDataNumber.number && numberData.status == "true") {
+  //         //   ticketDataNumber.status == true
+  //         // }
+  //       })
+  //       console.log("logticketData", JSON.stringify(ticketData.dateSet));
+  //     })
+  //   })
+  // }
 
   return (
     <div class="ticketSection">
@@ -33,113 +70,15 @@ const Ticket = () => {
             <div class="containerInfoInnerItem">Status</div>
           </div>
           <div class="number-card">
-            <div class="number">23</div>
-            <div class="number">7</div>
-            <div class="number">14</div>
-            <div class="number">2</div>
-            <div class="number">19</div>
-            <div class="number">5</div>
-            <div class="number">9</div>
-            <div class="number">12</div>
-            <div class="number">17</div>
-            <div class="number">25</div>
-            <div class="number">16</div>
-            <div class="number">1</div>
-            <div class="number">8</div>
-            <div class="number">21</div>
-            <div class="number">11</div>
-            <div class="number">3</div>
-            <div class="number">10</div>
-            <div class="number">22</div>
-            <div class="number">6</div>
-            <div class="number">15</div>
-            <div class="number">18</div>
-            <div class="number">24</div>
-            <div class="number">4</div>
-            <div class="number">13</div>
-            <div class="number">20</div>
-            <div class="number">22</div>
-            <div class="number">6</div>
-          </div>
-        </div>
-      </div>
-      <div class="outerContainer">
-        <div class="container mx-auto mt-8">
-          <div class="containerInfo">
-            <div class="containerInfoFirstInnerItem">
-              <div class="containerInfoInnerItemSerial">1</div>
-              <div class="containerInfoInnerItem">Abinash</div>
-            </div>
-            <div class="containerInfoInnerItem">Status</div>
-          </div>
-          <div class="number-card">
-            <div class="number">23</div>
-            <div class="number">7</div>
-            <div class="number">14</div>
-            <div class="number">2</div>
-            <div class="number">19</div>
-            <div class="number">5</div>
-            <div class="number">9</div>
-            <div class="number">12</div>
-            <div class="number">17</div>
-            <div class="number">25</div>
-            <div class="number">16</div>
-            <div class="number">1</div>
-            <div class="number">8</div>
-            <div class="number">21</div>
-            <div class="number">11</div>
-            <div class="number">3</div>
-            <div class="number">10</div>
-            <div class="number">22</div>
-            <div class="number">6</div>
-            <div class="number">15</div>
-            <div class="number">18</div>
-            <div class="number">24</div>
-            <div class="number">4</div>
-            <div class="number">13</div>
-            <div class="number">20</div>
-            <div class="number">22</div>
-            <div class="number">6</div>
-          </div>
-        </div>
-      </div>
-      <div class="outerContainer">
-        <div class="container mx-auto mt-8">
-          <div class="containerInfo">
-            <div class="containerInfoFirstInnerItem">
-              <div class="containerInfoInnerItemSerial">1</div>
-              <div class="containerInfoInnerItem">Abinash</div>
-            </div>
-            <div class="containerInfoInnerItem">Status</div>
-          </div>
-          <div class="number-card">
-            <div class="number">23</div>
-            <div class="number">7</div>
-            <div class="number">14</div>
-            <div class="number">2</div>
-            <div class="number">19</div>
-            <div class="number">5</div>
-            <div class="number">9</div>
-            <div class="number">12</div>
-            <div class="number">17</div>
-            <div class="number">25</div>
-            <div class="number">16</div>
-            <div class="number">1</div>
-            <div class="number">8</div>
-            <div class="number">21</div>
-            <div class="number">11</div>
-            <div class="number">3</div>
-            <div class="number">10</div>
-            <div class="number">22</div>
-            <div class="number">6</div>
-            <div class="number">15</div>
-            <div class="number">18</div>
-            <div class="number">24</div>
-            <div class="number">4</div>
-            <div class="number">13</div>
-            <div class="number">20</div>
-            <div class="number">22</div>
-            <div class="number">6</div>
+            {/* {console.log("eeeeewwew1", ticket[0].dateSet)}
+            {console.log("eeeeewwew2", JSON.stringify(ticket.dateSet[0]))} */}
+            {/* {ticket1?.map((itemData) => { */}
+            {ticket1?.dateSet?.map((item) => {
+
+              return <div class="number" style={{ color: item.status && 'red' }}>{item.number}</div>
+            })
+            }
+            {/* } */}
           </div>
         </div>
       </div>

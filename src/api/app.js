@@ -28,6 +28,9 @@ app.get('/ticketCardView', async (req, res) => {
   ex_query("SELECT * FROM tbl_ticket", req, res)
 })
 
+// app.put('/updateTicketStatus', async (req, res)=>{
+//   e
+// })
 
 app.listen(3003, function () {
   console.log('Server is up and Rudding on port 3000!');

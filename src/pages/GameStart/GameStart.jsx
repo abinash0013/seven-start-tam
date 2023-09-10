@@ -1,12 +1,14 @@
-// import db from "./../../firebase";
 import React, { useEffect, useState } from 'react';
 import "./GameStart.css";
 import { getApiCall } from '../../services/AppSetting';
 import { base } from '../../constants/Data.constant';
-import { firebase, db } from './../../firebase';
+import firebase from 'firebase/compat/app';
+import "firebase/compat/database";
+import Ticket from '../Ticket/Ticket';
 
 const GameStart = () => {
-  // Import Firebase
+  const [number, setNumber] = useState([]);
+  const [gameId, setGameId] = useState("");
 
   // Initialize Firebase with your config
   const firebaseConfig = {
@@ -16,11 +18,15 @@ const GameStart = () => {
     storageBucket: "sevenstarttambola.appspot.com",
     messagingSenderId: "58410367493",
     appId: "1:58410367493:web:5f11a4d6d5a5922ed27a6c",
-    measurementId: "G-BS4T9F2MK2"
+    measurementId: "G-BS4T9F2MK2",
+    databaseURL: "https://sevenstarttambola-default-rtdb.firebaseio.com"
   };
-
   firebase.initializeApp(firebaseConfig);
+  var db = firebase.database();
+  var ref = db.ref('game')
 
+  // const database = firebase.database();
+  // console.log("databaseee", database);
   // var db = firebase.firestore();
   // const numbers = [];
   // for (let i = 1; i <= 100; i++) {
@@ -28,24 +34,19 @@ const GameStart = () => {
   // }
 
   // Fetch the required data using the get() method
-  const Fetchdata = () => {
-    db.collection("game").get().then((querySnapshot) => {
-
-      // Loop through the data and store
-      // it in array to display
-      querySnapshot.forEach(element => {
-        var data = element.data().number_set;
-        // setNumber(arr => [...arr, data]);
-      });
+  const fetch_data = () => {
+    ref.on("value", snapshot => {
+      console.log("snapshotttt", snapshot.val());
+      setNumber(JSON.parse(snapshot.val().number_set));
+      setGameId(snapshot.val().game_id);
     })
   }
 
   useEffect(() => {
-    Fetchdata();
+    fetch_data();
     cutTicketNumberIfMatched();
   }, []);
 
-  const [number, setNumber] = useState([]);
   const cutTicketNumberIfMatched = async () => {
     // let result = await getApiCall(base.getNumberOneToHundredForCalling)
     // console.log("resulttt", result[0].game_number_set);
@@ -70,16 +71,18 @@ const GameStart = () => {
         <div class="outerContainer">
           <div class="container mx-auto mt-8">
             <div class="number-card">
+              {console.log("testingggga", number)}
               {number?.map((itemNumber, index) => (
                 // console.log("itemNumberrrr", itemNumber.number)
-                <div class="number" key={index} style={{ backgroundColor: itemNumber.status == "true" ? "red" : "" }}>
+                <div div class="number" key={index} style={{ backgroundColor: itemNumber.status == "true" ? "red" : "" }}>
                   {itemNumber.number}
                 </div>
               ))}
             </div>
           </div>
         </div>
-      </div >
+      </div>
+      <Ticket number={number} gameId={gameId} />
     </>
   )
 }

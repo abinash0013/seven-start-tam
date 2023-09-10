@@ -432,16 +432,11 @@ app.post('/matchedTicketForBooking', async (req, res) => {
               })
               console.log("numberDataaaa", numberData);
 
-              let data = {
-                [gameIdVar]: {
-                  game_id: gameIdVar,
-                  number_set: JSON.stringify(numberData)
-                }
-              }
               // userRef.set(data)
               ref.set({
                 game_id: gameIdVar,
-                number_set: JSON.stringify(numberData)
+                number_set: JSON.stringify(numberData),
+                currentCalledNumber: randomNumber
               })
 
               // const batch = db.batch();
