@@ -38,25 +38,7 @@ const ex_query = (sql, req, res, fields) => {
     });
 }
 
-// app.get('/list', (req, res) => {
-//   ex_query("SELECT * FROM tbl_users", req, res)
-// })
-
-// app.post('/users-add', (req, res) => {
-//   // const values = ex_query("INSERT INTO `tbl_users`(`name`, `email`, `phone`, `gender`) VALUES (?)", req, res);
-//   ex_query("INSERT INTO `tbl_users`(`name`, `email`, `phone`, `gender`) VALUES (?)", req, res);
-//   const values = [
-//     req.body.name,
-//     req.body.email,
-//     req.body.phone,
-//     req.body.gender
-//   ]
-//   // console.log("resulttttt");
-//   console.log("resultttt", values);
-//   res.send(values);
-// })
-
-// ::::::::::::::::::::::::::::::::::::::::: admin api code
+// ::::::::::::::::::::::::::::::::::::::::: admin api code // not working for now let us see at the end
 app.post("/adminLogin", async (req, res) => {
   // console.log("reqbody", req.body.password);
   con.query('SELECT * FROM `tbl_admin` Where `admin_username`=? And `admin_password`=?',
@@ -76,11 +58,17 @@ app.post("/adminLogin", async (req, res) => {
     });
 })
 
-// ::::::::::::::::::::::::::::::::::::::::: agents api code
+// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
+// ::::::::::::::::::::::::::::::::::::::: || aadmin || :::::::::::::::::::::::::::::::::::::::: //
+// ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
+
+
+// ::::::::::::::::::::::::::::::::::::::::: Agents List
 app.get('/agentsList', async (req, res) => {
   ex_query("SELECT * FROM tbl_agents", req, res)
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Save Agent
 app.post('/saveAgent', async (req, res) => {
   con.query('INSERT INTO `tbl_agents` SET `agents_name`=?, `agents_email`=?, `agents_phone`=?, `agents_gender`=?',
     [req.body.name, req.body.email, req.body.phone, req.body.gender],
@@ -98,6 +86,7 @@ app.post('/saveAgent', async (req, res) => {
     });
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Edit Agent
 app.put('/editAgent', async (req, res) => {
   con.query('UPDATE `tbl_agents` SET  `agents_name`=?, `agents_email`=?, `agents_phone`=?, `agents_gender`=? WHERE `agents_id`=?',
     [req.body.name, req.body.email, req.body.phone, req.body.gender, req.body.id],
@@ -116,6 +105,7 @@ app.put('/editAgent', async (req, res) => {
     });
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Delete Agent
 app.put('/deleteAgent', async (req, res) => {
   con.query('UPDATE `tbl_agents` SET `agents_active_status`=? WHERE `agents_id`=?',
     [req.body.status, req.body.id],
@@ -134,11 +124,12 @@ app.put('/deleteAgent', async (req, res) => {
   );
 })
 
-// ::::::::::::::::::::::::::::::::::::::::: users api code
+// ::::::::::::::::::::::::::::::::::::::::: Users List
 app.get('/usersList', async (req, res) => {
   ex_query("SELECT * FROM tbl_users", req, res)
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Save User
 app.post('/saveUser', async (req, res) => {
   con.query('INSERT INTO `tbl_users` SET `users_name`=?, `users_email`=?, `users_phone`=?, `users_gender`=?',
     [req.body.name, req.body.email, req.body.phone, req.body.gender],
@@ -156,6 +147,7 @@ app.post('/saveUser', async (req, res) => {
     });
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Edit User
 app.put('/editUser', async (req, res) => {
   con.query('UPDATE `tbl_users` SET  `users_name`=?, `users_email`=?, `users_phone`=?, `users_gender`=? WHERE `users_id`=?',
     [req.body.name, req.body.email, req.body.phone, req.body.gender, req.body.id],
@@ -174,6 +166,7 @@ app.put('/editUser', async (req, res) => {
     });
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Delete User
 app.put('/deleteUser', async (req, res) => {
   con.query('UPDATE `tbl_users` SET `users_active_status`=? WHERE `users_id`=?',
     [req.body.status, req.body.id],
@@ -192,11 +185,17 @@ app.put('/deleteUser', async (req, res) => {
   )
 })
 
-// ::::::::::::::::::::::::::::::::::::::::: ticket api code
+// ::::::::::::::::::::::::::::::::::::::::: Tickets List // this api because dynamic ticket created when game created
+
+app.get('/ticketList', async (req, res) => {
+  ex_query("SELECT * FROM tbl_game", req, res)
+})
+
 app.get('/ticketList', async (req, res) => {
   ex_query("SELECT * FROM tbl_ticket", req, res)
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Save Tickets
 app.post('/saveTicket', async (req, res) => {
   con.query('INSERT INTO `tbl_ticket` SET `ticket_serial_number`=?, `ticket_number`=?, `ticket_amount`=?, `ticket_status`=?',
     [req.body.ticketSerialNumber, req.body.ticketNumber, req.body.ticketAmount, req.body.ticketStatus],
@@ -214,6 +213,7 @@ app.post('/saveTicket', async (req, res) => {
     });
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Edit Tickets
 app.put('/editTicket', async (req, res) => {
   con.query('UPDATE `tbl_ticket` SET `ticket_serial_number`=?, `ticket_number`=?, `ticket_amount`=?, `ticket_status`=? WHERE `ticket_id`=?',
     [req.body.ticketSerialNumber, req.body.ticketNumber, req.body.ticketAmount, req.body.ticketStatus, req.body.id],
@@ -232,6 +232,7 @@ app.put('/editTicket', async (req, res) => {
     });
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Delete Tickets
 app.put('/deleteTicket', async (req, res) => {
   con.query('UPDATE `tbl_ticket` SET `ticket_status`=? WHERE `ticket_id`=?',
     [req.body.status, req.body.id],
@@ -250,22 +251,23 @@ app.put('/deleteTicket', async (req, res) => {
   )
 })
 
-app.get('/ticketCardView', async (req, res) => {
-  ex_query('SELECT * FROM `tbl_ticket` WHERE `game_id`=2', req, res)
-  // ex_query('SELECT * FROM `tbl_ticket`', req, res)
-  //   function (error, result, fields) {
-  //     if (error) throw error;
-  //     console.log("pppp", result);
-  //     if (error) {
-  //       ResponseHandler(res, false, "Api Issue", result)
-  //     } else {
-  //       if (result) {
-  //         ResponseHandler(res, true, "Update Successfully..", result)
-  //       } else {
-  //         ResponseHandler(res, false, "Sorry., Unable to Update..", result)
-  //       }
-  //     }
-  // });
+// ::::::::::::::::::::::::::::::::::::::::: Tickets Card View according to created Game id
+app.post('/ticketCardView', async (req, res) => {
+  // ex_query('SELECT * FROM `tbl_ticket` WHERE `game_id`=9', req, res)
+  con.query('SELECT * FROM `tbl_game` WHERE `game_id`=?', [req.body.gameId],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  )
 })
 
 app.post('/addTicket', async (req, res) => {
@@ -311,11 +313,12 @@ app.post('/addTicket', async (req, res) => {
     });
 })
 
-// ::::::::::::::::::::::::::::::::::::::::: ticket api code
+// ::::::::::::::::::::::::::::::::::::::::: Game List
 app.get('/gameList', async (req, res) => {
   ex_query("SELECT * FROM tbl_game", req, res)
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Save Game
 app.post('/saveGame', async (req, res) => {
   const numbersWithStatus = Array.from({ length: 100 }, (_, i) => ({
     number: i + 1,
@@ -339,40 +342,43 @@ app.post('/saveGame', async (req, res) => {
     });
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Get Number For Calling
 app.get('/getNumberOneToHundredForCalling', async (req, res) => {
   ex_query('SELECT * FROM `tbl_game` WHERE `game_id`=10', req, res)
 })
 
-app.post('/countDownStartForLiveGame', async (req, res) => {
-  // Function to generate and log a random number from 1 to 100
-  // Function to generate a random number between min and max (inclusive)
-  function getRandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+// ::::::::::::::::::::::::::::::::::::::::: Countdown For Calling Live Number
+// app.post('/countDownStartForLiveGame', async (req, res) => {
+//   // Function to generate and log a random number from 1 to 100
+//   // Function to generate a random number between min and max (inclusive)
+//   function getRandomNumber(min, max) {
+//     return Math.floor(Math.random() * (max - min + 1)) + min;
+//   }
 
-  // Array to store unique random numbers
-  const uniqueRandomNumbers = [];
+//   // Array to store unique random numbers
+//   const uniqueRandomNumbers = [];
 
-  // Function to generate and log unique random numbers
-  function generateUniqueRandomNumber() {
-    if (uniqueRandomNumbers.length < 100) {
-      let randomNumber;
-      do {
-        randomNumber = getRandomNumber(1, 100);
-      } while (uniqueRandomNumbers.includes(randomNumber));
+//   // Function to generate and log unique random numbers
+//   function generateUniqueRandomNumber() {
+//     if (uniqueRandomNumbers.length < 100) {
+//       let randomNumber;
+//       do {
+//         randomNumber = getRandomNumber(1, 100);
+//       } while (uniqueRandomNumbers.includes(randomNumber));
 
-      uniqueRandomNumbers.push(randomNumber);
-      console.log(randomNumber);
-    } else {
-      clearInterval(interval); // Stop the timer when 100 unique numbers are generated
-      console.log("Timer stopped.");
-    }
-  }
+//       uniqueRandomNumbers.push(randomNumber);
+//       console.log(randomNumber);
+//     } else {
+//       clearInterval(interval); // Stop the timer when 100 unique numbers are generated
+//       console.log("Timer stopped.");
+//     }
+//   }
 
-  // Set a timer to call the function every 100 milliseconds
-  const interval = setInterval(generateUniqueRandomNumber, 10000);
-})
+//   // Set a timer to call the function every 100 milliseconds
+//   const interval = setInterval(generateUniqueRandomNumber, 10000);
+// })
 
+// ::::::::::::::::::::::::::::::::::::::::: Matched Ticket For Booking
 app.post('/matchedTicketForBooking', async (req, res) => {
   const currentDate = new Date();
   // Extracting Date Components
@@ -388,12 +394,9 @@ app.post('/matchedTicketForBooking', async (req, res) => {
 
   const fullDate = `${year}-${month > 9 ? month : `0` + month}-${day > 9 ? day : `0` + day}`
   const fullTime = `${hours}:${minutes}`
-  console.log("Date & Time:", fullDate, fullTime);
-
+  // console.log("Date & Time:", fullDate, fullTime);
   con.query('SELECT `game_id`,`game_number_set` FROM `tbl_game` WHERE game_start_date=? AND game_start_time < ?',
     [fullDate, fullTime],
-    // date_ob = new Date()
-
     function (error, result, fields) {
       if (error) throw error;
       //  console.log("pppp", result);
@@ -401,19 +404,16 @@ app.post('/matchedTicketForBooking', async (req, res) => {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
         if (result) {
-          console.log("qqqwwwse", result)
-          console.log("qqqwwwse", result[0].game_number_set)
+          // console.log("qqqwwwse", result)
+          // console.log("qqqwwwse", result[0].game_number_set)
           let numberData = JSON.parse(result[0].game_number_set);
           let gameIdVar = result[0].game_id;
-          console.log("qqqwwwq", numberData)
-
+          // console.log("qqqwwwq", numberData)
           function getRandomNumber(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
           }
-
           // Array to store unique random numbers
           const uniqueRandomNumbers = [];
-
           // Function to generate and log unique random numbers
           let randomNumber;
           async function generateUniqueRandomNumber() {
@@ -421,41 +421,21 @@ app.post('/matchedTicketForBooking', async (req, res) => {
               do {
                 randomNumber = getRandomNumber(1, 100);
               } while (uniqueRandomNumbers.includes(randomNumber));
-
               uniqueRandomNumbers.push(randomNumber);
-              console.log(randomNumber);
+              // console.log(randomNumber);
               numberData?.map((item, index) => {
                 if (item.number == randomNumber) {
-                  console.log("randomif", item.number, randomNumber);
+                  // console.log("randomif", item.number, randomNumber);
                   numberData[index].status = "true";
                 }
               })
-              console.log("numberDataaaa", numberData);
-
+              // console.log("numberDataaaa", numberData);
               // userRef.set(data)
               ref.set({
                 game_id: gameIdVar,
                 number_set: JSON.stringify(numberData),
                 currentCalledNumber: randomNumber
               })
-
-              // const batch = db.batch();
-              // const snapshot = await db.collection("gameIdVarSet").where("game_id", "==", gameIdVar).get();
-              // snapshot.forEach(doc => {
-              //   batch.update(doc.ref, { watched: false });
-              // });
-
-
-              // userRef.set({
-              //   alanisawesome: {
-              //     date_of_birth: "12",
-              //     full_name: "34"
-              //   },
-              //   test: {
-              //     hello: "testting"
-              //   }
-              // })
-
               con.query('UPDATE `tbl_game` SET `game_number_set`=? WHERE `game_id`=?',
                 [JSON.stringify(numberData), gameIdVar],
                 // function (error, result, fields) {
@@ -473,14 +453,11 @@ app.post('/matchedTicketForBooking', async (req, res) => {
               )
             } else {
               clearInterval(interval); // Stop the timer when 100 unique numbers are generated
-              console.log("Timer stopped.");
+              // console.log("Timer stopped.");
             }
           }
-
           // Set a timer to call the function every 100 milliseconds
           const interval = setInterval(generateUniqueRandomNumber, 10000);
-
-
           ResponseHandler(res, true, "Successfully..", result)
         } else {
           ResponseHandler(res, false, "Sorry., Unable to..", result)
@@ -489,6 +466,7 @@ app.post('/matchedTicketForBooking', async (req, res) => {
     });
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Edit Game
 app.put('/editGame', async (req, res) => {
   con.query('UPDATE `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=? WHERE `game_id`=?',
     [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus, req.body.gameId],
@@ -507,6 +485,7 @@ app.put('/editGame', async (req, res) => {
     });
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Delete Game
 app.put('/deleteGame', async (req, res) => {
   con.query('UPDATE `tbl_game` SET `game_status`=? WHERE `game_id`=?',
     [req.body.gameStatus, req.body.gameId],
@@ -525,11 +504,12 @@ app.put('/deleteGame', async (req, res) => {
   )
 })
 
-// ::::::::::::::::::::::::::::::::::::::::: announcement api code
+// ::::::::::::::::::::::::::::::::::::::::: Announcement List
 app.get('/announcementList', async (req, res) => {
   ex_query("SELECT * FROM tbl_announcement", req, res)
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Save Announcement
 app.post('/saveAnnouncement', async (req, res) => {
   con.query('INSERT INTO `tbl_announcement` SET `announcement_title`=?, `announcement_message`=?, `announcement_status`=?',
     [req.body.announcementTitle, req.body.announcementMessage, req.body.announcementStatus],
@@ -547,6 +527,7 @@ app.post('/saveAnnouncement', async (req, res) => {
     });
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Edit Announcement
 app.put('/editAnnouncement', async (req, res) => {
   con.query('UPDATE `tbl_announcement` SET `announcement_title`=?, `announcement_message`=?, `announcement_status`=? WHERE `announcement_id`=?',
     [req.body.announcementTitle, req.body.announcementMessage, req.body.announcementStatus, req.body.announcementId],
@@ -565,6 +546,7 @@ app.put('/editAnnouncement', async (req, res) => {
     });
 })
 
+// ::::::::::::::::::::::::::::::::::::::::: Delete Announcement
 app.put('/deleteAnnouncement', async (req, res) => {
   con.query('UPDATE `tbl_announcement` SET `announcement_status`=? WHERE `announcement_id`=?',
     [req.body.announcementStatus, req.body.announcementId],
@@ -586,8 +568,7 @@ app.put('/deleteAnnouncement', async (req, res) => {
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
 // ::::::::::::::::::::::::::::::::::::: || agents api || :::::::::::::::::::::::::::::::::::::: // 
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
-
-// ::::::::::::::::::::::::::::::::::::: viewTicketForAgents
+// ::::::::::::::::::::::::::::::::::::: View Ticket For Agents
 app.post('/viewTicketForAgents', async (req, res) => {
   con.query("SELECT * FROM tbl_ticket WHERE game_id=?", [req.body.gameId],
     function (error, result, fields) {
@@ -605,6 +586,7 @@ app.post('/viewTicketForAgents', async (req, res) => {
   )
 })
 
+// ::::::::::::::::::::::::::::::::::::: Book Ticket By Agents
 app.put('/bookTicketByAgents', async (req, res) => {
   con.query('UPDATE `tbl_ticket` SET `ticket_set`=? WHERE `game_id`=?',
     [req.body.ticketSet, req.body.gameId],

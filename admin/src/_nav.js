@@ -33,23 +33,23 @@ const _nav = [
     badge: {
       color: 'info',
     },
+    // }, {
+    //   component: CNavItem,
+    //   name: 'Users',
+    //   to: '/users',
+    //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    //   badge: {
+    //     color: 'info',
+    //   },
   }, {
-    component: CNavItem,
-    name: 'Users',
-    to: '/users',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-    },
-  }, {
-    component: CNavItem,
-    name: 'Ticket',
-    to: '/ticket',
-    icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-    },
-  }, {
+    //   component: CNavItem,
+    //   name: 'Ticket',
+    //   to: '/ticket',
+    //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    //   badge: {
+    //     color: 'info',
+    //   },
+    // }, {
     component: CNavItem,
     name: 'Game',
     to: '/game',

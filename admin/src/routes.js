@@ -65,7 +65,7 @@ const routes = [
   { path: '/ticket', name: 'Ticket', element: Ticket },
   { path: '/game', name: 'Game', element: Game },
   { path: '/announcement', name: 'Announcement', element: Announcement },
-  { path: '/ticketView', name: 'TicketView', element: TicketView },
+  { path: '/ticketView/:id', name: 'TicketView', element: TicketView },
 
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },

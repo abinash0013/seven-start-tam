@@ -46,6 +46,7 @@ const Ticket = () => {
 
   const ticket_list = async () => {
     let result = await getApiCall(base.ticketList)
+    console.log("resultticketlist", result);
     setTicketData(result)
   }
 

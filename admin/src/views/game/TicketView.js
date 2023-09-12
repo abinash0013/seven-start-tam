@@ -34,25 +34,36 @@ import Toast from 'src/components/toast/Toast';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const TicketView = () => {
+const TicketView = (props) => {
+
   const [ticket, setTicket] = useState([]);
   useEffect(() => {
     ticketCardView();
-  }, []);
+  }, [props]);
   const { id } = useParams();
+  console.log("iidd", id);
   const ticketCardView = async () => {
-    let result = await getApiCall(base.ticketCardView)
-    // console.log("resulttt", result);
-    // console.log("resultcardvieweeqw", result[0].ticket_set);
-    // console.log("resultcardvieweeq0000", result[0]);
-    let convertJSON = JSON.parse(result[0].ticket_set);
-    // console.log("resultcardvieweeqqqw", convertJSON);
-    setTicket(convertJSON)
+    let req = {
+      gameId: id,
+    }
+    // let result = await getApiCall(base.ticketCardView)
+    let result = await postApiCall(base.ticketCardView, req)
+    // console.log("resultttweww", JSON.stringify(result));
+    // console.log("resultcardvieweeqw", JSON.stringify(result[0].game_number_set));
+    // console.log("resultcardvieweeqw", JSON.stringify(result[0]));
+    // console.log("resultcardvieweeq000012", typeof result.data[0].game_number_set[0]);
+    try {
+      let convertJSON = JSON.parse(result.data[0].game_number_set)
+      setTicket(convertJSON)
+    } catch (error) {
+
+    }
+
   }
 
   const _render_ticket_card_view = (data) => {
-    return data.map((item, index) => {
-      // console.log("dataitemm", item);
+    console.log("123data4", data);
+    return data[0]?.map((item, index) => {
       return (
         <CCol sm={6} style={{ margin: "10px 0" }} key={index}>
           <CCard>
@@ -74,7 +85,8 @@ const TicketView = () => {
                   // padding: "10px",
                   // border: "1px solid #ccc",
                 }}>
-                  {item.dateSet.map((item, index) => (
+                  {/* {item.dateSet.map((item, index) => ( */}
+                  {item.map((item, index) => (
                     <div style={{
                       width: "50px",
                       height: "50px",
@@ -104,6 +116,7 @@ const TicketView = () => {
     <CRow>
       {_render_ticket_card_view(ticket || [])}
     </CRow>
+    // <div style={{ flex: 1, background: 'red' }}></div>
   )
 }
 // const Styles = {

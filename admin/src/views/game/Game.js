@@ -94,7 +94,6 @@ const Game = () => {
     // console.log("saveGameApiCall", result);
     if (result.code == 200) {
       setVisible(false);
-
       successToast();
       // <Toast />
     }
@@ -323,14 +322,6 @@ const Game = () => {
                   <CTableHeaderCell scope="col">Game Start Time</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Game Maximum Ticket</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Amount Per Ticket</CTableHeaderCell>
-                  {/* <CTableHeaderCell scope="col">Quick Fire</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Game Star</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Top Line</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Middle Line</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Bottom Line</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Corner</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Half Sheet</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Housefull</CTableHeaderCell> */}
                   <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Ticket</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Action</CTableHeaderCell>
@@ -346,18 +337,12 @@ const Game = () => {
                     <CTableDataCell>{item.game_start_time}</CTableDataCell>
                     <CTableDataCell>{item.game_maximum_ticket_sell}</CTableDataCell>
                     <CTableDataCell>{item.game_amount}</CTableDataCell>
-                    {/* <CTableDataCell>{item.game_quick_fire}</CTableDataCell>
-                    <CTableDataCell>{item.game_star}</CTableDataCell>
-                    <CTableDataCell>{item.game_top_line}</CTableDataCell>
-                    <CTableDataCell>{item.game_middle_line}</CTableDataCell>
-                    <CTableDataCell>{item.game_bottom_line}</CTableDataCell>
-                    <CTableDataCell>{item.game_corner}</CTableDataCell>
-                    <CTableDataCell>{item.game_half_sheet}</CTableDataCell>
-                    <CTableDataCell>{item.game_housefull}</CTableDataCell> */}
                     <CTableDataCell>{item.game_status}</CTableDataCell>
                     <CTableDataCell>
-                      {/* <CButton color="info" className='me-2' onClick={() => { <TicketView /> }}>Ticket</CButton> */}
+                      {/* <CButton color="info" className='me-2' onClick={() => { alert(item.game_id) }}>Ticket</CButton> */}
+                      {/* <Link to={`/ticketView`}><CButton color="info" className='me-2'>Ticket</CButton></Link> */}
                       <Link to={`/ticketView/${item.game_id}`}><CButton color="info" className='me-2'>Ticket</CButton></Link>
+                      {/* <Link to={`/ticketView/3` }><CButton color="info" className='me-2'>Ticket</CButton></Link> */}
                       {/* <CButton color="info" className='me-2' onClick={() => { go_to_ticket_view(item) }}>Ticket</CButton> */}
                     </CTableDataCell>
                     <CTableDataCell>

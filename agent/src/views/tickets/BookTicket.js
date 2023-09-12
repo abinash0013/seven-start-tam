@@ -22,6 +22,7 @@ const BookTicket = () => {
     let result = await postApiCall(base.viewTicketForAgents, req)
     console.log("resulttt", result);
     let datamerge = JSON.parse(result.data[0].ticket_set)
+    console.log("datamergeeeee", datamerge);
     setTicketSerialNumber(datamerge)
   }
 
@@ -75,12 +76,12 @@ const BookTicket = () => {
     <CCard className="p-4">
       <CRow>
         <CCol xs={12}>
-          <CWidgetStatsB
+          {/* <CWidgetStatsB
             className="mb-3"
             progress={{ color: 'success', value: 75 }}
             title="Ticket Book isme all ticket aiga per game ka or dusre agent ne jo dicket kata h wo v dikhega"
             value="89.9%"
-          />
+          /> */}
           <CRow className='mb-3'>
             <CCol xs={12} className='m-1' style={{ display: "flex", flexWrap: "wrap" }}>
               {ticketSerialNumber?.map((item, index) => {
