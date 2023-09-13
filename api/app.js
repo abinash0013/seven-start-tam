@@ -320,14 +320,39 @@ app.get('/gameList', async (req, res) => {
 
 // ::::::::::::::::::::::::::::::::::::::::: Save Game
 app.post('/saveGame', async (req, res) => {
+  let mainArr = [];
+  for (i = 1; i <= 10; i++) {
+    let arr = [];
+    for (j = 1; j <= 27; j++) {
+      let x = Math.floor(Math.random() * 99);
+      let y = Math.floor(Math.random() * 3);
+      if (y === 0 || x == 0) {
+        arr.push({ status: false, number: 0, line: j < 10 ? 'top' : j > 9 && j < 18 ? "middle" : "bottom" });
+      } else {
+        arr.push({ status: false, number: x, line: j < 10 ? 'top' : j > 9 && j < 18 ? "middle" : "bottom" })
+      }
+    }
+    let gameId = 1;
+    let jsonset = {
+      id: i,
+      gameId: gameId,
+      agentId: "",
+      userName: "",
+      userPhone: "",
+      ticketUniquieId: gameId + "" + i + new Date().getTime(),
+      bookingDateAndTime: new Date().getTime(),
+      dateSet: arr
+    }
+    mainArr.push(jsonset);
+  }
   const numbersWithStatus = Array.from({ length: 100 }, (_, i) => ({
     number: i + 1,
     status: 'false'
   }));
   const numberSetJsonString = JSON.stringify(numbersWithStatus, null, 2); // The third argument is for pretty formatting (2 spaces for indentation)
   // console.log("numbersrrrjsonString", numberSetJsonString);
-  con.query('INSERT INTO `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_number_set`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=?',
-    [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, numberSetJsonString.toString(), req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus],
+  con.query('INSERT INTO `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_number_set`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=?,`ticket_set`=?',
+    [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, numberSetJsonString.toString(), req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus, JSON.stringify(mainArr)],
     function (error, result, fields) {
       if (error) throw error;
       if (error) {

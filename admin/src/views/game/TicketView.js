@@ -48,68 +48,64 @@ const TicketView = (props) => {
     }
     // let result = await getApiCall(base.ticketCardView)
     let result = await postApiCall(base.ticketCardView, req)
-    // console.log("resultttweww", JSON.stringify(result));
-    // console.log("resultcardvieweeqw", JSON.stringify(result[0].game_number_set));
-    // console.log("resultcardvieweeqw", JSON.stringify(result[0]));
-    // console.log("resultcardvieweeq000012", typeof result.data[0].game_number_set[0]);
+    console.log("resultttweww", result);
     try {
-      let convertJSON = JSON.parse(result.data[0].game_number_set)
+      let convertJSON = JSON.parse(result.data[0].ticket_set);
+      console.log("convertJSONnn", convertJSON[0].dateSet);
       setTicket(convertJSON)
     } catch (error) {
-
+      console.log("errorjson", error);
     }
-
   }
 
   const _render_ticket_card_view = (data) => {
-    console.log("123data4", data);
-    return data[0]?.map((item, index) => {
-      return (
-        <CCol sm={6} style={{ margin: "10px 0" }} key={index}>
-          <CCard>
-            <CCardBody>
-              {/* <div className="ticket-container"> */}
-              <div style={{
-                display: "flex",
-                justifyContent: "center",
-                // marginTop: "20px",
-                // flex: 1 
-              }}>
+    {
+      return (data?.map((item, index) => {
+        return (
+          <CCol sm={6} style={{ margin: "10px 0" }} key={index}>
+            <CCard>
+              <CCardBody>
+                {/* <div className="ticket-container"> */}
                 <div style={{
                   display: "flex",
-                  flexWrap: "wrap",
-                  flexDirection: "row",
                   justifyContent: "center",
-                  alignItems: "center",
-                  margin: "10px",
-                  // padding: "10px",
-                  // border: "1px solid #ccc",
+                  // marginTop: "20px",
+                  // flex: 1 
                 }}>
-                  {/* {item.dateSet.map((item, index) => ( */}
-                  {item.map((item, index) => (
-                    <div style={{
-                      width: "50px",
-                      height: "50px",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      border: "1px solid #ccc",
-                      // margin: "2px",
-                      fontWeight: "bold",
-                    }}>
-                      {/* {console.log("dataitemticket", ticket)} */}
-                      {item.number}
-                      {/* {"1"} */}
-                    </div>
-                  ))}
+
+                  <div style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    margin: "10px",
+                    // padding: "10px",
+                    // border: "1px solid #ccc",
+                  }}>
+                    {item?.dateSet?.map((innerItem, index) => (
+                      <div style={{
+                        width: "50px",
+                        height: "50px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        border: "1px solid #ccc",
+                        fontWeight: "bold",
+                      }}>
+                        {innerItem.number}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </CCardBody>
-          </CCard>
-        </CCol >
-        // <div>test1</div>
-      )
-    })
+              </CCardBody>
+            </CCard>
+          </CCol >
+          // <div>test1</div>
+        )
+      }))
+
+    }
   }
 
   return (
