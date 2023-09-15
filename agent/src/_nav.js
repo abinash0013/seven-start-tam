@@ -27,13 +27,21 @@ const _nav = [
     },
   }, {
     component: CNavItem,
-    name: 'Book Ticket',
-    to: '/bookTicket',
+    name: 'Game',
+    to: '/game',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
     badge: {
       color: 'info',
     },
   }, {
+    //   component: CNavItem,
+    //   name: 'Book Ticket',
+    //   to: '/bookTicket',
+    //   icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    //   badge: {
+    //     color: 'info',
+    //   },
+    // }, {
     component: CNavItem,
     name: 'Ticket',
     to: '/ticket',

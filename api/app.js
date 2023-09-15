@@ -187,13 +187,13 @@ app.put('/deleteUser', async (req, res) => {
 
 // ::::::::::::::::::::::::::::::::::::::::: Tickets List // this api because dynamic ticket created when game created
 
-app.get('/ticketList', async (req, res) => {
+app.get('/gameList', async (req, res) => {
   ex_query("SELECT * FROM tbl_game", req, res)
 })
 
-app.get('/ticketList', async (req, res) => {
-  ex_query("SELECT * FROM tbl_ticket", req, res)
-})
+// app.get('/ticketList', async (req, res) => {
+//   ex_query("SELECT * FROM tbl_ticket", req, res)
+// })
 
 // ::::::::::::::::::::::::::::::::::::::::: Save Tickets
 app.post('/saveTicket', async (req, res) => {
@@ -595,7 +595,8 @@ app.put('/deleteAnnouncement', async (req, res) => {
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
 // ::::::::::::::::::::::::::::::::::::: View Ticket For Agents
 app.post('/viewTicketForAgents', async (req, res) => {
-  con.query("SELECT * FROM tbl_ticket WHERE game_id=?", [req.body.gameId],
+  // con.query("SELECT * FROM tbl_ticket WHERE game_id=?", [req.body.gameId],
+  con.query("SELECT * FROM tbl_game WHERE game_id=?", [req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;
       if (error) {
@@ -613,7 +614,7 @@ app.post('/viewTicketForAgents', async (req, res) => {
 
 // ::::::::::::::::::::::::::::::::::::: Book Ticket By Agents
 app.put('/bookTicketByAgents', async (req, res) => {
-  con.query('UPDATE `tbl_ticket` SET `ticket_set`=? WHERE `game_id`=?',
+  con.query('UPDATE `tbl_game` SET `ticket_set`=? WHERE `game_id`=?',
     [req.body.ticketSet, req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;

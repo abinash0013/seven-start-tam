@@ -27,82 +27,27 @@ import { getApiCall, postApiCall, putApiCall } from 'src/services/AppSetting';
 import { base } from 'src/constants/Data.constant';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Link } from 'react-router-dom';
 
-const Ticket = () => {
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [itemValue, setItemValue] = useState("");
-  const [editModalVisible, setEditModalVisible] = useState(false);
-  const [ticketData, setTicketData] = useState([]);
-  const [visible, setVisible] = useState(false)
-  const [id, setId] = useState("");
-  const [ticketSerialNumber, setTicketSerialNumber] = useState("");
-  const [ticketNumber, setTicketNumber] = useState("");
-  const [ticketAmount, setTicketAmount] = useState("");
-  const [ticketStatus, setTicketStatus] = useState("");
-
+const Game = () => {
+  const [gameListData, setGameListData] = useState([])
   useEffect(() => {
-    ticket_list();
+    game_list();
   }, []);
 
-  const ticket_list = async () => {
-    let result = await getApiCall(base.ticketList)
-    console.log("resultticketlist", result);
-    result.map((item, index) => {
-      // console.log("mapIitemtID", item.ticket_set[0].agentId);
-      // item.ticket_set.map((ticketSetItem)=>{
-      //   console.log("mapIitemt", ticketSetItem);
-      // })
-    })
-    // setTicketData(result)
-  }
-
-  const save_ticket = async () => {
-    let req = {
-      ticketSerialNumber: ticketSerialNumber.target.value,
-      ticketNumber: ticketNumber.target.value,
-      ticketAmount: ticketAmount.target.value,
-      ticketStatus: ticketStatus.target.value
-    }
-    let result = await postApiCall(base.saveTicket, req)
-    if (result.code == 200) {
-      setVisible(false);
-      toast.success("Successfully Created..!");
-    }
-  }
-
-  const delete_ticket = async (value) => {
-    let req = {
-      id: value.ticket_id,
-      status: "1"
-    }
-    let result = await putApiCall(base.deleteTicket, req)
-    if (result.code == 200) {
-      toast.success("Updated Successfully..!");
-      setEditModalVisible(false);
-    }
+  const game_list = async () => {
+    let result = await getApiCall(base.gameList)
+    console.log("gamelisttt", result);
+    setGameListData(result)
   }
 
   const get_edit_value = async (item) => {
     setEditModalVisible(true)
-    setId(item.ticket_id);
-    setTicketSerialNumber(item.ticket_serial_number);
-    setTicketNumber(item.ticket_number);
-    setTicketAmount(item.ticket_amount);
-    setTicketStatus(item.ticket_status);
-  }
-
-  const edit_ticket = async () => {
-    let req = {
-      id: id,
-      ticketSerialNumber: ticketSerialNumber,
-      ticketNumber: ticketNumber,
-      ticketAmount: ticketAmount,
-      ticketStatus: ticketStatus,
-    }
-    let result = await putApiCall(base.editTicket, req)
-    if (result.code == 200) {
-      toast.error("Deleted Successfully..!");
-    }
+    // setId(item.ticket_id);
+    // setTicketSerialNumber(item.ticket_serial_number);
+    // setTicketNumber(item.ticket_number);
+    // setTicketAmount(item.ticket_amount);
+    // setTicketStatus(item.ticket_status);
   }
 
   return (
@@ -117,27 +62,24 @@ const Ticket = () => {
               <CTableHead>
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Ticket Serial Number</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Ticket Number</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Ticket Amount</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Username</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Game Name</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Game Start Date</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Game Start Time</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {ticketData.map((item, index) => {
+                {gameListData.map((item, index) => {
                   return <CTableRow key={index}>
                     <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                    <CTableDataCell>{item.ticket_serial_number}</CTableDataCell>
-                    <CTableDataCell>{item.ticket_number}</CTableDataCell>
-                    <CTableDataCell>{item.ticket_amount}</CTableDataCell>
-                    <CTableDataCell>{item.ticket_amount}</CTableDataCell>
-                    <CTableDataCell>{item.ticket_amount}</CTableDataCell>
-                    <CTableDataCell>{item.ticket_status}</CTableDataCell>
+                    <CTableDataCell>{item.game_name}</CTableDataCell>
+                    <CTableDataCell>{item.game_start_date}</CTableDataCell>
+                    <CTableDataCell>{item.game_start_time}</CTableDataCell>
                     <CTableDataCell>
-                      <CButton color="warning" className='me-2' onClick={() => { get_edit_value(item) }}>Edit</CButton>
-                      <CModal alignment="center" visible={editModalVisible}>
+                      {/* <CButton color="warning" className='me-2' onClick={() => { get_edit_value(item) }}>More</CButton> */}
+                      <Link to={`/bookTicket/${item.game_id}`}><CButton color="info" className='me-2'>More</CButton></Link>
+
+                      {/* <CModal alignment="center" visible={editModalVisible}>
                         <CModalHeader>
                           <CModalTitle>Edit</CModalTitle>
                         </CModalHeader>
@@ -185,7 +127,7 @@ const Ticket = () => {
                           </CButton>
                           <CButton color="primary" onClick={() => edit_ticket()}>Update</CButton>
                         </CModalFooter>
-                      </CModal>
+                      </CModal> */}
                     </CTableDataCell>
                   </CTableRow>
                 })}
@@ -198,4 +140,4 @@ const Ticket = () => {
   )
 }
 
-export default Ticket
+export default Game
