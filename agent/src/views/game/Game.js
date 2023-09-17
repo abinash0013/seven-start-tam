@@ -78,6 +78,7 @@ const Game = () => {
                     <CTableDataCell>
                       {/* <CButton color="warning" className='me-2' onClick={() => { get_edit_value(item) }}>More</CButton> */}
                       <Link to={`/bookTicket/${item.game_id}`}><CButton color="info" className='me-2'>More</CButton></Link>
+                      <Link to={`/ticket/${item.game_id}`}><CButton color="info" className='me-2'>Ticket Booked</CButton></Link>
 
                       {/* <CModal alignment="center" visible={editModalVisible}>
                         <CModalHeader>

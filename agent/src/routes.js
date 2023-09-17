@@ -59,7 +59,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/game', name: 'Game', element: Game },
   { path: '/bookTicket/:id', name: 'BookTicket', element: BookTicket },
-  { path: '/ticket', name: 'Ticket', element: Ticket },
+  { path: '/ticket/:gameIdVar', name: 'Ticket', element: Ticket },
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
   { path: '/base', name: 'Base', element: Cards, exact: true },

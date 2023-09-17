@@ -191,9 +191,23 @@ app.get('/gameList', async (req, res) => {
   ex_query("SELECT * FROM tbl_game", req, res)
 })
 
-// app.get('/ticketList', async (req, res) => {
-//   ex_query("SELECT * FROM tbl_ticket", req, res)
-// })
+app.post('/ticketList', async (req, res) => {
+  // con.query("SELECT * FROM tbl_ticket WHERE game_id=?", [req.body.gameId],
+  con.query("SELECT * FROM tbl_game WHERE game_id=?", [req.body.gameId],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Fetch Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  )
+})
 
 // ::::::::::::::::::::::::::::::::::::::::: Save Tickets
 app.post('/saveTicket', async (req, res) => {
@@ -319,52 +333,94 @@ app.get('/gameList', async (req, res) => {
 })
 
 // ::::::::::::::::::::::::::::::::::::::::: Save Game
-app.post('/saveGame', async (req, res) => {
-  let mainArr = [];
-  for (i = 1; i <= 10; i++) {
-    let arr = [];
-    for (j = 1; j <= 27; j++) {
-      let x = Math.floor(Math.random() * 99);
-      let y = Math.floor(Math.random() * 3);
-      if (y === 0 || x == 0) {
-        arr.push({ status: false, number: 0, line: j < 10 ? 'top' : j > 9 && j < 18 ? "middle" : "bottom" });
-      } else {
-        arr.push({ status: false, number: x, line: j < 10 ? 'top' : j > 9 && j < 18 ? "middle" : "bottom" })
+
+function generateTambolaTicket() {
+  // Initialize an empty ticket
+  const numberArr = [];
+  const ticket = [];
+
+  // Generate three rows with nine numbers each
+  for (let i = 0; i < 3; i++) {
+    const row = [];
+
+    // Generate nine unique random numbers for each row
+    while (row.length < 9) {
+      const randomNumber = getRandomNumber(1, 99); // Assuming Tambola numbers range from 1 to 90
+      if (!row.includes(randomNumber)) {
+        row.push({
+          status: false,
+          number: randomNumber,
+          line: i == 0 ? 'top' : i == 1 ? "middle" : "bottom"
+        }
+        );
       }
     }
-    let gameId = 1;
-    let jsonset = {
-      id: i,
-      gameId: gameId,
-      agentId: "",
-      userName: "",
-      userPhone: "",
-      ticketUniquieId: gameId + "" + i + new Date().getTime(),
-      bookingDateAndTime: new Date().getTime(),
-      dateSet: arr
+    let arr = []
+    while (arr.length < 5) {
+      var r = Math.floor(Math.random() * 8) + 1;
+      if (arr.indexOf(r) === -1)
+        arr.push(r)
     }
-    mainArr.push(jsonset);
+    for (let i = 0; i < arr.length; i++) {
+      row[arr[i]].number = 0
+    }
+    ticket.push(row);
+    for (let j = 0; j < 9; j++) {
+      numberArr.push(ticket[i][j])
+    }
   }
-  const numbersWithStatus = Array.from({ length: 100 }, (_, i) => ({
-    number: i + 1,
-    status: 'false'
-  }));
-  const numberSetJsonString = JSON.stringify(numbersWithStatus, null, 2); // The third argument is for pretty formatting (2 spaces for indentation)
-  // console.log("numbersrrrjsonString", numberSetJsonString);
-  con.query('INSERT INTO `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_number_set`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=?,`ticket_set`=?',
-    [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, numberSetJsonString.toString(), req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus, JSON.stringify(mainArr)],
+
+  return numberArr;
+}
+
+// Function to get a random number between min and max (inclusive)
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+app.post('/saveGame', async (req, res) => {
+  let gameId = "";
+  con.query("SELECT * FROM tbl_game", [req.body.userName, req.body.password],
     function (error, result, fields) {
       if (error) throw error;
-      if (error) {
-        ResponseHandler(res, false, "Api Issue", result)
-      } else {
-        if (result) {
-          ResponseHandler(res, true, "Save Successfully..", result)
-        } else {
-          ResponseHandler(res, false, "Sorry., Unable to Save..", result)
+      let resultLength = result.length
+      gameId = result[resultLength - 1].game_id + 1
+      let mainArr = [];
+      for (i = 1; i <= 5; i++) {
+        let jsonset = {
+          id: i,
+          gameId: gameId,
+          agentId: "",
+          userName: "",
+          userPhone: "",
+          ticketUniquieId: gameId + "" + i + new Date().getTime(),
+          bookingDateAndTime: new Date().getTime(),
+          dateSet: generateTambolaTicket()
         }
+        mainArr.push(jsonset);
       }
-    });
+      const numbersWithStatus = Array.from({ length: 100 }, (_, i) => ({
+        number: i + 1,
+        status: 'false'
+      }));
+      const numberSetJsonString = JSON.stringify(numbersWithStatus, null, 2); // The third argument is for pretty formatting (2 spaces for indentation)
+      // console.log("numbersrrrjsonString", numberSetJsonString);
+      con.query('INSERT INTO `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_number_set`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=?,`ticket_set`=?',
+        [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, numberSetJsonString.toString(), req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus, JSON.stringify(mainArr)],
+        function (error, result, fields) {
+          if (error) throw error;
+          if (error) {
+            ResponseHandler(res, false, "Api Issue", result)
+          } else {
+            if (result) {
+              ResponseHandler(res, true, "Save Successfully..", result)
+            } else {
+              ResponseHandler(res, false, "Sorry., Unable to Save..", result)
+            }
+          }
+        });
+    }
+  )
 })
 
 // ::::::::::::::::::::::::::::::::::::::::: Get Number For Calling
@@ -638,9 +694,9 @@ app.put('/bookTicketByAgents', async (req, res) => {
 
 
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
-// app.get('/ticketCardView', async (req, res) => {
-//   ex_query("SELECT * FROM tbl_ticket", req, res)
-// })
+app.get('/ticketCardViewForUser', async (req, res) => {
+  ex_query("SELECT * FROM tbl_ticket", req, res)
+})
 
 app.listen(3000, function () {
   console.log('Server is up and Rudding on port 3000!');

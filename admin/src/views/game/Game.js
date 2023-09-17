@@ -90,6 +90,7 @@ const Game = () => {
       gameStatus: gameStatus.target.value
     }
     console.log("saveGameApiCallreq", req);
+    // debugger;
     let result = await postApiCall(base.saveGame, req)
     // console.log("saveGameApiCall", result);
     if (result.code == 200) {

@@ -23,9 +23,9 @@ const BookTicket = () => {
     let req = {
       gameId: id
     }
-    console.log("viewTicketForAgentsreqqtt", req);
+    // console.log("viewTicketForAgentsreqqtt", req);
     let result = await postApiCall(base.viewTicketForAgents, req)
-    console.log("viewTicketForAgentsresulttt", result);
+    // console.log("viewTicketForAgentsresulttt", result);
     let datamerge = JSON.parse(result.data[0].ticket_set)
     // if (datamerge.length > 0) {
     setTicketSerialNumber(datamerge)
@@ -35,17 +35,19 @@ const BookTicket = () => {
   }
 
   const selectTicketForBookByAgent = async (data, index) => {
+    console.log("dataaata", data, ticketSerialNumber)
     let arr = [...ticketSerialNumber]
+    console.log("dataaatastatus", arr)
     arr[index].status = !arr[index].status
     setTicketSerialNumber(arr)
-    if (arr[index].status != true) {
-      ticketSelectByAgent.push(data.id)
-      // console.log("storeDataav", ticketSelectByAgent);
-    } else {
-      ticketSelectByAgent.splice(index, 1);
-      // console.log("storeDataaaaindex", index);
-    }
-    console.log("storeDataaaaindexvv", ticketSelectByAgent);
+    // if (arr[index].status != true) {
+    //   ticketSelectByAgent.push(data)
+    //   console.log("storeDataavv", ticketSelectByAgent);
+    // } else {
+    //   ticketSelectByAgent.splice(index, 1);
+    //   // console.log("storeDataaaaindex", index);
+    // }
+    // console.log("storeDataaaaindexvv", ticketSelectByAgent);
   }
 
   const requestForTicketBook = async (ticketSerialNumberVal) => {
@@ -57,32 +59,43 @@ const BookTicket = () => {
     console.log("stringreq", req);
     let result = await putApiCall(base.bookTicketByAgents, req)
     console.log("resultresulteerrrage", result);
+    if (result.status == true) {
+      alert("Ticket Booked Successfully.!")
+      setUserName("");
+      setUserPhone("");
+    }
   }
 
   const bookTicketByAgents = async () => {
-    ticketSelectByAgent.map((item, index) => {
-      console.log("itemmmmmtes", item);
-      item.agentId = "2";
-      item.userName = userName.target.value;
-      item.userPhone = userPhone.target.value;
-
-      ticketSerialNumber.map((serialItem, index) => {
-        if (serialItem.id == item.id) {
-          serialItem = item
-        }
-      })
-      requestForTicketBook(ticketSerialNumber);
-    });
-
-
+    console.log("userPhonelengthh", userPhone.length, ticketSelectByAgent);
+    if (ticketSelectByAgent == []) {
+      alert("Please Select a Ticket")
+    } else if (userName == "") {
+      alert("Please Enter Username")
+    } else if (userPhone == "") {
+      alert("Please Enter Userphone")
+      // } else if (userPhone.length != 10) {
+      //   alert("Phone Number Should be atleast 10 digit")
+    } else {
+      ticketSelectByAgent.map((item, index) => {
+        console.log("itemmmmmtes", item);
+        item.agentId = "2";
+        item.userName = userName.target.value;
+        item.userPhone = userPhone.target.value;
+        ticketSerialNumber.map((serialItem, index) => {
+          if (serialItem.id == item.id) {
+            serialItem = item
+          }
+        })
+        requestForTicketBook(ticketSerialNumber);
+      });
+    }
 
     // let datamerge = JSON.parse(result[0].ticket_set)
     // // console.log("datamergeee", datamerge);
     // setTicketSerialNumber(datamerge)
   }
 
-
-  // ticketSelectByAgent
   return (
     <CCard className="p-4">
       <CRow>
@@ -96,9 +109,10 @@ const BookTicket = () => {
           <CRow className='mb-3'>
             <CCol xs={12} className='m-1' style={{ display: "flex", flexWrap: "wrap" }}>
               {ticketSerialNumber?.map((item, index) => {
-                console.log("eeerererer", item.userName);
+                console.log("ticketSerialNumberrr", item);
                 return <div className='customBox'>
-                  <CFormCheck button={{ color: item.status != "" ? 'primary' : 'secondary', variant: item.status == "" ? '' : 'outline' }} id={item.id} autoComplete="off" label={item.id} onClick={() => { selectTicketForBookByAgent(item, index) }} />
+                  {/* <CFormCheck button={{ color: item.status != true ? 'primary' : 'secondary', variant: item.status == false ? '' : 'outline' }} id={item.id} autoComplete="off" label={item.id} onClick={() => { selectTicketForBookByAgent(item, index) }} /> */}
+                  <CFormCheck button={{ color: item.status == true ? 'primary' : 'secondary', variant: item.status == false ? '' : 'outline' }} id={item.id} autoComplete="off" label={item.id} onClick={() => { selectTicketForBookByAgent(item, index) }} />
                 </div>
               })}
               {/* <CFormCheck button={{ color: 'primary', variant: 'outline' }} id="number" autoComplete="off" label="Single toggle" /> */}
@@ -118,7 +132,7 @@ const BookTicket = () => {
               <CFormLabel htmlFor="phone" className="visually-hidden">
                 Phone
               </CFormLabel>
-              <CFormInput type="text" id="phone" placeholder="Enter Phone" onChange={(e) => { setUserPhone(e) }} />
+              <CFormInput type="number" id="phone" placeholder="Enter Phone" maxLength={10} onChange={(e) => { setUserPhone(e) }} />
             </CCol>
             <CCol xs={2}>
               <CButton type="submit" className="mb-3" onClick={() => { bookTicketByAgents() }}>

@@ -27,6 +27,7 @@ import { getApiCall, postApiCall, putApiCall } from 'src/services/AppSetting';
 import { base } from 'src/constants/Data.constant';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useParams } from 'react-router-dom';
 
 const Ticket = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -39,21 +40,35 @@ const Ticket = () => {
   const [ticketNumber, setTicketNumber] = useState("");
   const [ticketAmount, setTicketAmount] = useState("");
   const [ticketStatus, setTicketStatus] = useState("");
+  const [userName, setUserName] = useState("");
+  const [userPhone, setUserPhone] = useState("");
+  const [userDateAndTime, setUserDateAndTime] = useState("");
 
   useEffect(() => {
     ticket_list();
   }, []);
 
+  const { gameIdVar } = useParams();
+
   const ticket_list = async () => {
-    let result = await getApiCall(base.ticketList)
-    console.log("resultticketlist", result);
-    result.map((item, index) => {
-      // console.log("mapIitemtID", item.ticket_set[0].agentId);
-      // item.ticket_set.map((ticketSetItem)=>{
-      //   console.log("mapIitemt", ticketSetItem);
-      // })
-    })
-    // setTicketData(result)
+    // let result = await getApiCall(base.ticketList)
+    let req = {
+      gameId: gameIdVar
+    }
+    // console.log("resultticketlistreq", req);
+    let result = await postApiCall(base.ticketList, req)
+    // console.log("resultticketlistresult",  result);
+    let datamerge = JSON.parse(result.data[0].ticket_set)
+    // console.log("datamergeeeerrr", datamerge);
+    if (datamerge != null) {
+      if (datamerge.length > 0) {
+        let filterDataMerge = datamerge.filter(item => item.agentId == "2")
+        // console.log("filterDataMerge", filterDataMerge);
+        setTicketData(filterDataMerge)
+      } else {
+        alert("no data found")
+      }
+    }
   }
 
   const save_ticket = async () => {
@@ -83,12 +98,16 @@ const Ticket = () => {
   }
 
   const get_edit_value = async (item) => {
+    console.log("itemeditvalue", item);
     setEditModalVisible(true)
     setId(item.ticket_id);
-    setTicketSerialNumber(item.ticket_serial_number);
-    setTicketNumber(item.ticket_number);
-    setTicketAmount(item.ticket_amount);
-    setTicketStatus(item.ticket_status);
+    setTicketSerialNumber(item.bookingDateAndTime);
+    // setTicketNumber(item.ticket_number);
+    // setTicketAmount(item.ticket_amount);
+    // setTicketStatus(item.ticket_status);
+    setUserName(item.userName)
+    setUserPhone(item.userPhone)
+    setUserDateAndTime(item.bookingDateAndTime)
   }
 
   const edit_ticket = async () => {
@@ -118,24 +137,22 @@ const Ticket = () => {
                 <CTableRow>
                   <CTableHeaderCell scope="col">#</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Ticket Serial Number</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Ticket Number</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Ticket Amount</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Username</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
-                  <CTableHeaderCell scope="col">Action</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Phone No.</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Date and Time</CTableHeaderCell>
+                  {/* <CTableHeaderCell scope="col">Action</CTableHeaderCell> */}
                 </CTableRow>
               </CTableHead>
               <CTableBody>
                 {ticketData.map((item, index) => {
+                  console.log("ticketDataitemm", item);
                   return <CTableRow key={index}>
                     <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                    <CTableDataCell>{item.ticket_serial_number}</CTableDataCell>
-                    <CTableDataCell>{item.ticket_number}</CTableDataCell>
-                    <CTableDataCell>{item.ticket_amount}</CTableDataCell>
-                    <CTableDataCell>{item.ticket_amount}</CTableDataCell>
-                    <CTableDataCell>{item.ticket_amount}</CTableDataCell>
-                    <CTableDataCell>{item.ticket_status}</CTableDataCell>
-                    <CTableDataCell>
+                    <CTableDataCell>{item.ticketUniquieId}</CTableDataCell>
+                    <CTableDataCell>{item.userName}</CTableDataCell>
+                    <CTableDataCell>{item.userPhone}</CTableDataCell>
+                    <CTableDataCell>{item.bookingDateAndTime}</CTableDataCell>
+                    {/* <CTableDataCell>
                       <CButton color="warning" className='me-2' onClick={() => { get_edit_value(item) }}>Edit</CButton>
                       <CModal alignment="center" visible={editModalVisible}>
                         <CModalHeader>
@@ -152,30 +169,37 @@ const Ticket = () => {
                                 onChange={(e) => { setTicketSerialNumber(e) }}
                                 defaultValue={ticketSerialNumber}
                               />
-                              <CFormLabel htmlFor="ticketNumber">Ticket Number</CFormLabel>
+                              <CFormLabel htmlFor="userName">Username</CFormLabel>
                               <CFormInput
                                 type="text"
-                                id="ticketNumber"
+                                id="userName"
                                 placeholder="Ticket Number"
-                                onChange={(e) => { setTicketNumber(e) }}
-                                defaultValue={ticketNumber}
+                                onChange={(e) => { setUserName(e) }}
+                                defaultValue={userName}
                               />
-                              <CFormLabel htmlFor="ticketAmount">Ticket Amount</CFormLabel>
+                              <CFormLabel htmlFor="userPhone">Userphone</CFormLabel>
                               <CFormInput
                                 type="text"
-                                id="ticketAmount"
-                                placeholder="Ticket Amount"
-                                onChange={(e) => { setTicketAmount(e) }}
-                                defaultValue={ticketAmount}
+                                id="userPhone"
+                                placeholder="User Phone No."
+                                onChange={(e) => { setUserPhone(e) }}
+                                defaultValue={userPhone}
                               />
-                              <CFormLabel htmlFor="ticketStatus">Ticket Status</CFormLabel>
+                              <CFormLabel htmlFor="userDateAndTime">User Date and Time</CFormLabel>
                               <CFormInput
                                 type="text"
-                                id="ticketStatus"
-                                placeholder="Ticket Status"
-                                onChange={(e) => { setTicketStatus(e) }}
-                                defaultValue={ticketStatus}
+                                id="userDateAndTime"
+                                placeholder="User Date and Time"
+                                onChange={(e) => { setUserDateAndTime(e) }}
+                                defaultValue={userDateAndTime}
                               />
+                              <CFormLabel htmlFor="gender">Ticket Status</CFormLabel>
+                              <CFormSelect defaultValue={gender} id="gender" onChange={(e) => { setGender(e.target.value) }}>
+                                <option value="" selected disabled>Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Others">Others</option>
+                              </CFormSelect>
                             </div>
                           </CForm>
                         </CModalBody>
@@ -186,7 +210,7 @@ const Ticket = () => {
                           <CButton color="primary" onClick={() => edit_ticket()}>Update</CButton>
                         </CModalFooter>
                       </CModal>
-                    </CTableDataCell>
+                    </CTableDataCell> */}
                   </CTableRow>
                 })}
               </CTableBody>

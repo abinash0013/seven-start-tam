@@ -34,7 +34,8 @@ const Ticket = (props) => {
   // }
 
   const ticketCardView = async () => {
-    let result = await getApiCall(base.ticketCardView)
+    let result = await getApiCall(base.ticketCardViewForUser)
+    console.log("resultcardvieweeq", result);
     // console.log("resultcardvieweeq", result[0].ticket_set);
     // setTicket(result[0].ticket_set)
     let convertJSON = JSON.parse(result[0].ticket_set);
