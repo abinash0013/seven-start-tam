@@ -39,7 +39,9 @@ const Agents = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
   const [gender, setGender] = useState("");
+  const [status, setStatus] = useState("");
 
   useEffect(() => {
     agents_list();
@@ -55,9 +57,11 @@ const Agents = () => {
       name: name.target.value,
       email: email.target.value,
       phone: phone.target.value,
+      password: password,
       gender: gender,
+      status: status,
     }
-    console.log("saveAgentApiCallreq", req);
+    // console.log("saveAgentApiCallreq", req);
     let result = await postApiCall(base.saveAgent, req)
     if (result.code == 200) {
       setVisible(false);
@@ -70,22 +74,22 @@ const Agents = () => {
       id: value.agents_id,
       status: "1"
     }
-    console.log("iddddAgentreq", req);
+    // console.log("iddddAgentreq", req);
     let result = await putApiCall(base.deleteAgent, req)
-    console.log("iddddAgentresult", result);
+    // console.log("iddddAgentresult", result);
     if (result.code == 200) {
       toast.error("Deleted Successfully..!");
     }
   }
 
   const get_edit_value = async (item) => {
-    console.log("itemmm", item);
-    setEditModalVisible(true)
+    setEditModalVisible(true);
     setId(item.agents_id);
     setName(item.agents_name);
     setEmail(item.agents_email);
     setPhone(item.agents_phone);
     setGender(item.agents_gender);
+    setStatus(item.agents_active_status);
   }
 
   const edit_agent = async () => {
@@ -94,9 +98,10 @@ const Agents = () => {
       name: name,
       email: email,
       phone: phone,
-      Gender: gender,
+      gender: gender,
+      status: status,
     }
-    console.log("reqreq", req);
+    // console.log("reqreq", req);
     let result = await putApiCall(base.editAgent, req)
     console.log("resultresult", result);
     if (result.code == 200) {
@@ -104,6 +109,19 @@ const Agents = () => {
       toast.success("Updated Successfully..!");
     }
   }
+
+  const randomPasswordGenerate = () => {
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let newPassword = '';
+
+    for (let i = 0; i < 8; i++) {
+      const randomIndex = Math.floor(Math.random() * charset.length);
+      newPassword += charset[randomIndex];
+    }
+
+    setPassword(newPassword);
+    // console.log("newPassworddd", newPassword);
+  };
 
   return (
     <CRow>
@@ -139,12 +157,31 @@ const Agents = () => {
                   onChange={(e) => { setPhone(e) }}
                   maxLength={10}
                 />
+                <CFormLabel htmlFor="password">Password</CFormLabel>
+                <div className='d-flex'>
+                  <CFormInput
+                    type="text"
+                    id="password"
+                    placeholder="Agent Password"
+                    onChange={(e) => { setPassword(e) }}
+                    defaultValue={password}
+                  />
+                  <CButton className='ml-1' color="secondary" onClick={() => randomPasswordGenerate()}>
+                    Generate
+                  </CButton>
+                </div>
                 <CFormLabel htmlFor="gender">Gender</CFormLabel>
                 <CFormSelect defaultValue={gender} id="gender" onChange={(e) => { setGender(e.target.value) }}>
                   <option value="" selected disabled>Select Gender</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Others">Others</option>
+                </CFormSelect>
+                <CFormLabel htmlFor="status">Status</CFormLabel>
+                <CFormSelect defaultValue={status} id="status" onChange={(e) => { setStatus(e.target.value) }}>
+                  <option value="" selected disabled>Select Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Deactive">Deactive</option>
                 </CFormSelect>
               </div>
             </CForm>
@@ -221,6 +258,12 @@ const Agents = () => {
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                                 <option value="Others">Others</option>
+                              </CFormSelect>
+                              <CFormLabel htmlFor="status">Status</CFormLabel>
+                              <CFormSelect defaultValue={status} id="status" onChange={(e) => { setStatus(e.target.value) }}>
+                                <option value="" selected disabled>Select Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Deactive">Deactive</option>
                               </CFormSelect>
                             </div>
                           </CForm>

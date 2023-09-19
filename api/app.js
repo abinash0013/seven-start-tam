@@ -70,8 +70,8 @@ app.get('/agentsList', async (req, res) => {
 
 // ::::::::::::::::::::::::::::::::::::::::: Save Agent
 app.post('/saveAgent', async (req, res) => {
-  con.query('INSERT INTO `tbl_agents` SET `agents_name`=?, `agents_email`=?, `agents_phone`=?, `agents_gender`=?',
-    [req.body.name, req.body.email, req.body.phone, req.body.gender],
+  con.query('INSERT INTO `tbl_agents` SET `agents_name`=?, `agents_email`=?, `agents_phone`=?,`agents_password`=?, `agents_gender`=?,`agents_active_status`=?',
+    [req.body.name, req.body.email, req.body.phone, req.body.password, req.body.gender, req.body.status],
     function (error, result, fields) {
       if (error) throw error;
       if (error) {
@@ -88,8 +88,8 @@ app.post('/saveAgent', async (req, res) => {
 
 // ::::::::::::::::::::::::::::::::::::::::: Edit Agent
 app.put('/editAgent', async (req, res) => {
-  con.query('UPDATE `tbl_agents` SET  `agents_name`=?, `agents_email`=?, `agents_phone`=?, `agents_gender`=? WHERE `agents_id`=?',
-    [req.body.name, req.body.email, req.body.phone, req.body.gender, req.body.id],
+  con.query('UPDATE `tbl_agents` SET  `agents_name`=?, `agents_email`=?, `agents_phone`=?, `agents_gender`=?,`agents_active_status`=?  WHERE `agents_id`=?',
+    [req.body.name, req.body.email, req.body.phone, req.body.gender, req.body.status, req.body.id],
     function (error, result, fields) {
       if (error) throw error;
       console.log("pppp", result);
@@ -356,7 +356,7 @@ function generateTambolaTicket() {
       }
     }
     let arr = []
-    while (arr.length < 5) {
+    while (arr.length < 4) {
       var r = Math.floor(Math.random() * 8) + 1;
       if (arr.indexOf(r) === -1)
         arr.push(r)

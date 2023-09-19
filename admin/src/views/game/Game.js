@@ -25,6 +25,7 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
+  CFormSelect,
 } from '@coreui/react'
 import { getApiCall, postApiCall, putApiCall } from 'src/services/AppSetting';
 import { base } from 'src/constants/Data.constant';
@@ -87,7 +88,7 @@ const Game = () => {
       gameCorner: gameCorner,
       gameHalfSheet: gameHalfSheet,
       gameHousefull: gameHousefull,
-      gameStatus: gameStatus.target.value
+      gameStatus: gameStatus
     }
     console.log("saveGameApiCallreq", req);
     // debugger;
@@ -293,13 +294,12 @@ const Game = () => {
                   defaultChecked={gameHousefull}
                   onChange={() => setGameHousefull(!gameHousefull)}
                 />
-                <CFormLabel htmlFor="gameHousefull">Game Status</CFormLabel>
-                <CFormInput
-                  type="text"
-                  id="gameStatus"
-                  placeholder="Game Status"
-                  onChange={(e) => { setGameStatus(e) }}
-                />
+                <CFormLabel htmlFor="gameStatus">Game Status</CFormLabel>
+                <CFormSelect defaultValue={gameStatus} id="gameStatus" onChange={(e) => { setGameStatus(e.target.value) }}>
+                  <option value="" selected disabled>Select Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Deactive">Deactive</option>
+                </CFormSelect>
               </div>
             </CForm>
           </CModalBody>
@@ -453,13 +453,11 @@ const Game = () => {
                                   disabled
                                 />
                                 <CFormLabel htmlFor="gameStatus">Game Status</CFormLabel>
-                                <CFormInput
-                                  type="text"
-                                  id="gameStatus"
-                                  placeholder="Game Status"
-                                  defaultValue={gameStatus}
-                                  disabled
-                                />
+                                <CFormSelect defaultValue={gameStatus} id="gameStatus" onChange={(e) => { setGameStatus(e.target.value) }}>
+                                  <option value="" selected disabled>Select Status</option>
+                                  <option value="Active">Active</option>
+                                  <option value="Deactive">Deactive</option>
+                                </CFormSelect>
                               </div>
                             ) : (
                               <div className="mb-3">
@@ -552,13 +550,11 @@ const Game = () => {
                                   onChange={() => setGameHousefull(!gameHousefull)}
                                 />
                                 <CFormLabel htmlFor="gameStatus">Game Status</CFormLabel>
-                                <CFormInput
-                                  type="text"
-                                  id="gameStatus"
-                                  placeholder="Game Status"
-                                  onChange={(e) => { setGameStatus(e) }}
-                                  defaultValue={gameStatus}
-                                />
+                                <CFormSelect defaultValue={gameStatus} id="gameStatus" onChange={(e) => { setGameStatus(e.target.value) }}>
+                                  <option value="" selected disabled>Select Status</option>
+                                  <option value="Active">Active</option>
+                                  <option value="Deactive">Deactive</option>
+                                </CFormSelect>
                               </div>)}
                           </CForm>
                         </CModalBody>
