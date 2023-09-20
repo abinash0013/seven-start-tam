@@ -386,7 +386,8 @@ app.post('/saveGame', async (req, res) => {
       let resultLength = result.length
       gameId = result[resultLength - 1].game_id + 1
       let mainArr = [];
-      for (i = 1; i <= 5; i++) {
+      // for (i = 1; i <= 10; i++) {
+      for (i = 1; i <= req.body.gameMaximumTicketSell; i++) {
         let jsonset = {
           id: i,
           gameId: gameId,
@@ -405,8 +406,8 @@ app.post('/saveGame', async (req, res) => {
       }));
       const numberSetJsonString = JSON.stringify(numbersWithStatus, null, 2); // The third argument is for pretty formatting (2 spaces for indentation)
       // console.log("numbersrrrjsonString", numberSetJsonString);
-      con.query('INSERT INTO `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_number_set`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=?,`ticket_set`=?',
-        [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, numberSetJsonString.toString(), req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus, JSON.stringify(mainArr)],
+      con.query('INSERT INTO `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_number_set`=?, `game_amount`=?, `game_amount_per_ticket_to_agent`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=?,`ticket_set`=?',
+        [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, numberSetJsonString.toString(), req.body.gameAmount, req.body.gameAmountPerTicketToAgent, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus, JSON.stringify(mainArr)],
         function (error, result, fields) {
           if (error) throw error;
           if (error) {

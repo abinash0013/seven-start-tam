@@ -49,6 +49,7 @@ const Game = () => {
   const [gameStartTime, setGameStartTime] = useState("");
   const [gameMaximumTicketSell, setGameMaximumTicketSell] = useState("");
   const [gameAmount, setGameAmount] = useState("");
+  const [gameAmountPerTicketToAgent, setGameAmountPerTicketToAgent] = useState("");
   const [gameQuickFire, setGameQuickFire] = useState(false);
   const [gameStar, setGameStar] = useState(false);
   const [gameTopLine, setGameTopLine] = useState(false);
@@ -80,6 +81,7 @@ const Game = () => {
       gameStartTime: gameStartTime.target.value,
       gameMaximumTicketSell: gameMaximumTicketSell.target.value,
       gameAmount: gameAmount.target.value,
+      gameAmountPerTicketToAgent: gameAmountPerTicketToAgent.target.value,
       gameQuickFire: gameQuickFire,
       gameStar: gameStar,
       gameTopLine: gameTopLine,
@@ -245,6 +247,13 @@ const Game = () => {
                   id="gameAmount"
                   placeholder="Game Amount Per Ticket"
                   onChange={(e) => { setGameAmount(e) }}
+                />
+                <CFormLabel htmlFor="gameAmount">Game Amount Per Ticket to Agents</CFormLabel>
+                <CFormInput
+                  type="text"
+                  id="gameAmountPerTicketToAgent"
+                  placeholder="Game Amount Per Ticket to Agent"
+                  onChange={(e) => { setGameAmountPerTicketToAgent(e) }}
                 />
                 <CFormSwitch
                   label="Game Quick Fire"

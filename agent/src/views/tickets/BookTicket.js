@@ -23,9 +23,9 @@ const BookTicket = () => {
     let req = {
       gameId: id
     }
-    // console.log("viewTicketForAgentsreqqtt", req);
+    console.log("viewTicketForAgentsreqqtt", req);
     let result = await postApiCall(base.viewTicketForAgents, req)
-    // console.log("viewTicketForAgentsresulttt", result);
+    console.log("viewTicketForAgentsresulttt", result);
     let datamerge = JSON.parse(result.data[0].ticket_set)
     // if (datamerge.length > 0) {
     setTicketSerialNumber(datamerge)
@@ -40,14 +40,6 @@ const BookTicket = () => {
     console.log("dataaatastatus", arr)
     arr[index].status = !arr[index].status
     setTicketSerialNumber(arr)
-    // if (arr[index].status != true) {
-    //   ticketSelectByAgent.push(data)
-    //   console.log("storeDataavv", ticketSelectByAgent);
-    // } else {
-    //   ticketSelectByAgent.splice(index, 1);
-    //   // console.log("storeDataaaaindex", index);
-    // }
-    // console.log("storeDataaaaindexvv", ticketSelectByAgent);
   }
 
   const requestForTicketBook = async (ticketSerialNumberVal) => {
@@ -66,9 +58,9 @@ const BookTicket = () => {
     }
   }
 
-  const bookTicketByAgents = async () => {
-    console.log("userPhonelengthh", userPhone.length, ticketSelectByAgent);
-    if (ticketSelectByAgent == []) {
+  const bookTicketByAgentsFun = async () => {
+    console.log("userPhonelengthhf", ticketSelectByAgent.length);
+    if (ticketSelectByAgent.length == 0) {
       alert("Please Select a Ticket")
     } else if (userName == "") {
       alert("Please Enter Username")
@@ -90,10 +82,6 @@ const BookTicket = () => {
         requestForTicketBook(ticketSerialNumber);
       });
     }
-
-    // let datamerge = JSON.parse(result[0].ticket_set)
-    // // console.log("datamergeee", datamerge);
-    // setTicketSerialNumber(datamerge)
   }
 
   return (
@@ -132,10 +120,10 @@ const BookTicket = () => {
               <CFormLabel htmlFor="phone" className="visually-hidden">
                 Phone
               </CFormLabel>
-              <CFormInput type="number" id="phone" placeholder="Enter Phone" maxLength={10} onChange={(e) => { setUserPhone(e) }} />
+              <CFormInput type="text" id="phone" placeholder="Enter Phone" maxLength={10} onChange={(e) => { setUserPhone(e) }} />
             </CCol>
             <CCol xs={2}>
-              <CButton type="submit" className="mb-3" onClick={() => { bookTicketByAgents() }}>
+              <CButton type="submit" className="mb-3" onClick={() => { bookTicketByAgentsFun() }}>
                 Book
               </CButton>
             </CCol>
