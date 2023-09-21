@@ -670,22 +670,55 @@ app.post('/viewTicketForAgents', async (req, res) => {
 })
 
 // ::::::::::::::::::::::::::::::::::::: Book Ticket By Agents
-app.put('/bookTicketByAgents', async (req, res) => {
-  con.query('UPDATE `tbl_game` SET `ticket_set`=? WHERE `game_id`=?',
-    [req.body.ticketSet, req.body.gameId],
+app.post('/bookTicketByAgents', async (req, res) => {
+  console.log("reqeqqew", req.body.gameId);
+  con.query("SELECT * FROM tbl_game WHERE game_id=?", [req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;
       if (error) {
         ResponseHandler(res, false, "Api Issue", result);
       } else {
         if (result) {
-          ResponseHandler(res, true, "Ticket Booked Successfully..", result);
+          console.log("resulttttw", req.body.selectedIdsForTicketBooking);
+          let lastTicket = result.ticket_set
+          let selectedTicket = JSON.stringify(req.body.selectedIdsForTicketBooking)
+          console.log("adsdfasdf1", selectedTicket);
+          selectedTicket.map((selectedTicketItem, selectedTicketIndex) => {
+            console.log("adsdfasdf2");
+            lastTicket.map((lastTicketItem, lastTicketIndex) => {
+              console.log("adsdfasdf3");
+              if (lastTicketItem.id == selectedTicketItem) {
+                console.log("adsdfasdf4");
+                lastTicketItem.agentId = "2",
+                  lastTicketItem.userName = req.body.userName,
+                  lastTicketItem.userPhone = req.body.userPhone,
+                  lastTicketItem.bookingDateAndTime = new Date().getTime();
+              }
+            })
+          })
+          console.log("selectedTicketttttapi", lastTicket);
+          ResponseHandler(res, true, "Fetch Successfully..", result);
         } else {
-          ResponseHandler(res, false, "Sorry., Unable to Booked Ticket", result);
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
         }
       }
     }
   )
+  // con.query('UPDATE `tbl_game` SET `ticket_set`=? WHERE `game_id`=?',
+  //   [req.body.ticketSet, req.body.gameId],
+  //   function (error, result, fields) {
+  //     if (error) throw error;
+  //     if (error) {
+  //       ResponseHandler(res, false, "Api Issue", result);
+  //     } else {
+  //       if (result) {
+  //         ResponseHandler(res, true, "Ticket Booked Successfully..", result);
+  //       } else {
+  //         ResponseHandler(res, false, "Sorry., Unable to Booked Ticket", result);
+  //       }
+  //     }
+  //   }
+  // )
 })
 
 // ::::::::::::::::::::::::::::::::::::: bookTicketByAgentsForUser
