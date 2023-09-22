@@ -671,7 +671,7 @@ app.post('/viewTicketForAgents', async (req, res) => {
 
 // ::::::::::::::::::::::::::::::::::::: Book Ticket By Agents
 app.post('/bookTicketByAgents', async (req, res) => {
-  console.log("reqeqqew", req.body.gameId);
+  console.log("reqeqqew", req.body.gameId, req);
   con.query("SELECT * FROM tbl_game WHERE game_id=?", [req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;
@@ -679,14 +679,16 @@ app.post('/bookTicketByAgents', async (req, res) => {
         ResponseHandler(res, false, "Api Issue", result);
       } else {
         if (result) {
-          console.log("resulttttw", req.body.selectedIdsForTicketBooking);
-          let lastTicket = result.ticket_set
-          let selectedTicket = JSON.stringify(req.body.selectedIdsForTicketBooking)
-          console.log("adsdfasdf1", selectedTicket);
+          // console.log("resultresult", result[0].ticket_set);
+          // console.log("resulttttw", req.body.selectedIdsForTicketBooking, result);
+          let lastTicket = JSON.parse(result[0].ticket_set)
+          // let selectedTicket = JSON.stringify(req.body.selectedIdsForTicketBooking)
+          let selectedTicket = JSON.parse(req.body.selectedIdsForTicketBooking)
+          // console.log("adsdfasdf1", selectedTicket, lastTicket);
           selectedTicket.map((selectedTicketItem, selectedTicketIndex) => {
-            console.log("adsdfasdf2");
-            lastTicket.map((lastTicketItem, lastTicketIndex) => {
-              console.log("adsdfasdf3");
+            console.log("adsdfasdf2", selectedTicketItem, lastTicket);
+            lastTicket?.map((lastTicketItem, lastTicketIndex) => {
+              console.log("adsdfasdf3", lastTicketItem);
               if (lastTicketItem.id == selectedTicketItem) {
                 console.log("adsdfasdf4");
                 lastTicketItem.agentId = "2",
@@ -696,7 +698,25 @@ app.post('/bookTicketByAgents', async (req, res) => {
               }
             })
           })
-          console.log("selectedTicketttttapi", lastTicket);
+          const lastTicketString = JSON.stringify(lastTicket)
+          // console.log("selectedTicketttttapi", lastTicket, lastTicketString);
+          console.log("selectedTicketttttapiString", lastTicketString);
+
+          con.query('UPDATE `tbl_game` SET `ticket_set`=? WHERE `game_id`=?',
+            [lastTicketString, req.body.gameId],
+            function (error, result, fields) {
+              if (error) throw error;
+              if (error) {
+                ResponseHandler(res, false, "Api Issue", result);
+              } else {
+                if (result) {
+                  ResponseHandler(res, true, "Ticket Booked Successfully..", result);
+                } else {
+                  ResponseHandler(res, false, "Sorry., Unable to Booked Ticket", result);
+                }
+              }
+            }
+          )
           ResponseHandler(res, true, "Fetch Successfully..", result);
         } else {
           ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
@@ -704,28 +724,9 @@ app.post('/bookTicketByAgents', async (req, res) => {
       }
     }
   )
-  // con.query('UPDATE `tbl_game` SET `ticket_set`=? WHERE `game_id`=?',
-  //   [req.body.ticketSet, req.body.gameId],
-  //   function (error, result, fields) {
-  //     if (error) throw error;
-  //     if (error) {
-  //       ResponseHandler(res, false, "Api Issue", result);
-  //     } else {
-  //       if (result) {
-  //         ResponseHandler(res, true, "Ticket Booked Successfully..", result);
-  //       } else {
-  //         ResponseHandler(res, false, "Sorry., Unable to Booked Ticket", result);
-  //       }
-  //     }
-  //   }
-  // )
 })
 
-// ::::::::::::::::::::::::::::::::::::: bookTicketByAgentsForUser
-// app.put  ('/bookTicketByAgentsForUser', async (req, res)=>{
-//   con.query('')
-// })
-
+// ::::::::::::::::::::::::::::::::::::: 
 
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
 app.get('/ticketCardViewForUser', async (req, res) => {

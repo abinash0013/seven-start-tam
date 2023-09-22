@@ -11,6 +11,7 @@ const BookTicket = () => {
   const [ticketSelectByAgent, setTicketSelectByAgent] = useState([]);
   const [userName, setUserName] = useState("");
   const [userPhone, setUserPhone] = useState("");
+  const [selectedTicket, setSelectedTicket] = useState([]);
 
   useEffect(() => {
     console.log("bookticket");
@@ -34,7 +35,6 @@ const BookTicket = () => {
     // }
   }
 
-  const selectedTicket = [];
   const selectTicketForBookByAgent = async (data, index) => {
     if (selectedTicket.includes(data.id)) {
       selectedTicket.splice(index, 1)
@@ -45,6 +45,7 @@ const BookTicket = () => {
   }
 
   const bookTicketByAgentsFun = async () => {
+    console.log("selectedTickettt", selectedTicket);
     // if (ticketSelectByAgent.length == 0) {
     //   alert("Please Select a Ticket")
     // } else if (userName == "") {
@@ -66,11 +67,13 @@ const BookTicket = () => {
     let result = await postApiCall(base.bookTicketByAgents, req)
     console.log("resultresulteerrrage", result);
     debugger;
-    if (result.status == true) {
-      alert("Ticket Booked Successfully.!")
-      setUserName("");
-      setUserPhone("");
-    }
+    // if (result.status == true) {
+    //   alert("Ticket Booked Successfully.!")
+    //   setUserName("");
+    //   setUserPhone("");
+    // } else {
+    //   alert("false")
+    // }
     // }
   }
 
@@ -106,7 +109,8 @@ const BookTicket = () => {
                 console.log("ticketSerialNumberrr", item);
                 return <div className='customBox'>
                   {/* <CFormCheck button={{ color: item.status != true ? 'primary' : 'secondary', variant: item.status == false ? '' : 'outline' }} id={item.id} autoComplete="off" label={item.id} onClick={() => { selectTicketForBookByAgent(item, index) }} /> */}
-                  <CFormCheck button={{ color: item.status == true ? 'primary' : 'secondary' }} id={item.id} autoComplete="off" label={item.id} onClick={() => { selectTicketForBookByAgent(item, index) }} />
+                  {/* <CFormCheck button={{ color: item.status == true ? 'primary' : 'secondary' }} id={item.id} autoComplete="off" label={item.id} onClick={() => { selectTicketForBookByAgent(item, index) }} /> */}
+                  <CFormCheck button={{ color: selectedTicket ? 'primary' : 'secondary' }} id={item.id} autoComplete="off" label={item.id} onClick={() => { selectTicketForBookByAgent(item, index) }} />
                 </div>
               })}
               {/* <CFormCheck button={{ color: 'primary', variant: 'outline' }} id="number" autoComplete="off" label="Single toggle" /> */}
