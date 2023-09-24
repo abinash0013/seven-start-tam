@@ -65,16 +65,14 @@ const BookTicket = () => {
     console.log("selectedIdsForTicketBookinggg", req);
     // let result = await putApiCall(base.bookTicketByAgents, req)
     let result = await postApiCall(base.bookTicketByAgents, req)
-    console.log("resultresulteerrrage", result);
-    debugger;
-    // if (result.status == true) {
-    //   alert("Ticket Booked Successfully.!")
-    //   setUserName("");
-    //   setUserPhone("");
-    // } else {
-    //   alert("false")
-    // }
-    // }
+    console.log("resultresulteerrrageagentId", result.agentId);
+    if (result.status == true) {
+      alert("Ticket Booked Successfully.!")
+      setUserName("");
+      setUserPhone("");
+    } else {
+      alert("false")
+    }
   }
 
   const requestForTicketBook = async (ticketSerialNumberVal) => {
@@ -106,17 +104,26 @@ const BookTicket = () => {
           <CRow className='mb-3'>
             <CCol xs={12} className='m-1' style={{ display: "flex", flexWrap: "wrap" }}>
               {ticketSerialNumber?.map((item, index) => {
-                console.log("ticketSerialNumberrr", item);
+                console.log("ticketSerialNumberrr", typeof item.agentId, item.agentId, item.agentId.length);
                 return <div className='customBox'>
-                  {/* <CFormCheck button={{ color: item.status != true ? 'primary' : 'secondary', variant: item.status == false ? '' : 'outline' }} id={item.id} autoComplete="off" label={item.id} onClick={() => { selectTicketForBookByAgent(item, index) }} /> */}
-                  {/* <CFormCheck button={{ color: item.status == true ? 'primary' : 'secondary' }} id={item.id} autoComplete="off" label={item.id} onClick={() => { selectTicketForBookByAgent(item, index) }} /> */}
-                  <CFormCheck button={{ color: selectedTicket ? 'primary' : 'secondary' }} id={item.id} autoComplete="off" label={item.id} onClick={() => { selectTicketForBookByAgent(item, index) }} />
+                  {item.agentId !== "" ? (
+                    <CFormCheck
+                      button={{ color: item.agentId != "" ? 'primary' : 'secondary' }}
+                      id={item.id} autoComplete="off"
+                      label={item.id}
+                      onClick={() => { selectTicketForBookByAgent(item, index) }}
+                      disabled
+                    />
+                  ) : (
+                    <CFormCheck
+                      button={{ color: item.agentId != "" ? 'primary' : 'warning', variant: item.agentId != "" ? '' : 'outline' }}
+                      id={item.id} autoComplete="off"
+                      label={item.id}
+                      onClick={() => { selectTicketForBookByAgent(item, index) }}
+                    />
+                  )}
                 </div>
               })}
-              {/* <CFormCheck button={{ color: 'primary', variant: 'outline' }} id="number" autoComplete="off" label="Single toggle" /> */}
-              {/* <CFormCheck button={{ color: 'secondary', variant: 'outline' }} id="btn-check-2-outlined" autoComplete="off" label="Checked" defaultChecked />
-              <CFormCheck button={{ color: 'success', variant: 'outline' }} type="radio" name="options-outlined" id="success-outlined" autoComplete="off" label="Radio" defaultChecked />
-              <CFormCheck button={{ color: 'danger', variant: 'outline' }} type="radio" name="options-outlined" id="danger-outlined" autoComplete="off" label="Radio" /> */}
             </CCol>
           </CRow>
           <CForm className="row justify-between">

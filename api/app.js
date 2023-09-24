@@ -42,7 +42,7 @@ const ex_query = (sql, req, res, fields) => {
 app.post("/adminLogin", async (req, res) => {
   // console.log("reqbody", req.body.password);
   con.query('SELECT * FROM `tbl_admin` Where `admin_username`=? And `admin_password`=?',
-    [req.body.userName, req.body.password],
+    [req.body.username, req.body.password],
     function (error, result, fields) {
       if (error) throw error;
       console.log(result);
@@ -92,7 +92,7 @@ app.put('/editAgent', async (req, res) => {
     [req.body.name, req.body.email, req.body.phone, req.body.gender, req.body.status, req.body.id],
     function (error, result, fields) {
       if (error) throw error;
-      console.log("pppp", result);
+      // console.log("pppp", result);
       if (error) {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
@@ -153,7 +153,7 @@ app.put('/editUser', async (req, res) => {
     [req.body.name, req.body.email, req.body.phone, req.body.gender, req.body.id],
     function (error, result, fields) {
       if (error) throw error;
-      console.log("pppp", result);
+      // console.log("pppp", result);
       if (error) {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
@@ -233,7 +233,7 @@ app.put('/editTicket', async (req, res) => {
     [req.body.ticketSerialNumber, req.body.ticketNumber, req.body.ticketAmount, req.body.ticketStatus, req.body.id],
     function (error, result, fields) {
       if (error) throw error;
-      console.log("pppp", result);
+      // console.log("pppp", result);
       if (error) {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
@@ -314,7 +314,7 @@ app.post('/addTicket', async (req, res) => {
     // console.log(mainArr)
     function (error, result, fields) {
       if (error) throw error;
-      console.log("pppp", result);
+      // console.log("pppp", result);
       if (error) {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
@@ -554,7 +554,7 @@ app.put('/editGame', async (req, res) => {
     [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus, req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;
-      console.log("pppp", result);
+      // console.log("pppp", result);
       if (error) {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
@@ -615,7 +615,7 @@ app.put('/editAnnouncement', async (req, res) => {
     [req.body.announcementTitle, req.body.announcementMessage, req.body.announcementStatus, req.body.announcementId],
     function (error, result, fields) {
       if (error) throw error;
-      console.log("pppp", result);
+      // console.log("pppp", result);
       if (error) {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
@@ -653,6 +653,7 @@ app.put('/deleteAnnouncement', async (req, res) => {
 // ::::::::::::::::::::::::::::::::::::: View Ticket For Agents
 app.post('/viewTicketForAgents', async (req, res) => {
   // con.query("SELECT * FROM tbl_ticket WHERE game_id=?", [req.body.gameId],
+  // console.log("reqviewticketforagent", req);
   con.query("SELECT * FROM tbl_game WHERE game_id=?", [req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;
@@ -671,10 +672,10 @@ app.post('/viewTicketForAgents', async (req, res) => {
 
 // ::::::::::::::::::::::::::::::::::::: Book Ticket By Agents
 app.post('/bookTicketByAgents', async (req, res) => {
-  console.log("reqeqqew", req.body.gameId, req);
+  // console.log("reqeqqew", req.body.gameId, req);
   con.query("SELECT * FROM tbl_game WHERE game_id=?", [req.body.gameId],
     function (error, result, fields) {
-      if (error) throw error;
+      // if (error) throw error;
       if (error) {
         ResponseHandler(res, false, "Api Issue", result);
       } else {
@@ -682,15 +683,16 @@ app.post('/bookTicketByAgents', async (req, res) => {
           // console.log("resultresult", result[0].ticket_set);
           // console.log("resulttttw", req.body.selectedIdsForTicketBooking, result);
           let lastTicket = JSON.parse(result[0].ticket_set)
+          // console.log("lastTickettttt", lastTicket);
           // let selectedTicket = JSON.stringify(req.body.selectedIdsForTicketBooking)
           let selectedTicket = JSON.parse(req.body.selectedIdsForTicketBooking)
           // console.log("adsdfasdf1", selectedTicket, lastTicket);
           selectedTicket.map((selectedTicketItem, selectedTicketIndex) => {
-            console.log("adsdfasdf2", selectedTicketItem, lastTicket);
+            // console.log("adsdfasdf2", selectedTicketItem, lastTicket);
             lastTicket?.map((lastTicketItem, lastTicketIndex) => {
-              console.log("adsdfasdf3", lastTicketItem);
+              // console.log("adsdfasdf3", lastTicketItem);
               if (lastTicketItem.id == selectedTicketItem) {
-                console.log("adsdfasdf4");
+                // console.log("adsdfasdf4");
                 lastTicketItem.agentId = "2",
                   lastTicketItem.userName = req.body.userName,
                   lastTicketItem.userPhone = req.body.userPhone,
@@ -700,16 +702,17 @@ app.post('/bookTicketByAgents', async (req, res) => {
           })
           const lastTicketString = JSON.stringify(lastTicket)
           // console.log("selectedTicketttttapi", lastTicket, lastTicketString);
-          console.log("selectedTicketttttapiString", lastTicketString);
+          // console.log("selectedTicketttttapiString", lastTicketString);
 
           con.query('UPDATE `tbl_game` SET `ticket_set`=? WHERE `game_id`=?',
             [lastTicketString, req.body.gameId],
             function (error, result, fields) {
-              if (error) throw error;
+              // if (error) throw error;
               if (error) {
                 ResponseHandler(res, false, "Api Issue", result);
               } else {
                 if (result) {
+                  // console.log("first", result)
                   ResponseHandler(res, true, "Ticket Booked Successfully..", result);
                 } else {
                   ResponseHandler(res, false, "Sorry., Unable to Booked Ticket", result);
@@ -717,9 +720,8 @@ app.post('/bookTicketByAgents', async (req, res) => {
               }
             }
           )
-          ResponseHandler(res, true, "Fetch Successfully..", result);
-        } else {
-          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+          // console.log("second")
+          // ResponseHandler(res, true, "Fetch Successfully..", result);
         }
       }
     }
@@ -733,6 +735,6 @@ app.get('/ticketCardViewForUser', async (req, res) => {
   ex_query("SELECT * FROM tbl_ticket", req, res)
 })
 
-app.listen(3000, function () {
-  console.log('Server is up and Rudding on port 3000!');
+app.listen(8000, function () {
+  console.log('Server is up and Rudding on port 8000!');
 });

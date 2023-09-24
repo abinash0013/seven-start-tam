@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, redirect, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -19,18 +19,35 @@ import { postApiCall } from 'src/services/AppSetting'
 import { base } from 'src/constants/Data.constant'
 
 const Login = () => {
-
+  const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [authenticated, setAuthenticated] = useState(localStorage.getItem(localStorage.getItem("authenticated") || false));
 
   const submitLogin = async () => {
-    let req = {
-      userName: userName.target.value,
-      password: password.target.value
+    console.log("first")
+    if (userName == "") {
+      alert("username is mandatory")
+    } else if (password == "") {
+      alert("password is mandatory")
+    } else {
+      let req = {
+        username: userName.target.value,
+        password: password.target.value
+      }
+      console.log("first", req)
+      let result = await postApiCall(base.adminLogin, req)
+      console.log("logoflogin", result);
+      if (result.status == true) {
+        alert("Login successfully")
+        let test = await localStorage.setItem("loginId", result.data[0].admin_id);
+        // let test = await localStorage.setItem("loginId", "1");
+        console.log("testeee", test);
+        navigate("/dashboard");
+      } else {
+        alert("Login failed")
+      }
     }
-    let result = await postApiCall(base.adminLogin, req)
-    console.log("logoflogin", result);
-    alert("login successfully")
   }
 
   return (
@@ -42,8 +59,8 @@ const Login = () => {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm>
-                    <h1>Login</h1>
-                    <p className="text-medium-emphasis">Sign In to your account</p>
+                    <h1>Admin Login</h1>
+                    <p className="text-medium-emphasis">Login to access your Dashboard</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
@@ -64,7 +81,7 @@ const Login = () => {
                     <CRow>
                       <CCol xs={6}>
                         <CButton color="primary" className="px-4" onClick={() => submitLogin()}>
-                          Login
+                          Loginn
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
