@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CAvatar,
   CBadge,
@@ -23,9 +23,34 @@ import {
 import CIcon from '@coreui/icons-react'
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const AppHeaderDropdown = () => {
+  const navigate = useNavigate();
+  const [loginId, setLoginId] = useState("");
+
+  useEffect(() => {
+    const sessionData = async () => {
+      const loggedInUser = await localStorage.getItem("adminLoginId");
+      console.log("loggedInUserr", loggedInUser);
+      setLoginId(loggedInUser);
+      if (loggedInUser == null || loggedInUser == "") {
+        navigate("/login");
+      } else {
+      }
+    }
+    sessionData()
+  }, []);
+
+  const clearLocalStorageItem = async () => {
+    // Remove a specific item from localStorage
+    const sessionClear = await localStorage.removeItem('agentLoginId');
+    console.log("sessionClearrr", sessionClear);
+    if (sessionClear == undefined || sessionClear == null || sessionClear == "") {
+      navigate("/login");
+    }
+  }
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
@@ -87,11 +112,9 @@ const AppHeaderDropdown = () => {
           Setting
         </CDropdownItem> */}
         {/* <CDropdownItem href="/login"> */}
-        <CDropdownItem>
-          <Link to="/login">
-            <CIcon icon={cilLockLocked} className="me-2" />
-            Logout
-          </Link>
+        <CDropdownItem onClick={() => clearLocalStorageItem()}>
+          <CIcon icon={cilLockLocked} className="me-2" />
+          Logout
         </CDropdownItem>
       </CDropdownMenu>
     </CDropdown>

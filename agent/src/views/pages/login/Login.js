@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -19,18 +19,34 @@ import { postApiCall } from 'src/services/AppSetting'
 import { base } from 'src/constants/Data.constant'
 
 const Login = () => {
-
+  const navigate = useNavigate()
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
   const submitLogin = async () => {
-    let req = {
-      userName: userName.target.value,
-      password: password.target.value
+    console.log("first")
+    if (userName == "") {
+      alert("username is mandatory")
+    } else if (password == "") {
+      alert("password is mandatory")
+    } else {
+      let req = {
+        username: userName.target.value,
+        password: password.target.value
+      }
+      console.log("first", req)
+      let result = await postApiCall(base.agentLogin, req)
+      console.log("logoflogin", result);
+      alert("login successfully")
+      if (result.status == true) {
+        alert("Login successfully")
+        let test = await localStorage.setItem("agentLoginId", result.data[0].agents_id);
+        console.log("testeee", test);
+        navigate("/dashboard");
+      } else {
+        alert("Login failed")
+      }
     }
-    let result = await postApiCall(base.adminLogin, req)
-    console.log("logoflogin", result);
-    alert("login successfully")
   }
 
   return (
@@ -42,8 +58,8 @@ const Login = () => {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm>
-                    <h1>Login</h1>
-                    <p className="text-medium-emphasis">Sign In to your account</p>
+                    <h1>Agent Login</h1>
+                    <p className="text-medium-emphasis">Login to access your Agent Dashboard</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
@@ -67,14 +83,14 @@ const Login = () => {
                           Login
                         </CButton>
                       </CCol>
-                      <CCol xs={6} className="text-right">
-                        {/* <CButton color="link" className="px-0">
+                      {/* <CCol xs={6} className="text-right"> */}
+                      {/* <CButton color="link" className="px-0">
                           Forgot password?
                         </CButton> */}
-                        <CButton color="link" className="px-0" to="/register">
+                      {/* <CButton color="link" className="px-0" to="/register">
                           Register Now!
-                        </CButton>
-                      </CCol>
+                        </CButton> */}
+                      {/* </CCol> */}
                     </CRow>
                   </CForm>
                 </CCardBody>

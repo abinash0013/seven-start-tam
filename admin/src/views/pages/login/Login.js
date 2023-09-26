@@ -22,7 +22,6 @@ const Login = () => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [authenticated, setAuthenticated] = useState(localStorage.getItem(localStorage.getItem("authenticated") || false));
 
   const submitLogin = async () => {
     console.log("first")
@@ -40,7 +39,7 @@ const Login = () => {
       console.log("logoflogin", result);
       if (result.status == true) {
         alert("Login successfully")
-        let test = await localStorage.setItem("loginId", result.data[0].admin_id);
+        let test = await localStorage.setItem("adminLoginId", result.data[0].admin_id);
         // let test = await localStorage.setItem("loginId", "1");
         console.log("testeee", test);
         navigate("/dashboard");

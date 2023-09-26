@@ -1,4 +1,4 @@
-const mainUrl = `http://localhost:3000/`
+const mainUrl = `http://localhost:8000/`
 const base = {
     getNumberOneToHundredForCalling: mainUrl + `getNumberOneToHundredForCalling`,
     ticketCardViewForUser: mainUrl + `ticketCardViewForUser`,

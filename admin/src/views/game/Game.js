@@ -248,7 +248,7 @@ const Game = () => {
                   placeholder="Game Amount Per Ticket"
                   onChange={(e) => { setGameAmount(e) }}
                 />
-                <CFormLabel htmlFor="gameAmount">Game Amount Per Ticket to Agents</CFormLabel>
+                <CFormLabel htmlFor="gameAmount">Game Amount Pay Per Ticket to Agents</CFormLabel>
                 <CFormInput
                   type="text"
                   id="gameAmountPerTicketToAgent"

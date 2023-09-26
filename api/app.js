@@ -40,7 +40,6 @@ const ex_query = (sql, req, res, fields) => {
 
 // ::::::::::::::::::::::::::::::::::::::::: admin api code // not working for now let us see at the end
 app.post("/adminLogin", async (req, res) => {
-  // console.log("reqbody", req.body.password);
   con.query('SELECT * FROM `tbl_admin` Where `admin_username`=? And `admin_password`=?',
     [req.body.username, req.body.password],
     function (error, result, fields) {
@@ -61,7 +60,6 @@ app.post("/adminLogin", async (req, res) => {
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
 // ::::::::::::::::::::::::::::::::::::::: || aadmin || :::::::::::::::::::::::::::::::::::::::: //
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
-
 
 // ::::::::::::::::::::::::::::::::::::::::: Agents List
 app.get('/agentsList', async (req, res) => {
@@ -92,7 +90,6 @@ app.put('/editAgent', async (req, res) => {
     [req.body.name, req.body.email, req.body.phone, req.body.gender, req.body.status, req.body.id],
     function (error, result, fields) {
       if (error) throw error;
-      // console.log("pppp", result);
       if (error) {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
@@ -186,13 +183,11 @@ app.put('/deleteUser', async (req, res) => {
 })
 
 // ::::::::::::::::::::::::::::::::::::::::: Tickets List // this api because dynamic ticket created when game created
-
 app.get('/gameList', async (req, res) => {
   ex_query("SELECT * FROM tbl_game", req, res)
 })
 
 app.post('/ticketList', async (req, res) => {
-  // con.query("SELECT * FROM tbl_ticket WHERE game_id=?", [req.body.gameId],
   con.query("SELECT * FROM tbl_game WHERE game_id=?", [req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;
@@ -209,65 +204,8 @@ app.post('/ticketList', async (req, res) => {
   )
 })
 
-// ::::::::::::::::::::::::::::::::::::::::: Save Tickets
-app.post('/saveTicket', async (req, res) => {
-  con.query('INSERT INTO `tbl_ticket` SET `ticket_serial_number`=?, `ticket_number`=?, `ticket_amount`=?, `ticket_status`=?',
-    [req.body.ticketSerialNumber, req.body.ticketNumber, req.body.ticketAmount, req.body.ticketStatus],
-    function (error, result, fields) {
-      if (error) throw error;
-      if (error) {
-        ResponseHandler(res, false, "Api Issue", result)
-      } else {
-        if (result) {
-          ResponseHandler(res, true, "Save Successfully..", result)
-        } else {
-          ResponseHandler(res, false, "Sorry., Unable to Save..", result)
-        }
-      }
-    });
-})
-
-// ::::::::::::::::::::::::::::::::::::::::: Edit Tickets
-app.put('/editTicket', async (req, res) => {
-  con.query('UPDATE `tbl_ticket` SET `ticket_serial_number`=?, `ticket_number`=?, `ticket_amount`=?, `ticket_status`=? WHERE `ticket_id`=?',
-    [req.body.ticketSerialNumber, req.body.ticketNumber, req.body.ticketAmount, req.body.ticketStatus, req.body.id],
-    function (error, result, fields) {
-      if (error) throw error;
-      // console.log("pppp", result);
-      if (error) {
-        ResponseHandler(res, false, "Api Issue", result)
-      } else {
-        if (result) {
-          ResponseHandler(res, true, "Update Successfully..", result)
-        } else {
-          ResponseHandler(res, false, "Sorry., Unable to Update..", result)
-        }
-      }
-    });
-})
-
-// ::::::::::::::::::::::::::::::::::::::::: Delete Tickets
-app.put('/deleteTicket', async (req, res) => {
-  con.query('UPDATE `tbl_ticket` SET `ticket_status`=? WHERE `ticket_id`=?',
-    [req.body.status, req.body.id],
-    function (error, result, fields) {
-      if (error) throw error;
-      if (error) {
-        ResponseHandler(res, false, "Api Issue", result);
-      } else {
-        if (result) {
-          ResponseHandler(res, true, "Deleted Successfully..", result);
-        } else {
-          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
-        }
-      }
-    }
-  )
-})
-
 // ::::::::::::::::::::::::::::::::::::::::: Tickets Card View according to created Game id
 app.post('/ticketCardView', async (req, res) => {
-  // ex_query('SELECT * FROM `tbl_ticket` WHERE `game_id`=9', req, res)
   con.query('SELECT * FROM `tbl_game` WHERE `game_id`=?', [req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;
@@ -284,65 +222,18 @@ app.post('/ticketCardView', async (req, res) => {
   )
 })
 
-app.post('/addTicket', async (req, res) => {
-  let mainArr = [];
-  for (i = 1; i <= 10; i++) {
-    let arr = [];
-    for (j = 1; j <= 27; j++) {
-      let x = Math.floor(Math.random() * 99);
-      let y = Math.floor(Math.random() * 3);
-      if (y === 0 || x == 0) {
-        arr.push({ status: false, number: 0, line: j < 10 ? 'top' : j > 9 && j < 18 ? "middle" : "bottom" });
-      } else {
-        arr.push({ status: false, number: x, line: j < 10 ? 'top' : j > 9 && j < 18 ? "middle" : "bottom" })
-      }
-    }
-    let gameId = 1;
-    let jsonset = {
-      id: i,
-      gameId: gameId,
-      agentId: "",
-      userName: "",
-      userPhone: "",
-      ticketUniquieId: gameId + "" + i + new Date().getTime(),
-      bookingDateAndTime: new Date().getTime(),
-      dateSet: arr
-    }
-    mainArr.push(jsonset);
-  }
-  con.query('INSERT INTO `tbl_ticket` SET `game_id`=?,`ticket_set`=?', [req.body.gameId, JSON.stringify(mainArr)],
-    // console.log(mainArr)
-    function (error, result, fields) {
-      if (error) throw error;
-      // console.log("pppp", result);
-      if (error) {
-        ResponseHandler(res, false, "Api Issue", result)
-      } else {
-        if (result) {
-          ResponseHandler(res, true, "Update Successfully..", result)
-        } else {
-          ResponseHandler(res, false, "Sorry., Unable to Update..", result)
-        }
-      }
-    });
-})
-
-// ::::::::::::::::::::::::::::::::::::::::: Game List
 app.get('/gameList', async (req, res) => {
   ex_query("SELECT * FROM tbl_game", req, res)
 })
 
 // ::::::::::::::::::::::::::::::::::::::::: Save Game
-
 function generateTambolaTicket() {
   // Initialize an empty ticket
   const numberArr = [];
   const ticket = [];
-
   // Generate three rows with nine numbers each
   for (let i = 0; i < 3; i++) {
     const row = [];
-
     // Generate nine unique random numbers for each row
     while (row.length < 9) {
       const randomNumber = getRandomNumber(1, 99); // Assuming Tambola numbers range from 1 to 90
@@ -351,8 +242,7 @@ function generateTambolaTicket() {
           status: false,
           number: randomNumber,
           line: i == 0 ? 'top' : i == 1 ? "middle" : "bottom"
-        }
-        );
+        });
       }
     }
     let arr = []
@@ -369,7 +259,6 @@ function generateTambolaTicket() {
       numberArr.push(ticket[i][j])
     }
   }
-
   return numberArr;
 }
 
@@ -429,38 +318,7 @@ app.get('/getNumberOneToHundredForCalling', async (req, res) => {
   ex_query('SELECT * FROM `tbl_game` WHERE `game_id`=10', req, res)
 })
 
-// ::::::::::::::::::::::::::::::::::::::::: Countdown For Calling Live Number
-// app.post('/countDownStartForLiveGame', async (req, res) => {
-//   // Function to generate and log a random number from 1 to 100
-//   // Function to generate a random number between min and max (inclusive)
-//   function getRandomNumber(min, max) {
-//     return Math.floor(Math.random() * (max - min + 1)) + min;
-//   }
-
-//   // Array to store unique random numbers
-//   const uniqueRandomNumbers = [];
-
-//   // Function to generate and log unique random numbers
-//   function generateUniqueRandomNumber() {
-//     if (uniqueRandomNumbers.length < 100) {
-//       let randomNumber;
-//       do {
-//         randomNumber = getRandomNumber(1, 100);
-//       } while (uniqueRandomNumbers.includes(randomNumber));
-
-//       uniqueRandomNumbers.push(randomNumber);
-//       console.log(randomNumber);
-//     } else {
-//       clearInterval(interval); // Stop the timer when 100 unique numbers are generated
-//       console.log("Timer stopped.");
-//     }
-//   }
-
-//   // Set a timer to call the function every 100 milliseconds
-//   const interval = setInterval(generateUniqueRandomNumber, 10000);
-// })
-
-// ::::::::::::::::::::::::::::::::::::::::: Matched Ticket For Booking
+// ::::::::::::::::::::::::::::::::::::::::: Matched Ticket For Booking(calling this api to start game)
 app.post('/matchedTicketForBooking', async (req, res) => {
   const currentDate = new Date();
   // Extracting Date Components
@@ -650,6 +508,26 @@ app.put('/deleteAnnouncement', async (req, res) => {
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
 // ::::::::::::::::::::::::::::::::::::: || agents api || :::::::::::::::::::::::::::::::::::::: // 
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //
+
+// ::::::::::::::::::::::::::::::::::::::::: admin api code // not working for now let us see at the end
+app.post("/agentLogin", async (req, res) => {
+  con.query('SELECT * FROM `tbl_agents` Where `agents_email`=? And `agents_password`=?',
+    [req.body.username, req.body.password],
+    function (error, result, fields) {
+      if (error) throw error;
+      console.log(result);
+      if (error) {
+        ResponseHandler(res, false, "Api issue", result)
+      } else {
+        if (result.length > 0) {
+          ResponseHandler(res, true, "Login Successful", result)
+        } else {
+          ResponseHandler(res, false, "Login Failed", result)
+        }
+      }
+    });
+})
+
 // ::::::::::::::::::::::::::::::::::::: View Ticket For Agents
 app.post('/viewTicketForAgents', async (req, res) => {
   // con.query("SELECT * FROM tbl_ticket WHERE game_id=?", [req.body.gameId],
@@ -680,7 +558,7 @@ app.post('/bookTicketByAgents', async (req, res) => {
         ResponseHandler(res, false, "Api Issue", result);
       } else {
         if (result) {
-          // console.log("resultresult", result[0].ticket_set);
+          console.log("resultresult", result[0].ticket_set);
           // console.log("resulttttw", req.body.selectedIdsForTicketBooking, result);
           let lastTicket = JSON.parse(result[0].ticket_set)
           // console.log("lastTickettttt", lastTicket);
@@ -732,7 +610,20 @@ app.post('/bookTicketByAgents', async (req, res) => {
 
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
 app.get('/ticketCardViewForUser', async (req, res) => {
-  ex_query("SELECT * FROM tbl_ticket", req, res)
+  con.query("SELECT * FROM tbl_game WHERE game_id=?", [req.body.gameId],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Fetch Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  )
 })
 
 app.listen(8000, function () {

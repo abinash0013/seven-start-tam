@@ -1,6 +1,7 @@
 const mainUrl = `http://localhost:8000/`
 const base = {
     adminLogin: mainUrl + `adminLogin`,
+    agentLogin: mainUrl + `agentLogin`,
     saveAgent: mainUrl + `saveAgent`,
     agentsList: mainUrl + `agentsList`,
     editAgent: mainUrl + `editAgent`,

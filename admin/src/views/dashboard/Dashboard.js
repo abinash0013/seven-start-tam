@@ -56,24 +56,6 @@ import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import { Navigate, useNavigate } from 'react-router-dom'
 
 const Dashboard = (props) => {
-  const navigate = useNavigate();
-  console.log("propsssss", props);
-  const [loginId, setLoginId] = useState("");
-
-  useEffect(() => {
-    const sessionData = async () => {
-      const loggedInUser = await localStorage.getItem("loginId");
-      console.log("loggedInUserr", loggedInUser);
-      setLoginId(loggedInUser);
-      if (loggedInUser == "1") {
-
-      } else {
-        navigate("/login");
-      }
-    }
-    sessionData()
-  }, []);
-
   // const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
   // const progressExample = [
@@ -197,7 +179,7 @@ const Dashboard = (props) => {
     },
   ]
 
-  { console.log("authenticateddd", loginId) }
+  // { console.log("authenticateddd", loginId) }
   // if (!loginId) {
   //   return <Navigate replace to="/login" />;
   // } else {

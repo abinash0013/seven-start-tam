@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import {
   CAvatar,
@@ -53,9 +53,10 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
+import { useNavigate } from 'react-router-dom'
 
 const Dashboard = (props) => {
-  const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+  // const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
   const progressGroupExample2 = [
     { title: 'Total Ticket', icon: cilUser, value: 600 },
     { title: 'Sold Ticket', icon: cilUser, value: 0 },
@@ -67,6 +68,8 @@ const Dashboard = (props) => {
     { title: 'Total Revenue', icon: cilUser, value: 0 },
     { title: 'Total Profit', icon: cilUser, value: 0 },
   ]
+
+  // { console.log("authenticateddd", agentLoginId) }
 
   const tableExample = [
     {
