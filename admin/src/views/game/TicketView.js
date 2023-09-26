@@ -72,7 +72,6 @@ const TicketView = (props) => {
                   // marginTop: "20px",
                   // flex: 1 
                 }}>
-
                   <div style={{
                     display: "flex",
                     flexWrap: "wrap",

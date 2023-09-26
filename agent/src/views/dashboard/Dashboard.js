@@ -54,8 +54,34 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import { useNavigate } from 'react-router-dom'
+import { getApiCall } from 'src/services/AppSetting'
+import { base } from 'src/constants/Data.constant'
 
-const Dashboard = (props) => {
+const Dashboard = () => {
+  const navigate = useNavigate();
+  const [loginId, setLoginId] = useState("");
+  const [agentList, setAgentList] = useState([]);
+
+  useEffect(() => {
+    // const sessionData = async () => {
+    //   const loggedInUser = await localStorage.getItem("adminLoginId");
+    //   console.log("loggedInUserr", loggedInUser);
+    //   setLoginId(loggedInUser);
+    //   if (loggedInUser == null || loggedInUser == "") {
+    //     navigate("/login");
+    //   } else {
+    //   }
+    // }
+    // sessionData()
+    agentsList();
+  }, []);
+
+  const agentsList = async () => {
+    let result = await getApiCall(base.agentsList)
+    console.log("resulteew", result);
+    setAgentList(result)
+  }
+
   // const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
   const progressGroupExample2 = [
     { title: 'Total Ticket', icon: cilUser, value: 600 },
@@ -162,6 +188,32 @@ const Dashboard = (props) => {
     },
   ]
 
+  const _render_agent_list = (data) => {
+    {
+      return (data?.map((item, index) => {
+        <CTableRow v-for="item in tableItems" key={index}>
+          <CTableDataCell className="text-center">
+            {/* <CAvatar size="md" src={item.avatar.src} /> */}
+          </CTableDataCell>
+          <CTableDataCell>
+            <div>{item.agents_name}</div>
+            {/* <div className="small text-medium-emphasis">
+              <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
+              {item.user.registered}
+            </div> */}
+          </CTableDataCell>
+          <CTableDataCell className="text-center">
+            {/* <CIcon size="xl" icon={item.payment.icon} /> */}
+            {/* <div>{item.agents_phone}</div> */}
+          </CTableDataCell>
+          <CTableDataCell>
+            <div className="small text-medium-emphasis">Last login</div>
+            <strong>{item.agents_phone}</strong>
+          </CTableDataCell>
+        </CTableRow>
+      }))
+    }
+  }
   return (
     <>
       {/* <WidgetsDropdown /> */}
@@ -250,28 +302,7 @@ const Dashboard = (props) => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {tableExample.map((item, index) => (
-                  <CTableRow v-for="item in tableItems" key={index}>
-                    <CTableDataCell className="text-center">
-                      <CAvatar size="md" src={item.avatar.src} />
-                    </CTableDataCell>
-                    <CTableDataCell>
-                      <div>{item.user.name}</div>
-                      <div className="small text-medium-emphasis">
-                        <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
-                        {item.user.registered}
-                      </div>
-                    </CTableDataCell>
-                    <CTableDataCell className="text-center">
-                      {/* <CIcon size="xl" icon={item.payment.icon} /> */}
-                      <div>{"1000"}</div>
-                    </CTableDataCell>
-                    {/* <CTableDataCell>
-                        <div className="small text-medium-emphasis">Last login</div>
-                        <strong>{item.activity}</strong>
-                      </CTableDataCell> */}
-                  </CTableRow>
-                ))}
+                {_render_agent_list(agentList || [])}
               </CTableBody>
             </CTable>
           </CCard>

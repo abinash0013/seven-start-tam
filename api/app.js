@@ -579,7 +579,7 @@ app.post('/bookTicketByAgents', async (req, res) => {
             })
           })
           const lastTicketString = JSON.stringify(lastTicket)
-          // console.log("selectedTicketttttapi", lastTicket, lastTicketString);
+          console.log("selectedTicketttttapi", lastTicket, lastTicketString);
           // console.log("selectedTicketttttapiString", lastTicketString);
 
           con.query('UPDATE `tbl_game` SET `ticket_set`=? WHERE `game_id`=?',
@@ -609,7 +609,7 @@ app.post('/bookTicketByAgents', async (req, res) => {
 // ::::::::::::::::::::::::::::::::::::: 
 
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
-app.get('/ticketCardViewForUser', async (req, res) => {
+app.post('/ticketCardViewForUser', async (req, res) => {
   con.query("SELECT * FROM tbl_game WHERE game_id=?", [req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;
