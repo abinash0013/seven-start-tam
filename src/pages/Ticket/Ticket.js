@@ -15,17 +15,18 @@ const Ticket = (props) => {
     ticketCardView();
     number.map((numberData, index) => {
       console.log("numberDataaaa", numberData);
-      ticket?.map((ticketData) => {
+      ticket1.map((ticketData) => {
         console.log("sssss", ticketData)
         ticketData?.dateSet?.map((ticketDataNumber, index) => {
           console.log("ticketDataNumberrrr", ticketDataNumber);
           if (numberData.number == ticketDataNumber.number && numberData.status == "true") {
             ticketDataNumber.status = "true"
           }
+          console.log("ticketDatasett", ticketDataNumber)
         })
-        setTicket1(ticketData)
-        console.log("logticketData", JSON.stringify(ticketData));
+        // setTicket1(ticketData)
       })
+      console.log("logticketData", JSON.stringify(ticket));
     })
   }, [number]);
 
@@ -39,16 +40,12 @@ const Ticket = (props) => {
       gameId: gameId
     }
     let result = await postApiCall(base.ticketCardViewForUser, req)
-    // console.log("resultcardvieweeqd", result.data);
-    // let data = result.data
-    // let convertJSON = JSON.parse(result[0].ticket_set);
-    // console.log("resultcardvieweeqqq", convertJSON);
-    // setTicket(convertJSON)
+
     console.log("resultttweww", result);
     try {
       let convertJSON = JSON.parse(result.data[0].ticket_set);
-      console.log("convertJSONnn", convertJSON[0].dateSet);
-      setTicket(convertJSON)
+      console.log("convertJSONnn", convertJSON);
+      setTicket1(convertJSON)
     } catch (error) {
       console.log("errorjson", error);
     }
@@ -72,28 +69,31 @@ const Ticket = (props) => {
 
   return (
     <div className="ticketSection">
-      <div className="outerContainer">
-        <div className="container mx-auto mt-8">
-          <div className="containerInfo">
-            <div className="containerInfoFirstInnerItem">
-              <div className="containerInfoInnerItemSerial">1</div>
-              <div className="containerInfoInnerItem">Abinash</div>
+      {ticket1.map((item, index) => {
+        return <div className="outerContainer">
+          <div className="container mx-auto mt-8">
+            <div className="containerInfo">
+              <div className="containerInfoFirstInnerItem">
+                <div className="containerInfoInnerItemSerial">1</div>
+                <div className="containerInfoInnerItem">Abinash</div>
+              </div>
+              <div className="containerInfoInnerItem">Status</div>
             </div>
-            <div className="containerInfoInnerItem">Status</div>
-          </div>
-          <div className="number-card">
-            {/* {console.log("eeeeewwew1", ticket[0].dateSet)}
-            {console.log("eeeeewwew2", JSON.stringify(ticket.dateSet[0]))} */}
-            {/* {ticket1?.map((itemData) => { */}
-            {ticket1?.dateSet?.map((item) => {
-
-              return <div className="number" style={{ color: item.status && 'red' }}>{item.number}</div>
-            })
-            }
-            {/* } */}
+            <div className="number-card">
+              {/* {console.log("eeeeewwew1", ticket[0].dateSet)}
+              {console.log("eeeeewwew2", JSON.stringify(ticket.dateSet[0]))} */}
+              {/* {ticket1?.map((itemData) => { */}
+              {item?.dateSet?.map((item) => {
+                return <div className="number" style={{ color: item.status && 'red' }}>{item.number}</div>
+              })
+              }
+              {/* } */}
+            </div>
           </div>
         </div>
-      </div>
+      }
+      )}
+
     </div>
   )
 }

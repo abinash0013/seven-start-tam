@@ -54,7 +54,7 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import { useNavigate } from 'react-router-dom'
-import { getApiCall } from 'src/services/AppSetting'
+import { getApiCall, postApiCall } from 'src/services/AppSetting'
 import { base } from 'src/constants/Data.constant'
 
 const Dashboard = () => {
@@ -74,7 +74,23 @@ const Dashboard = () => {
     // }
     // sessionData()
     agentsList();
+    // agentsInfo();
   }, []);
+
+  // agentInfo
+
+
+  // const agentsInfo = async () => {
+  //   const loggedInUser = await localStorage.getItem("adminLoginId");
+  //   console.log("loggedInUserr", loggedInUser);
+  //   let req = {
+  //     gameId: loggedInUser
+  //   }
+  //   console.log("resulteewreq", req);
+  //   let result = await postApiCall(base.agentInfo, req)
+  //   console.log("resulteew", result);
+  //   setAgentList(result)
+  // }
 
   const agentsList = async () => {
     let result = await getApiCall(base.agentsList)

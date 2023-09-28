@@ -397,7 +397,7 @@ app.post('/matchedTicketForBooking', async (req, res) => {
             }
           }
           // Set a timer to call the function every 100 milliseconds
-          const interval = setInterval(generateUniqueRandomNumber, 10000);
+          const interval = setInterval(generateUniqueRandomNumber, 20000);
           ResponseHandler(res, true, "Successfully..", result)
         } else {
           ResponseHandler(res, false, "Sorry., Unable to..", result)
@@ -513,6 +513,24 @@ app.put('/deleteAnnouncement', async (req, res) => {
 app.post("/agentLogin", async (req, res) => {
   con.query('SELECT * FROM `tbl_agents` Where `agents_email`=? And `agents_password`=?',
     [req.body.username, req.body.password],
+    function (error, result, fields) {
+      if (error) throw error;
+      console.log(result);
+      if (error) {
+        ResponseHandler(res, false, "Api issue", result)
+      } else {
+        if (result.length > 0) {
+          ResponseHandler(res, true, "Login Successful", result)
+        } else {
+          ResponseHandler(res, false, "Login Failed", result)
+        }
+      }
+    });
+})
+
+app.post("/agentInfo", async (req, res) => {
+  con.query('SELECT * FROM `tbl_agents` Where `agents_id`=?',
+    [req.body.agentId],
     function (error, result, fields) {
       if (error) throw error;
       console.log(result);

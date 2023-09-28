@@ -37,8 +37,10 @@ const GameStart = () => {
   const fetch_data = () => {
     ref.on("value", snapshot => {
       console.log("snapshotttt", snapshot.val());
-      setNumber(JSON.parse(snapshot.val().number_set));
-      setGameId(snapshot.val().game_id);
+      if (snapshot.val() != null) {
+        setNumber(JSON.parse(snapshot.val().number_set));
+        setGameId(snapshot.val().game_id);
+      }
     })
   }
 
