@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   CRow,
   CCol,
@@ -12,8 +12,31 @@ import { getStyle } from '@coreui/utils'
 import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
+import { getApiCall } from 'src/services/AppSetting'
+import { base } from 'src/constants/Data.constant'
 
 const WidgetsDropdown = () => {
+
+  const [agentsDashboardCount, setAgentsDashboardCount] = useState([]);
+  const [totalGameDashboardCount, setTotalGameDashboardCount] = useState([]);
+
+  useEffect(() => {
+    agentDashboardCount();
+    gameDashboardCount();
+  }, []);
+
+  const agentDashboardCount = async () => {
+    let result = await getApiCall(base.agentsList);
+    console.log("agentDahboardCountresult", result);
+    setAgentsDashboardCount(result.length)
+  }
+
+  const gameDashboardCount = async () => {
+    let result = await getApiCall(base.gameList);
+    console.log("gameDashboardCountresult", result);
+    setTotalGameDashboardCount(result.length)
+  }
+
   return (
     <CRow>
       <CCol sm={6} lg={3}>
@@ -195,13 +218,10 @@ const WidgetsDropdown = () => {
           color="warning"
           value={
             <>
-              2.49{' '}
-              <span className="fs-6 fw-normal">
-                (84.7% <CIcon icon={cilArrowTop} />)
-              </span>
+              {agentsDashboardCount}
             </>
           }
-          title="Conversion Rate"
+          title="Agents"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -268,13 +288,10 @@ const WidgetsDropdown = () => {
           color="danger"
           value={
             <>
-              44K{' '}
-              <span className="fs-6 fw-normal">
-                (-23.6% <CIcon icon={cilArrowBottom} />)
-              </span>
+              {totalGameDashboardCount}
             </>
           }
-          title="Sessions"
+          title="Total Game"
           action={
             <CDropdown alignment="end">
               <CDropdownToggle color="transparent" caret={false} className="p-0">

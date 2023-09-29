@@ -4,6 +4,7 @@ const base = {
     agentLogin: mainUrl + `agentLogin`,
     saveAgent: mainUrl + `saveAgent`,
     agentsList: mainUrl + `agentsList`,
+    agentsOwnDetails: mainUrl + `agentsOwnDetails`,
     editAgent: mainUrl + `editAgent`,
     deleteAgent: mainUrl + `deleteAgent`,
     saveUser: mainUrl + `saveUser`,

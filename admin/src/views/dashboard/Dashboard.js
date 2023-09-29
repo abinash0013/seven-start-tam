@@ -54,6 +54,8 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { getApiCall } from 'src/services/AppSetting'
+import { base } from 'src/constants/Data.constant'
 
 const Dashboard = (props) => {
   // const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
@@ -88,6 +90,39 @@ const Dashboard = (props) => {
   //   { title: 'LinkedIn', icon: cibLinkedin, percent: 8, value: '27,319' },
   // ]
 
+  const [agentList, setAgentList] = useState([]);
+
+  useEffect(() => {
+    agentsList();
+  }, []);
+
+  const agentsList = async () => {
+    let result = await getApiCall(base.agentsList)
+    console.log("agentsListResult", result);
+    let FinalArr = [];
+    result.map((item, index) => {
+      console.log("itemmmm", item);
+      FinalArr.push({
+        avatar: { src: avatar1, status: 'success' },
+        user: {
+          name: 'Yiorgos Avraamu',
+          new: true,
+          registered: 'Jan 1, 2021',
+        },
+        country: { name: 'USA', flag: cifUs },
+        usage: {
+          value: 50,
+          period: 'Jun 11, 2021 - Jul 10, 20211',
+          color: 'success',
+        },
+        payment: { name: 'Mastercard', icon: cibCcMastercard },
+        activity: '10 sec ago',
+      })
+    });
+    console.log("FinalArrFinalArr", FinalArr);
+    setAgentList(FinalArr)
+  }
+
   const tableExample = [
     {
       avatar: { src: avatar1, status: 'success' },
@@ -99,7 +134,7 @@ const Dashboard = (props) => {
       country: { name: 'USA', flag: cifUs },
       usage: {
         value: 50,
-        period: 'Jun 11, 2021 - Jul 10, 2021',
+        period: 'Jun 11, 2021 - Jul 10, 20211',
         color: 'success',
       },
       payment: { name: 'Mastercard', icon: cibCcMastercard },
@@ -420,7 +455,7 @@ const Dashboard = (props) => {
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {tableExample.map((item, index) => (
+                  {agentList.map((item, index) => (
                     <CTableRow v-for="item in tableItems" key={index}>
                       <CTableDataCell className="text-center">
                         <CAvatar size="md" src={item.avatar.src} />

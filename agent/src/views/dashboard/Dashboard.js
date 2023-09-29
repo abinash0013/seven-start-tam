@@ -61,9 +61,13 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [loginId, setLoginId] = useState("");
   const [agentList, setAgentList] = useState([]);
+  const [agentOwnName, setAgentOwnName] = useState("");
+  const [agentOwnPhone, setAgentOwnPhone] = useState("");
+  const [agentOwnGender, setAgentOwnGender] = useState("");
+
 
   useEffect(() => {
-    // const sessionData = async () => {
+    // const sessionData = async () => { 
     //   const loggedInUser = await localStorage.getItem("adminLoginId");
     //   console.log("loggedInUserr", loggedInUser);
     //   setLoginId(loggedInUser);
@@ -73,28 +77,30 @@ const Dashboard = () => {
     //   }
     // }
     // sessionData()
+    agentsOwnDetails();
     agentsList();
-    // agentsInfo();
   }, []);
 
-  // agentInfo
-
-
-  // const agentsInfo = async () => {
-  //   const loggedInUser = await localStorage.getItem("adminLoginId");
-  //   console.log("loggedInUserr", loggedInUser);
-  //   let req = {
-  //     gameId: loggedInUser
-  //   }
-  //   console.log("resulteewreq", req);
-  //   let result = await postApiCall(base.agentInfo, req)
-  //   console.log("resulteew", result);
-  //   setAgentList(result)
-  // }
+  const agentsOwnDetails = async () => {
+    const loggedInUser = await localStorage.getItem("adminLoginId");
+    let req = {
+      // agentId: loggedInUser
+      agentId: "22"
+    }
+    // console.log("agentsOwnDetailsresulttttreq", req);
+    let result = await postApiCall(base.agentsOwnDetails, req)
+    // console.log("agentsOwnDetailsresulttttstatus", result.status);
+    if (result.data[0].agents_id == req) {
+      setAgentOwnName(result.data[0].agents_name)
+      setAgentOwnPhone(result.data[0].agents_phone)
+      setAgentOwnGender(result.data[0].agents_gender)
+    } else {
+      alert("No Data Found.!!!")
+    }
+  }
 
   const agentsList = async () => {
     let result = await getApiCall(base.agentsList)
-    console.log("resulteew", result);
     setAgentList(result)
   }
 
@@ -205,31 +211,23 @@ const Dashboard = () => {
   ]
 
   const _render_agent_list = (data) => {
-    {
-      return (data?.map((item, index) => {
+    return data?.map((item, index) => {
+      return (
         <CTableRow v-for="item in tableItems" key={index}>
-          <CTableDataCell className="text-center">
-            {/* <CAvatar size="md" src={item.avatar.src} /> */}
-          </CTableDataCell>
           <CTableDataCell>
             <div>{item.agents_name}</div>
-            {/* <div className="small text-medium-emphasis">
-              <span>{item.user.new ? 'New' : 'Recurring'}</span> | Registered:{' '}
-              {item.user.registered}
-            </div> */}
-          </CTableDataCell>
-          <CTableDataCell className="text-center">
-            {/* <CIcon size="xl" icon={item.payment.icon} /> */}
-            {/* <div>{item.agents_phone}</div> */}
           </CTableDataCell>
           <CTableDataCell>
-            <div className="small text-medium-emphasis">Last login</div>
+            <strong>{item.agents_gender}</strong>
+          </CTableDataCell>
+          <CTableDataCell>
             <strong>{item.agents_phone}</strong>
           </CTableDataCell>
         </CTableRow>
-      }))
-    }
+      )
+    })
   }
+
   return (
     <>
       {/* <WidgetsDropdown /> */}
@@ -252,7 +250,7 @@ const Dashboard = () => {
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
-            <CCardHeader>Business Info</CCardHeader>
+            <CCardHeader>Agent Own Info</CCardHeader>
             <CCardBody>
               <CRow>
                 <CCol xs={12} md={12} xl={12}>
@@ -260,25 +258,23 @@ const Dashboard = () => {
                     <CCol sm={4}>
                       <div className="border-start border-start-4 border-start-warning py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">Agent Name</div>
-                        <div className="fs-5 fw-semibold">Abinash</div>
+                        <div className="fs-5 fw-semibold">{agentOwnName ? agentOwnName : "no data found."}</div>
                       </div>
                     </CCol>
                     <CCol sm={4}>
                       <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">Agent Phone</div>
-                        <div className="fs-5 fw-semibold">1234567890</div>
+                        <div className="fs-5 fw-semibold">{agentOwnPhone ? agentOwnPhone : "no data found."}</div>
                       </div>
                     </CCol>
                     <CCol sm={4}>
                       <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">Agent Gender</div>
-                        <div className="fs-5 fw-semibold">Male</div>
+                        <div className="fs-5 fw-semibold">{agentOwnGender ? agentOwnGender : "no data found."}</div>
                       </div>
                     </CCol>
                   </CRow>
-
                   <hr className="mt-0" />
-
                   {progressGroupExample2.map((item, index) => (
                     <div className="progress-group mb-4" key={index}>
                       <div className="progress-group-header">
@@ -300,7 +296,6 @@ const Dashboard = () => {
         </CCol>
       </CRow>
 
-
       <CRow>
         <CCol xs>
           <CCard className="mb-4">
@@ -308,13 +303,12 @@ const Dashboard = () => {
             <CTable align="middle" className="mb-0 border" hover responsive>
               <CTableHead color="light">
                 <CTableRow>
-                  <CTableHeaderCell className="text-center">
+                  {/* <CTableHeaderCell className="text-center">
                     <CIcon icon={cilPeople} />
-                  </CTableHeaderCell>
+                </CTableHeaderCell> */}
                   <CTableHeaderCell>Agent Name</CTableHeaderCell>
-                  <CTableHeaderCell className="text-center">Ticket Sold</CTableHeaderCell>
-                  {/* <CTableHeaderCell className="text-center">Amount</CTableHeaderCell> */}
-                  {/* <CTableHeaderCell>Activity</CTableHeaderCell> */}
+                  <CTableHeaderCell>Gender</CTableHeaderCell>
+                  <CTableHeaderCell>Ticket Sold</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>
@@ -323,7 +317,7 @@ const Dashboard = () => {
             </CTable>
           </CCard>
         </CCol>
-      </CRow>
+      </CRow >
     </>
   )
 }

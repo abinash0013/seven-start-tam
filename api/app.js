@@ -66,6 +66,23 @@ app.get('/agentsList', async (req, res) => {
   ex_query("SELECT * FROM tbl_agents", req, res)
 })
 
+app.post('/agentsOwnDetails', async (req, res) => {
+  con.query("SELECT * FROM tbl_agents WHERE agents_id=?", [req.body.agentId],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Fetch Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  )
+})
+
 // ::::::::::::::::::::::::::::::::::::::::: Save Agent
 app.post('/saveAgent', async (req, res) => {
   con.query('INSERT INTO `tbl_agents` SET `agents_name`=?, `agents_email`=?, `agents_phone`=?,`agents_password`=?, `agents_gender`=?,`agents_active_status`=?',
@@ -339,7 +356,7 @@ app.post('/matchedTicketForBooking', async (req, res) => {
     [fullDate, fullTime],
     function (error, result, fields) {
       if (error) throw error;
-      //  console.log("pppp", result);
+      console.log("pppp", result);
       if (error) {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
@@ -513,24 +530,6 @@ app.put('/deleteAnnouncement', async (req, res) => {
 app.post("/agentLogin", async (req, res) => {
   con.query('SELECT * FROM `tbl_agents` Where `agents_email`=? And `agents_password`=?',
     [req.body.username, req.body.password],
-    function (error, result, fields) {
-      if (error) throw error;
-      console.log(result);
-      if (error) {
-        ResponseHandler(res, false, "Api issue", result)
-      } else {
-        if (result.length > 0) {
-          ResponseHandler(res, true, "Login Successful", result)
-        } else {
-          ResponseHandler(res, false, "Login Failed", result)
-        }
-      }
-    });
-})
-
-app.post("/agentInfo", async (req, res) => {
-  con.query('SELECT * FROM `tbl_agents` Where `agents_id`=?',
-    [req.body.agentId],
     function (error, result, fields) {
       if (error) throw error;
       console.log(result);
