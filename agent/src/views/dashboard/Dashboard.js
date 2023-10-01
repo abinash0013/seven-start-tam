@@ -82,15 +82,16 @@ const Dashboard = () => {
   }, []);
 
   const agentsOwnDetails = async () => {
-    const loggedInUser = await localStorage.getItem("adminLoginId");
+    // const loggedInUser = await localStorage.getItem("adminLoginId");
     let req = {
       // agentId: loggedInUser
       agentId: "22"
     }
-    // console.log("agentsOwnDetailsresulttttreq", req);
+    console.log("agentsOwnDetailsresulttttreq", req);
     let result = await postApiCall(base.agentsOwnDetails, req)
-    // console.log("agentsOwnDetailsresulttttstatus", result.status);
-    if (result.data[0].agents_id == req) {
+    console.log("agentsOwnDetailsresulttttstatus", result.data[0].agents_id);
+    // if (result.data[0].agents_id == req) {
+    if (result.status == true) {
       setAgentOwnName(result.data[0].agents_name)
       setAgentOwnPhone(result.data[0].agents_phone)
       setAgentOwnGender(result.data[0].agents_gender)
@@ -107,14 +108,14 @@ const Dashboard = () => {
   // const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
   const progressGroupExample2 = [
     { title: 'Total Ticket', icon: cilUser, value: 600 },
-    { title: 'Sold Ticket', icon: cilUser, value: 0 },
-    { title: 'Total Haftsheet Booked', icon: cilUser, value: 28 },
-    { title: 'Total Fullsheet Booked', icon: cilUser, value: 7 },
-    { title: 'Ticket Left', icon: cilUser, value: 544 },
-    { title: 'Ticket Price', icon: cilUser, value: 30 },
+    // { title: 'Sold Ticket', icon: cilUser, value: 0 },
+    // { title: 'Total Haftsheet Booked', icon: cilUser, value: 28 },
+    // { title: 'Total Fullsheet Booked', icon: cilUser, value: 7 },
+    // { title: 'Ticket Left', icon: cilUser, value: 544 },
+    // { title: 'Ticket Price', icon: cilUser, value: 30 },
     { title: 'Agent Commission', icon: cilUser, value: 0 },
-    { title: 'Total Revenue', icon: cilUser, value: 0 },
-    { title: 'Total Profit', icon: cilUser, value: 0 },
+    // { title: 'Total Revenue', icon: cilUser, value: 0 },
+    // { title: 'Total Profit', icon: cilUser, value: 0 },
   ]
 
   // { console.log("authenticateddd", agentLoginId) }
@@ -215,13 +216,13 @@ const Dashboard = () => {
       return (
         <CTableRow v-for="item in tableItems" key={index}>
           <CTableDataCell>
-            <div>{item.agents_name}</div>
+            <div className='text-center'>{item.agents_name}</div>
           </CTableDataCell>
           <CTableDataCell>
-            <strong>{item.agents_gender}</strong>
+            <div className='text-center'>{item.agents_gender}</div>
           </CTableDataCell>
           <CTableDataCell>
-            <strong>{item.agents_phone}</strong>
+            <div className='text-center'>{item.agents_phone}</div>
           </CTableDataCell>
         </CTableRow>
       )
@@ -262,7 +263,7 @@ const Dashboard = () => {
                       </div>
                     </CCol>
                     <CCol sm={4}>
-                      <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
+                      <div className="border-start border-start-4 border-start-info py-1 px-3 mb-3">
                         <div className="text-medium-emphasis small">Agent Phone</div>
                         <div className="fs-5 fw-semibold">{agentOwnPhone ? agentOwnPhone : "no data found."}</div>
                       </div>
@@ -274,8 +275,28 @@ const Dashboard = () => {
                       </div>
                     </CCol>
                   </CRow>
+                  <CRow>
+                    <CCol sm={4}>
+                      <div className="border-start border-start-4 border-start-dark py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">Total Ticket</div>
+                        <div className="fs-5 fw-semibold">{agentOwnName ? agentOwnName : "no data found."}</div>
+                      </div>
+                    </CCol>
+                    <CCol sm={4}>
+                      <div className="border-start border-start-4 border-start-danger py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">Agent Commission</div>
+                        <div className="fs-5 fw-semibold">{agentOwnPhone ? agentOwnPhone : "no data found."}</div>
+                      </div>
+                    </CCol>
+                    {/* <CCol sm={4}>
+                      <div className="border-start border-start-4 border-start-success py-1 px-3 mb-3">
+                        <div className="text-medium-emphasis small">Agent Gender</div>
+                        <div className="fs-5 fw-semibold">{agentOwnGender ? agentOwnGender : "no data found."}</div>
+                      </div>
+                    </CCol> */}
+                  </CRow>
                   <hr className="mt-0" />
-                  {progressGroupExample2.map((item, index) => (
+                  {/* {progressGroupExample2.map((item, index) => (
                     <div className="progress-group mb-4" key={index}>
                       <div className="progress-group-header">
                         <CIcon className="me-2" icon={item.icon} size="lg" />
@@ -286,7 +307,7 @@ const Dashboard = () => {
                         <CProgress thin color="warning" value={item.value} />
                       </div>
                     </div>
-                  ))}
+                  ))} */}
                   <div className="mb-5"></div>
                 </CCol>
               </CRow>
@@ -306,9 +327,9 @@ const Dashboard = () => {
                   {/* <CTableHeaderCell className="text-center">
                     <CIcon icon={cilPeople} />
                 </CTableHeaderCell> */}
-                  <CTableHeaderCell>Agent Name</CTableHeaderCell>
-                  <CTableHeaderCell>Gender</CTableHeaderCell>
-                  <CTableHeaderCell>Ticket Sold</CTableHeaderCell>
+                  <CTableHeaderCell className='text-center'>Agent Name</CTableHeaderCell>
+                  <CTableHeaderCell className='text-center'>Gender</CTableHeaderCell>
+                  <CTableHeaderCell className='text-center'>Ticket Sold</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
               <CTableBody>

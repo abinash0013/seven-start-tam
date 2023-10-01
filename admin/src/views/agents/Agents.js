@@ -47,25 +47,49 @@ const Agents = () => {
     agents_list();
   }, []);
 
+  const clearFormData = async () => {
+    setName("");
+    setEmail("");
+    setPhone("");
+    setPassword("");
+    setGender("");
+    setStatus("");
+  }
   const agents_list = async () => {
     let result = await getApiCall(base.agentsList)
     setAgentsData(result)
   }
 
   const save_agent = async () => {
-    let req = {
-      name: name.target.value,
-      email: email.target.value,
-      phone: phone.target.value,
-      password: password,
-      gender: gender,
-      status: status,
-    }
-    // console.log("saveAgentApiCallreq", req);
-    let result = await postApiCall(base.saveAgent, req)
-    if (result.code == 200) {
-      setVisible(false);
-      toast.success("Successfully Created..!");
+    if (name == "") {
+      toast.error("name is mandatory");
+    } else if (email == "") {
+      toast.error("emmail is mandatory")
+    } else if (phone == "") {
+      toast.error("phone no. is mandatory")
+    } else if (phone.length < 10) {
+      toast.error("Phone No. Should be in 10 digits")
+    } else if (gender == "") {
+      toast.error("Please select a gender")
+    } else if (status == "") {
+      toast.error("Please select a status")
+    } else {
+      let req = {
+        name: name.target.value,
+        email: email.target.value,
+        phone: phone.target.value,
+        password: password,
+        gender: gender,
+        status: status,
+      }
+      // console.log("saveAgentApiCallreq", req);
+      let result = await postApiCall(base.saveAgent, req)
+      if (result.code == 200) {
+        setVisible(false);
+        agents_list();
+        clearFormData();
+        toast.success("Successfully Created..!");
+      }
     }
   }
 
@@ -113,14 +137,13 @@ const Agents = () => {
   const randomPasswordGenerate = () => {
     const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let newPassword = '';
-
     for (let i = 0; i < 8; i++) {
       const randomIndex = Math.floor(Math.random() * charset.length);
       newPassword += charset[randomIndex];
     }
-
     setPassword(newPassword);
-    // console.log("newPassworddd", newPassword);
+    toast.error(newPassword)
+    console.log("newPassworddd", newPassword);
   };
 
   return (
@@ -163,10 +186,11 @@ const Agents = () => {
                     type="text"
                     id="password"
                     placeholder="Agent Password"
-                    onChange={(e) => { setPassword(e) }}
+                    // onChange={(e) => { setPassword(e) }}
                     defaultValue={password}
+                    disabled
                   />
-                  <CButton className='ml-1' color="secondary" onClick={() => randomPasswordGenerate()}>
+                  <CButton className='mx-1' color="secondary" onClick={() => randomPasswordGenerate()}>
                     Generate
                   </CButton>
                 </div>
