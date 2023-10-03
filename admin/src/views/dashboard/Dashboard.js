@@ -451,6 +451,7 @@ const Dashboard = (props) => {
                     <CTableHeaderCell>Agent Name</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Address</CTableHeaderCell>
                     <CTableHeaderCell>Ticket Limit</CTableHeaderCell>
+                    <CTableHeaderCell>Total Ticket</CTableHeaderCell>
                     <CTableHeaderCell className="text-center">Amount</CTableHeaderCell>
                     {/* <CTableHeaderCell>Activity</CTableHeaderCell> */}
                   </CTableRow>
@@ -479,7 +480,10 @@ const Dashboard = (props) => {
                             <small className="text-medium-emphasis">{item.usage.period}</small>
                           </div>
                         </div>
-                        <CProgress thin color={item.usage.color} value={item.usage.value} />
+                        {/* <CProgress thin color={item.usage.color} value={item.usage.value} /> */}
+                      </CTableDataCell>
+                      <CTableDataCell>
+                        <div>{item.country.address}</div>
                       </CTableDataCell>
                       <CTableDataCell className="text-center">
                         <CIcon size="xl" icon={item.payment.icon} />

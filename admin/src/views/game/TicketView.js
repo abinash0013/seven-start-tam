@@ -67,13 +67,11 @@ const TicketView = (props) => {
             <CCard>
               <CCardBody>
                 {/* <div className="ticket-container"> */}
-                <div style={{ fontSize: 20, textAlign: "center", fontWeight: "bold", }}>{item.userName}</div>
-                <div style={{ fontSize: 20, textAlign: "center", fontWeight: "bold", }}>{item.userPhone}</div>
+                <div style={{ fontSize: 20, textAlign: "center", fontWeight: "bold", }}>{item.userName != "" ? item.userName : "Un Sold"}</div>
+                <div style={{ fontSize: 20, textAlign: "center", fontWeight: "bold", }}>{item.userPhone != "" ? item.userPhone : ". . ."}</div>
                 <div style={{
                   display: "flex",
                   justifyContent: "center",
-                  // marginTop: "20px",
-                  // flex: 1 
                 }}>
                   <div style={{
                     display: "flex",
