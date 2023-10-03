@@ -17,16 +17,16 @@ const Ticket = (props) => {
       console.log("numberDataaaa", numberData);
       ticket1.map((ticketData) => {
         console.log("sssss", ticketData)
-        ticketData?.dateSet?.map((ticketDataNumber, index) => {
-          console.log("ticketDataNumberrrr", ticketDataNumber);
-          if (numberData.number == ticketDataNumber.number && numberData.status == "true") {
-            ticketDataNumber.status = "true"
-          }
-          console.log("ticketDatasett", ticketDataNumber)
-        })
+        // ticketData?.dateSet?.map((ticketDataNumber, index) => {
+        //   console.log("ticketDataNumberrrr", ticketDataNumber);
+        //   if (numberData.number == ticketDataNumber.number && numberData.status == "true") {
+        //     ticketDataNumber.status = "true"
+        //   }
+        //   console.log("ticketDatasett", ticketDataNumber)
+        // })
         // setTicket1(ticketData)
       })
-      console.log("logticketData", JSON.stringify(ticket));
+      // console.log("logticketData", JSON.stringify(ticket));
     })
   }, [number]);
 
@@ -40,7 +40,6 @@ const Ticket = (props) => {
       gameId: gameId
     }
     let result = await postApiCall(base.ticketCardViewForUser, req)
-
     console.log("resultttweww", result);
     try {
       let convertJSON = JSON.parse(result.data[0].ticket_set);

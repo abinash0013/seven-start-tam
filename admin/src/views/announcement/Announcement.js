@@ -51,15 +51,24 @@ const Announcement = () => {
   }
 
   const save_announcement = async () => {
-    let req = {
-      announcementTitle: announcementTitle.target.value,
-      announcementMessage: announcementMessage.target.value,
-      announcementStatus: announcementStatus
-    }
-    let result = await postApiCall(base.saveAnnouncement, req)
-    if (result.code == 200) {
-      setVisible(false);
-      toast.success("Successfully Created..!");
+    if (announcementTitle == "") {
+      toast.error("Announcement Title is Mandatory")
+    } else if (announcementMessage == "") {
+      toast.error("Announcement Message is Mandatory")
+    } else if (announcementStatus == "") {
+      toast.error("Announcement Status is Mandatory")
+    } else {
+      let req = {
+        announcementTitle: announcementTitle.target.value,
+        announcementMessage: announcementMessage.target.value,
+        announcementStatus: announcementStatus
+      }
+      let result = await postApiCall(base.saveAnnouncement, req)
+      if (result.code == 200) {
+        setVisible(false);
+        announcement_list();
+        toast.success("Successfully Created..!");
+      }
     }
   }
 
@@ -72,6 +81,7 @@ const Announcement = () => {
     let result = await putApiCall(base.deleteAnnouncement, req)
     console.log("iddddAgentresult", result);
     if (result.code == 200) {
+      announcement_list();
       toast.error("Deleted Successfully..!");
     }
   }
@@ -86,18 +96,27 @@ const Announcement = () => {
   }
 
   const edit_announcement = async () => {
-    let req = {
-      announcementId: announcementId,
-      announcementTitle: announcementTitle,
-      announcementMessage: announcementMessage,
-      announcementStatus: announcementStatus,
-    }
-    console.log("reqreq", req);
-    let result = await putApiCall(base.editAnnouncement, req)
-    console.log("resultresult", result);
-    if (result.code == 200) {
-      setEditModalVisible(false)
-      toast.success("Updated Successfully..!");
+    if (announcementTitle == "") {
+      toast.error("Announcement Title is Mandatory")
+    } else if (announcementMessage == "") {
+      toast.error("Announcement Message is Mandatory")
+    } else if (announcementStatus == "") {
+      toast.error("Announcement Status is Mandatory")
+    } else {
+      let req = {
+        announcementId: announcementId,
+        announcementTitle: announcementTitle,
+        announcementMessage: announcementMessage,
+        announcementStatus: announcementStatus,
+      }
+      console.log("reqreq", req);
+      let result = await putApiCall(base.editAnnouncement, req)
+      console.log("resultresult", result);
+      if (result.code == 200) {
+        setEditModalVisible(false)
+        announcement_list();
+        toast.success("Updated Successfully..!");
+      }
     }
   }
 

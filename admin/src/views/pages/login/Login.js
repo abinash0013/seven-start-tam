@@ -17,6 +17,8 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { postApiCall } from 'src/services/AppSetting'
 import { base } from 'src/constants/Data.constant'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -24,12 +26,15 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const submitLogin = async () => {
-    console.log("first")
     if (userName == "") {
+      toast.error("username is mandatory")
+      console.log("first")
       alert("username is mandatory")
     } else if (password == "") {
-      alert("password is mandatory")
+      toast.error("password is mandatory")
+      console.log("second")
     } else {
+      console.log("object");
       let req = {
         username: userName.target.value,
         password: password.target.value
@@ -38,13 +43,13 @@ const Login = () => {
       let result = await postApiCall(base.adminLogin, req)
       console.log("logoflogin", result);
       if (result.status == true) {
-        alert("Login successfully")
+        toast.error("Login successfully")
         let test = await localStorage.setItem("adminLoginId", result.data[0].admin_id);
         // let test = await localStorage.setItem("loginId", "1");
         console.log("testeee", test);
         navigate("/dashboard");
       } else {
-        alert("Login failed")
+        toast.error("Login failed")
       }
     }
   }
@@ -52,6 +57,7 @@ const Login = () => {
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
+        <ToastContainer />
         <CRow className="justify-content-center">
           <CCol md={4}>
             <CCardGroup>
@@ -64,7 +70,7 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" onChange={(e) => { setUserName(e) }} />
+                      <CFormInput placeholder="Username" autoComplete="userName" id="userName" onChange={(e) => { setUserName(e) }} />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -73,6 +79,7 @@ const Login = () => {
                       <CFormInput
                         type="password"
                         placeholder="Password"
+                        id="password"
                         autoComplete="current-password"
                         onChange={(e) => { setPassword(e) }}
                       />
@@ -83,14 +90,14 @@ const Login = () => {
                           Loginn
                         </CButton>
                       </CCol>
-                      <CCol xs={6} className="text-right">
-                        {/* <CButton color="link" className="px-0">
+                      {/* <CCol xs={6} className="text-right"> */}
+                      {/* <CButton color="link" className="px-0">
                           Forgot password?
                         </CButton> */}
-                        <CButton color="link" className="px-0" to="/register">
+                      {/* <CButton color="link" className="px-0" to="/register">
                           Register Now!
                         </CButton>
-                      </CCol>
+                      </CCol> */}
                     </CRow>
                   </CForm>
                 </CCardBody>

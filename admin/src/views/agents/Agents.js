@@ -102,6 +102,7 @@ const Agents = () => {
     let result = await putApiCall(base.deleteAgent, req)
     // console.log("iddddAgentresult", result);
     if (result.code == 200) {
+      agents_list();
       toast.error("Deleted Successfully..!");
     }
   }
@@ -130,6 +131,7 @@ const Agents = () => {
     console.log("resultresult", result);
     if (result.code == 200) {
       setEditModalVisible(false)
+      agents_list();
       toast.success("Updated Successfully..!");
     }
   }

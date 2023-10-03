@@ -61,11 +61,14 @@ const TicketView = (props) => {
   const _render_ticket_card_view = (data) => {
     {
       return (data?.map((item, index) => {
+        console.log("itemtestingg", item);
         return (
           <CCol sm={6} style={{ margin: "10px 0" }} key={index}>
             <CCard>
               <CCardBody>
                 {/* <div className="ticket-container"> */}
+                <div style={{ fontSize: 20, textAlign: "center", fontWeight: "bold", }}>{item.userName}</div>
+                <div style={{ fontSize: 20, textAlign: "center", fontWeight: "bold", }}>{item.userPhone}</div>
                 <div style={{
                   display: "flex",
                   justifyContent: "center",

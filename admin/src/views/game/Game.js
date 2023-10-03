@@ -75,31 +75,48 @@ const Game = () => {
   }
 
   const save_game = async () => {
-    let req = {
-      gameName: gameName.target.value,
-      gameStartDate: gameStartDate.target.value,
-      gameStartTime: gameStartTime.target.value,
-      gameMaximumTicketSell: gameMaximumTicketSell.target.value,
-      gameAmount: gameAmount.target.value,
-      gameAmountPerTicketToAgent: gameAmountPerTicketToAgent.target.value,
-      gameQuickFire: gameQuickFire,
-      gameStar: gameStar,
-      gameTopLine: gameTopLine,
-      gameMiddleLine: gameMiddleLine,
-      gameBottomLine: gameBottomLine,
-      gameCorner: gameCorner,
-      gameHalfSheet: gameHalfSheet,
-      gameHousefull: gameHousefull,
-      gameStatus: gameStatus
-    }
-    console.log("saveGameApiCallreq", req);
-    // debugger;
-    let result = await postApiCall(base.saveGame, req)
-    // console.log("saveGameApiCall", result);
-    if (result.code == 200) {
-      setVisible(false);
-      successToast();
-      // <Toast />
+    if (gameName == "") {
+      toast.error("Game Name is Mandatory")
+    } else if (gameStartDate == "") {
+      toast.error("Game Start Date is Mandatory")
+    } else if (gameStartTime == "") {
+      toast.error("Game Start Time is Mandatory")
+    } else if (gameMaximumTicketSell == "") {
+      toast.error("Game Maximum Ticket Sell is Mandatory")
+    } else if (gameAmount == "") {
+      toast.error("Game Amount is Mandatory")
+    } else if (gameAmountPerTicketToAgent == "") {
+      toast.error("Game Amount Per Ticket To Agent is Mandatory")
+    } else if (gameStatus == "") {
+      toast.error("Game Amount Per Ticket To Agent is Mandatory")
+    } else {
+      let req = {
+        gameName: gameName.target.value,
+        gameStartDate: gameStartDate.target.value,
+        gameStartTime: gameStartTime.target.value,
+        gameMaximumTicketSell: gameMaximumTicketSell.target.value,
+        gameAmount: gameAmount.target.value,
+        gameAmountPerTicketToAgent: gameAmountPerTicketToAgent.target.value,
+        gameQuickFire: gameQuickFire,
+        gameStar: gameStar,
+        gameTopLine: gameTopLine,
+        gameMiddleLine: gameMiddleLine,
+        gameBottomLine: gameBottomLine,
+        gameCorner: gameCorner,
+        gameHalfSheet: gameHalfSheet,
+        gameHousefull: gameHousefull,
+        gameStatus: gameStatus
+      }
+      console.log("saveGameApiCallreq", req);
+      // debugger;
+      let result = await postApiCall(base.saveGame, req)
+      // console.log("saveGameApiCall", result);
+      if (result.code == 200) {
+        setVisible(false);
+        game_list();
+        successToast();
+        // <Toast />
+      }
     }
   }
 
@@ -108,13 +125,6 @@ const Game = () => {
       position: toast.POSITION.TOP_RIGHT
     })
   }
-
-  // const showToasts = () => {
-  //   //     toast.success("Successfully Created.!");
-  //   //     toast.error("I'm never gonna toast you!");
-  //   //     toast.warning("I'm never gonna toast you!");
-  //   //     toast.info("I'm never gonna toast you!");
-  // }
 
   const delete_game = async (id) => {
     console.log("delete_game_id_log", id);
@@ -150,35 +160,45 @@ const Game = () => {
     setGameStatus(item.game_status)
   }
 
-  // const go_to_ticket_view = async (item) = {
-  //   <Ticket />
-  // }
-
   const edit_game = async () => {
-    let req = {
-      id: id,
-      gameName: gameName,
-      gameStartDate: gameStartDate,
-      gameStartTime: gameStartTime,
-      gameMaximumTicketSell: gameMaximumTicketSell,
-      gameAmount: gameAmount,
-      gameQuickFire: gameQuickFire,
-      gameStar: gameStar,
-      gameTopLine: gameTopLine,
-      gameMiddleLine: gameMiddleLine,
-      gameBottomLine: gameBottomLine,
-      gameCorner: gameCorner,
-      gameHalfSheet: gameHalfSheet,
-      gameHousefull: gameHousefull,
-      gameStatus: gameStatus,
-    }
-    console.log("reqofedituser", req);
-    let result = await putApiCall(base.editGame, req)
-    console.log("resultofedituser", result);
-    if (result.code == 200) {
-      successToast();
-      setEditModalVisible(false);
-      setEditOption(false);
+    if (gameName == "") {
+      toast.error("Game Name is Mandatory")
+    } else if (gameStartDate == "") {
+      toast.error("Game Start Date is Mandatory")
+    } else if (gameStartTime == "") {
+      toast.error("Game Start Time is Mandatory")
+    } else if (gameMaximumTicketSell == "") {
+      toast.error("Game Maximum Ticket Sell is Mandatory")
+    } else if (gameAmount == "") {
+      toast.error("Game Amount is Mandatory")
+    } else if (gameStatus == "") {
+      toast.error("Game Amount Per Ticket To Agent is Mandatory")
+    } else {
+      let req = {
+        id: id,
+        gameName: gameName,
+        gameStartDate: gameStartDate,
+        gameStartTime: gameStartTime,
+        gameMaximumTicketSell: gameMaximumTicketSell,
+        gameAmount: gameAmount,
+        gameQuickFire: gameQuickFire,
+        gameStar: gameStar,
+        gameTopLine: gameTopLine,
+        gameMiddleLine: gameMiddleLine,
+        gameBottomLine: gameBottomLine,
+        gameCorner: gameCorner,
+        gameHalfSheet: gameHalfSheet,
+        gameHousefull: gameHousefull,
+        gameStatus: gameStatus,
+      }
+      console.log("reqofedituser", req);
+      let result = await putApiCall(base.editGame, req)
+      console.log("resultofedituser", result);
+      if (result.code == 200) {
+        successToast();
+        setEditModalVisible(false);
+        setEditOption(false);
+      }
     }
   }
 
