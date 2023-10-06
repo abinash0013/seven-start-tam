@@ -200,9 +200,9 @@ app.put('/deleteUser', async (req, res) => {
 })
 
 // ::::::::::::::::::::::::::::::::::::::::: Tickets List // this api because dynamic ticket created when game created
-app.get('/gameList', async (req, res) => {
-  ex_query("SELECT * FROM tbl_game", req, res)
-})
+// app.get('/gameList', async (req, res) => {
+//   ex_query("SELECT * FROM tbl_game", req, res)
+// })
 
 app.post('/ticketList', async (req, res) => {
   con.query("SELECT * FROM tbl_game WHERE game_id=?", [req.body.gameId],
@@ -351,7 +351,7 @@ app.post('/matchedTicketForBooking', async (req, res) => {
 
   const fullDate = `${year}-${month > 9 ? month : `0` + month}-${day > 9 ? day : `0` + day}`
   const fullTime = `${hours}:${minutes}`
-  // console.log("Date & Time:", fullDate, fullTime);
+  console.log("Date & Time:", fullDate, fullTime);
   con.query('SELECT `game_id`,`game_number_set` FROM `tbl_game` WHERE game_start_date=? AND game_start_time < ?',
     [fullDate, fullTime],
     function (error, result, fields) {
@@ -361,11 +361,13 @@ app.post('/matchedTicketForBooking', async (req, res) => {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
         if (result) {
-          // console.log("qqqwwwse", result)
-          // console.log("qqqwwwse", result[0].game_number_set)
+          console.log("qqqwwwse", result)
+          console.log("qqqwwwseee", result[0].game_number_set)
           let numberData = JSON.parse(result[0].game_number_set);
+          // let numberData = JSON.stringify(result[0].game_number_set);
           let gameIdVar = result[0].game_id;
-          // console.log("qqqwwwq", numberData)
+          console.log("qqqwwwq", numberData)
+          console.log("gameIdVarrr", gameIdVar)
           function getRandomNumber(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
           }
@@ -395,18 +397,6 @@ app.post('/matchedTicketForBooking', async (req, res) => {
               })
               con.query('UPDATE `tbl_game` SET `game_number_set`=? WHERE `game_id`=?',
                 [JSON.stringify(numberData), gameIdVar],
-                // function (error, result, fields) {
-                //   if (error) throw error;
-                //   // if (error) {
-                //   //   ResponseHandler(res, false, "Api Issue", result);
-                //   // } else {
-                //   //   if (result) {
-                //   //     ResponseHandler(res, true, "Game Status Updated Successfully..", result);
-                //   //   } else {
-                //   //     ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
-                //   //   }
-                //   // }
-                // }
               )
             } else {
               clearInterval(interval); // Stop the timer when 100 unique numbers are generated
@@ -520,6 +510,30 @@ app.put('/deleteAnnouncement', async (req, res) => {
       }
     }
   )
+})
+
+// ::::::::::::::::::::::::::::::::::::::::: Disclaimer List
+app.get('/disclaimerList', async (req, res) => {
+  ex_query("SELECT * FROM tbl_disclaimer", req, res)
+})
+
+// ::::::::::::::::::::::::::::::::::::::::: Edit Disclaimer
+app.put('/editDisclaimer', async (req, res) => {
+  con.query('UPDATE `tbl_disclaimer` SET `disclaimer_title`=?, `disclaimer_message`=? WHERE `disclaimer_id`=?',
+    [req.body.disclaimerTitle, req.body.disclaimerMessage, req.body.disclaimerId],
+    function (error, result, fields) {
+      if (error) throw error;
+      // console.log("pppp", result);
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result)
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Update Successfully..", result)
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Update..", result)
+        }
+      }
+    });
 })
 
 // ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: //

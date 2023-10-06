@@ -7,48 +7,57 @@ import { getApiCall, postApiCall, putApiCall } from '../../services/AppSetting';
 import { base } from '../../constants/Data.constant';
 
 const Ticket = (props) => {
-  const { number, gameId } = props;
-  const [ticket, setTicket] = useState([]);
+  const { number, gameId, ticket, setTicket } = props;
+  console.log("numberrrrrticket", ticket);
+  // const [ticket, setTicket] = useState([]);
   const [ticket1, setTicket1] = useState([]);
 
+  // useEffect(() => {
+  //   ticketCardView();
+  // }, [props])
+
   useEffect(() => {
-    ticketCardView();
-    number.map((numberData, index) => {
-      console.log("numberDataaaa", numberData);
-      ticket1.map((ticketData) => {
-        console.log("sssss", ticketData)
-        // ticketData?.dateSet?.map((ticketDataNumber, index) => {
-        //   console.log("ticketDataNumberrrr", ticketDataNumber);
-        //   if (numberData.number == ticketDataNumber.number && numberData.status == "true") {
-        //     ticketDataNumber.status = "true"
-        //   }
-        //   console.log("ticketDatasett", ticketDataNumber)
-        // })
-        // setTicket1(ticketData)
+    const ticketCutHiglight = async () => {
+      number?.map((numberData, index) => {
+        // console.log("numberDataaaa", numberData.number);
+        let aarr = ticket
+        aarr?.map((ticketData) => {
+          // console.log("sssss", ticketData)
+          ticketData?.dateSet?.map((ticketDataNumber, index) => {
+            // console.log("ticketDataNumberrrr", ticketDataNumber);
+            // console.log("ifcon1", numberData.number, ticketDataNumber.number, numberData.status);
+            if (numberData.number == ticketDataNumber.number && numberData.status == "true") {
+              console.log("ifcon", numberData.number, ticketDataNumber.number, numberData.status);
+              ticketDataNumber.status = true
+            }
+          })
+          console.log("ticketDatasetttypoflh", typeof ticketData)
+          // console.log("ticketDatasetttypoflengthhh", ticketData)
+          // setTicket(ticketData)
+        })
+        setTicket1(aarr)
+
+        // console.log("logticketData", JSON.stringify(ticket));
       })
-      // console.log("logticketData", JSON.stringify(ticket));
-    })
+    }
+    ticketCutHiglight();
   }, [number]);
 
-  // const updateTicketStatus = async () => {
-  //   let result = await putApiCall(base.updateTicketStatus)
+  // const ticketCardView = async () => {
+  //   console.log("one");
+  //   let req = {
+  //     gameId: gameId
+  //   }
+  //   let result = await postApiCall(base.ticketCardViewForUser, req)
+  //   // console.log("resultttweww", result);
+  //   try {
+  //     let convertJSON = JSON.parse(result.data[0].ticket_set);
+  //     // console.log("convertJSONnn", convertJSON);
+  //     setTicket(convertJSON)
+  //   } catch (error) {
+  //     // console.log("errorjson", error);
+  //   }
   // }
-
-  const ticketCardView = async () => {
-    console.log("one");
-    let req = {
-      gameId: gameId
-    }
-    let result = await postApiCall(base.ticketCardViewForUser, req)
-    console.log("resultttweww", result);
-    try {
-      let convertJSON = JSON.parse(result.data[0].ticket_set);
-      console.log("convertJSONnn", convertJSON);
-      setTicket1(convertJSON)
-    } catch (error) {
-      console.log("errorjson", error);
-    }
-  }
 
   // const ticketNumberUpdate = async () => {
   //   number.map((numberData, index) => {
@@ -57,9 +66,9 @@ const Ticket = (props) => {
   //       console.log("two");
   //       JSON.parse(ticketData.dateSet).map((ticketDataNumber) => {
   //         console.log("logticketData", JSON.stringify(ticketDataNumber));
-  //         // if (numberData.number == ticketDataNumber.number && numberData.status == "true") {
-  //         //   ticketDataNumber.status == true
-  //         // }
+  //         if (numberData.number == ticketDataNumber.number && numberData.status == "true") {
+  //           ticketDataNumber.status == true
+  //         }
   //       })
   //       console.log("logticketData", JSON.stringify(ticketData.dateSet));
   //     })
@@ -68,30 +77,35 @@ const Ticket = (props) => {
 
   return (
     <div className="ticketSection">
-      {ticket1.map((item, index) => {
-        return <div className="outerContainer">
-          <div className="container mx-auto mt-8">
-            <div className="containerInfo">
-              <div className="containerInfoFirstInnerItem">
-                <div className="containerInfoInnerItemSerial">1</div>
-                <div className="containerInfoInnerItem">Abinash</div>
+      {/* {JSON.stringify(ticket1)} */}
+      {ticket1?.length > 0 &&
+        ticket1?.map((item, index) => {
+          console.log("itemitemitem22", item);
+          return <div className="outerContainer">
+            <div className="container mx-auto mt-8">
+              <div className="containerInfo">
+                <div className="containerInfoFirstInnerItem">
+                  <div className="containerInfoInnerItemSerial">1</div>
+                  <div className="containerInfoInnerItem">Abinash</div>
+                </div>
+                <div className="containerInfoInnerItem">Status</div>
               </div>
-              <div className="containerInfoInnerItem">Status</div>
-            </div>
-            <div className="number-card">
-              {/* {console.log("eeeeewwew1", ticket[0].dateSet)}
+              <div className="number-card">
+                {/* {console.log("eeeeewwew1", ticket[0].dateSet)}
               {console.log("eeeeewwew2", JSON.stringify(ticket.dateSet[0]))} */}
-              {/* {ticket1?.map((itemData) => { */}
-              {item?.dateSet?.map((item) => {
-                return <div className="number" style={{ color: item.status && 'red' }}>{item.number}</div>
-              })
-              }
-              {/* } */}
+                {/* {ticket?.map((itemData) => { */}
+                {item?.dateSet?.map((item) => {
+                  console.log("itemdatasetitemmnumbetypof", item);
+                  return <div className="number" style={{ color: item.status == true ? 'red' : "blue" }}>{item.number}{item.status}</div>
+                })
+                }
+                {/* } */}
+              </div>
             </div>
           </div>
-        </div>
+        }
+        )
       }
-      )}
 
     </div>
   )

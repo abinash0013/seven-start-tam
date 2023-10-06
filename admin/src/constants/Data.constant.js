@@ -21,5 +21,7 @@ const base = {
     announcementList: mainUrl + `announcementList`,
     editAnnouncement: mainUrl + `editAnnouncement`,
     deleteAnnouncement: mainUrl + `deleteAnnouncement`,
+    disclaimerList: mainUrl + `disclaimerList`,
+    editDisclaimer: mainUrl + `editDisclaimer`,
 };
 export { base };

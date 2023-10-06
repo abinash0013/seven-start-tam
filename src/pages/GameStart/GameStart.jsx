@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import "./GameStart.css";
-import { getApiCall } from '../../services/AppSetting';
+import { getApiCall, postApiCall } from '../../services/AppSetting';
 import { base } from '../../constants/Data.constant';
 import firebase from 'firebase/compat/app';
 import "firebase/compat/database";
@@ -9,6 +9,7 @@ import Ticket from '../Ticket/Ticket';
 const GameStart = () => {
   const [number, setNumber] = useState([]);
   const [gameId, setGameId] = useState("");
+  const [ticket, setTicket] = useState([]);
 
   // Initialize Firebase with your config
   const firebaseConfig = {
@@ -40,6 +41,7 @@ const GameStart = () => {
       if (snapshot.val() != null) {
         setNumber(JSON.parse(snapshot.val().number_set));
         setGameId(snapshot.val().game_id);
+        ticketCardView(snapshot.val().game_id);
       }
     })
   }
@@ -48,6 +50,22 @@ const GameStart = () => {
     fetch_data();
     cutTicketNumberIfMatched();
   }, []);
+
+  const ticketCardView = async (gameId) => {
+    console.log("one");
+    let req = {
+      gameId: gameId
+    }
+    let result = await postApiCall(base.ticketCardViewForUser, req)
+    console.log("resultttweww", result);
+    try {
+      let convertJSON = JSON.parse(result.data[0].ticket_set);
+      console.log("convertJSONnn", convertJSON);
+      setTicket(convertJSON)
+    } catch (error) {
+      // console.log("errorjson", error);
+    }
+  }
 
   const cutTicketNumberIfMatched = async () => {
     // let result = await getApiCall(base.getNumberOneToHundredForCalling)
@@ -84,7 +102,7 @@ const GameStart = () => {
           </div>
         </div>
       </div>
-      <Ticket number={number} gameId={gameId} />
+      <Ticket number={number} gameId={gameId} setTicket={setTicket} ticket={ticket} />
     </>
   )
 }

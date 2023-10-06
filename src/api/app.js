@@ -23,10 +23,10 @@ const ex_query = (sql, req, res, fields) => {
   });
 }
 
-// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
-app.get('/ticketCardView', async (req, res) => {
-  ex_query("SELECT * FROM tbl_ticket", req, res)
-})
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api hide on 03-oct
+// app.get('/ticketCardView', async (req, res) => {
+//   ex_query("SELECT * FROM tbl_ticket", req, res)
+// })
 
 // app.put('/updateTicketStatus', async (req, res)=>{
 //   e

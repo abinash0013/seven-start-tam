@@ -12,7 +12,7 @@ function App() {
       {/* <Header /> */}
       <Banner />
       <GameStart />
-      <Ticket />
+      {/* <Ticket /> */}
     </div>
   );
 }

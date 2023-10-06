@@ -42,6 +42,7 @@ const Agents = () => {
   const [password, setPassword] = useState("");
   const [gender, setGender] = useState("");
   const [status, setStatus] = useState("");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     agents_list();
@@ -148,10 +149,32 @@ const Agents = () => {
     console.log("newPassworddd", newPassword);
   };
 
+  // const _filter = (item, index) => {
+  //   console.log("itemfilter", item);
+  //   if (item.agents_name.toString().toUpperCase().search(search.toString().toUpperCase()) !== -1 ||
+  //     item.agents_email.toString().toUpperCase().search(search.toString().toUpperCase()) !== -1 ||
+  //     item.agents_phone.toString().toUpperCase().search(search.toString().toUpperCase()) !== -1 ||
+  //     item.agents_gender.toString().toUpperCase().search(search.toString().toUpperCase()) !== -1 ||
+  //     item.agents_address.toString().toUpperCase().search(search.toString().toUpperCase()) !== -1
+  //   ) {
+  //     return item;
+  //   }
+  // }
+
   return (
     <CRow>
       <CCol xs={12} className='mb-4'>
+        {/* <div className='d-flex justify-content-between'> */}
         <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Add</CButton>
+        {/* <div class="w-25">
+            <CFormInput
+              type="text"
+              id="search"
+              placeholder="Search"
+              onChange={(e) => { setSearch(e) }}
+            />
+          </div>
+        </div> */}
         <ToastContainer />
         <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
           <CModalHeader>
@@ -237,6 +260,7 @@ const Agents = () => {
               <CTableBody>
                 {agentsData.map((item, index) => {
                   console.log("agentlistitem", item);
+                  // if (_filter(item, search)) {
                   return <CTableRow key={index}>
                     <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                     <CTableDataCell>{item.agents_name}</CTableDataCell>
@@ -315,6 +339,7 @@ const Agents = () => {
                       </CModal>
                     </CTableDataCell>
                   </CTableRow>
+                  // }
                 })}
               </CTableBody>
             </CTable>
