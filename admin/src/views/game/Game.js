@@ -51,13 +51,20 @@ const Game = () => {
   const [gameAmount, setGameAmount] = useState("");
   const [gameAmountPerTicketToAgent, setGameAmountPerTicketToAgent] = useState("");
   const [gameQuickFire, setGameQuickFire] = useState(false);
+  const [gameQuickSevenPrize, setGameQuickSevenPrize] = useState("");
   const [gameStar, setGameStar] = useState(false);
   const [gameTopLine, setGameTopLine] = useState(false);
+  const [gameTopLinePrize, setGameTopLinePrize] = useState(false);
   const [gameMiddleLine, setGameMiddleLine] = useState(false);
+  const [gameMiddleLinePrize, setGameMiddleLinePrize] = useState(false);
   const [gameBottomLine, setGameBottomLine] = useState(false);
+  const [gameBottomLinePrize, setGameBottomLinePrize] = useState(false);
   const [gameCorner, setGameCorner] = useState(false);
   const [gameHalfSheet, setGameHalfSheet] = useState(false);
   const [gameHousefull, setGameHousefull] = useState(false);
+  const [gameHouseFullPrize, setGameHouseFullPrize] = useState(false);
+  const [gameSecondHousefull, setGameSecondHousefull] = useState(false);
+  const [gameSecondHouseFullPrize, setGameSecondHouseFullPrize] = useState(false);
   const [gameStatus, setGameStatus] = useState("");
   const [time, setTime] = useState(new Date());
 
@@ -98,13 +105,20 @@ const Game = () => {
         gameAmount: gameAmount.target.value,
         gameAmountPerTicketToAgent: gameAmountPerTicketToAgent.target.value,
         gameQuickFire: gameQuickFire,
-        gameStar: gameStar,
+        gameQuickSevenPrize: gameQuickSevenPrize.target.value,
+        // gameStar: gameStar,
         gameTopLine: gameTopLine,
+        gameTopLinePrize: gameTopLinePrize.target.value,
         gameMiddleLine: gameMiddleLine,
+        gameMiddleLinePrize: gameMiddleLinePrize.target.value,
         gameBottomLine: gameBottomLine,
-        gameCorner: gameCorner,
-        gameHalfSheet: gameHalfSheet,
+        gameBottomLinePrize: gameBottomLinePrize.target.value,
+        // gameCorner: gameCorner,
+        // gameHalfSheet: gameHalfSheet,
         gameHousefull: gameHousefull,
+        gameHouseFullPrize: gameHouseFullPrize.target.value,
+        gameSecondHousefull: gameSecondHousefull,
+        gameSecondHouseFullPrize: gameSecondHouseFullPrize.target.value,
         gameStatus: gameStatus
       }
       console.log("saveGameApiCallreq", req);
@@ -276,53 +290,107 @@ const Game = () => {
                   onChange={(e) => { setGameAmountPerTicketToAgent(e) }}
                 />
                 <CFormSwitch
-                  label="Game Quick Fire"
+                  label="Game Quick Seven"
                   id="gameQuickFire"
                   defaultChecked={gameQuickFire}
                   onChange={() => setGameQuickFire(!gameQuickFire)}
                 />
-                <CFormSwitch
+                {gameQuickFire && (
+                  <CFormInput
+                    type="text"
+                    id="gameQuickSevenPrize"
+                    placeholder="Game Quick Seven Prize"
+                    onChange={(e) => { setGameQuickSevenPrize(e) }}
+                  />
+                )}
+                {/* <CFormSwitch
                   label="Game Star"
                   id="gameStar"
                   defaultChecked={gameStar}
                   onChange={() => setGameStar(!gameStar)}
-                />
+                /> */}
                 <CFormSwitch
                   label="Game Top Line"
                   id="gameTopLine"
                   defaultChecked={gameTopLine}
                   onChange={() => setGameTopLine(!gameTopLine)}
                 />
+                {gameTopLine && (
+                  <CFormInput
+                    type="text"
+                    id="gameTopLinePrize"
+                    placeholder="Game Top Line Prize"
+                    onChange={(e) => { setGameTopLinePrize(e) }}
+                  />
+                )}
                 <CFormSwitch
                   label="Game Middle Line"
                   id="gameMiddleLine"
                   defaultChecked={gameMiddleLine}
                   onChange={() => setGameMiddleLine(!gameMiddleLine)}
                 />
+                {gameMiddleLine &&
+                  <CFormInput
+                    type="text"
+                    id="gameMiddleLinePrize"
+                    placeholder="Game Middle Line Prize"
+                    onChange={(e) => { setGameMiddleLinePrize(e) }}
+                  />
+                }
                 <CFormSwitch
                   label="Game Bottom Line"
                   id="gameBottomLine"
                   defaultChecked={gameBottomLine}
                   onChange={() => setGameBottomLine(!gameBottomLine)}
                 />
-                <CFormSwitch
+                {gameBottomLine &&
+                  <CFormInput
+                    type="text"
+                    id="gameBottomLinePrize"
+                    placeholder="Game Bottom Line Prize"
+                    onChange={(e) => { setGameBottomLinePrize(e) }}
+                  />
+                }
+                {/* <CFormSwitch
                   label="Game Corner"
                   id="gameCorner"
                   defaultChecked={gameCorner}
                   onChange={() => setGameCorner(!gameCorner)}
-                />
-                <CFormSwitch
+                /> */}
+                {/* <CFormSwitch
                   label="Game Half Sheet"
                   id="gameHalfSheet"
                   defaultChecked={gameHalfSheet}
                   onChange={() => setGameHalfSheet(!gameHalfSheet)}
-                />
+                /> */}
                 <CFormSwitch
-                  label="Game Housefull"
+                  label="First Full house"
                   id="gameHousefull"
                   defaultChecked={gameHousefull}
                   onChange={() => setGameHousefull(!gameHousefull)}
                 />
+                {gameHousefull &&
+                  <CFormInput
+                    type="text"
+                    id="gameHousefullPrize"
+                    placeholder="Game Housefull Prize"
+                    onChange={(e) => { setGameHouseFullPrize(e) }}
+                  />
+                }
+                <CFormSwitch
+                  label="Second Full house"
+                  id="gameSecondHousefull"
+                  defaultChecked={gameSecondHousefull}
+                  onChange={() => setGameSecondHousefull(!gameSecondHousefull)}
+                />
+                {gameSecondHousefull &&
+                  <CFormInput
+                    type="text"
+                    id="gameSecondHousefullPrize"
+                    placeholder="Game Second Housefull Prize"
+                    onChange={(e) => { setGameSecondHouseFullPrize(e) }}
+                  />
+                }
                 <CFormLabel htmlFor="gameStatus">Game Status</CFormLabel>
                 <CFormSelect defaultValue={gameStatus} id="gameStatus" onChange={(e) => { setGameStatus(e.target.value) }}>
                   <option value="" selected disabled>Select Status</option>

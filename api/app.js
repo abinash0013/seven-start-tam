@@ -302,6 +302,8 @@ app.post('/saveGame', async (req, res) => {
           userPhone: "",
           ticketUniquieId: gameId + "" + i + new Date().getTime(),
           bookingDateAndTime: new Date().getTime(),
+          winnerTag: "",
+          winnerPrize: "",
           dateSet: generateTambolaTicket()
         }
         mainArr.push(jsonset);
@@ -312,8 +314,8 @@ app.post('/saveGame', async (req, res) => {
       }));
       const numberSetJsonString = JSON.stringify(numbersWithStatus, null, 2); // The third argument is for pretty formatting (2 spaces for indentation)
       // console.log("numbersrrrjsonString", numberSetJsonString);
-      con.query('INSERT INTO `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_number_set`=?, `game_amount`=?, `game_amount_per_ticket_to_agent`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=?,`ticket_set`=?',
-        [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, numberSetJsonString.toString(), req.body.gameAmount, req.body.gameAmountPerTicketToAgent, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus, JSON.stringify(mainArr)],
+      con.query('INSERT INTO `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_number_set`=?, `game_amount`=?, `game_amount_per_ticket_to_agent`=?, `game_quick_fire`=?, `quick_seven_prize`=?, `game_top_line`=?, `top_line_prize`=?, `game_middle_line`=?, `middle_line_prize`=?, `game_bottom_line`=?, `bottom_line_prize`=?, `game_housefull`=?, `first_full_house_prize`=?, `gameSecondHousefull`=?, `second_full_house_prize`=?, `game_status`=?,`ticket_set`=?',
+        [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, numberSetJsonString.toString(), req.body.gameAmount, req.body.gameAmountPerTicketToAgent, req.body.gameQuickFire, req.body.gameQuickSevenPrize, req.body.gameTopLine, req.body.gameTopLinePrize, req.body.gameMiddleLine, req.body.gameMiddleLinePrize, req.body.gameBottomLine, req.body.gameBottomLinePrize, req.body.gameHousefull, req.body.gameHouseFullPrize, req.body.gameSecondHousefull, req.body.gameSecondHouseFullPrize, req.body.gameStatus, JSON.stringify(mainArr)],
         function (error, result, fields) {
           if (error) throw error;
           if (error) {
@@ -337,6 +339,7 @@ app.get('/getNumberOneToHundredForCalling', async (req, res) => {
 
 // ::::::::::::::::::::::::::::::::::::::::: Matched Ticket For Booking(calling this api to start game)
 app.post('/matchedTicketForBooking', async (req, res) => {
+  let quickSevenAssigned = false;
   const currentDate = new Date();
   // Extracting Date Components
   const year = currentDate.getFullYear();
@@ -352,7 +355,7 @@ app.post('/matchedTicketForBooking', async (req, res) => {
   const fullDate = `${year}-${month > 9 ? month : `0` + month}-${day > 9 ? day : `0` + day}`
   const fullTime = `${hours}:${minutes}`
   console.log("Date & Time:", fullDate, fullTime);
-  con.query('SELECT `game_id`,`game_number_set` FROM `tbl_game` WHERE game_start_date=? AND game_start_time < ?',
+  con.query('SELECT `game_id`,`game_number_set`,`ticket_set` FROM `tbl_game` WHERE game_start_date=? AND game_start_time < ?',
     [fullDate, fullTime],
     function (error, result, fields) {
       if (error) throw error;
@@ -364,6 +367,8 @@ app.post('/matchedTicketForBooking', async (req, res) => {
           console.log("qqqwwwse", result)
           console.log("qqqwwwseee", result[0].game_number_set)
           let numberData = JSON.parse(result[0].game_number_set);
+          let ticketData = JSON.parse(result[0].ticket_set)
+          console.log("ticketDataaaa", ticketData)
           // let numberData = JSON.stringify(result[0].game_number_set);
           let gameIdVar = result[0].game_id;
           console.log("qqqwwwq", numberData)
@@ -388,6 +393,38 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                   numberData[index].status = "true";
                 }
               })
+
+              ticketData?.map((ticketDataItem, ticketDataIndex) => {
+                if (ticketDataItem.winnerTag == "quick_seven") {
+                  quickSevenAssigned = true;
+                }
+              })
+
+              // let residvar = getWinnerPrize(gameIdVar);
+              ticketData?.map((ticketDataItem, ticketDataIndex) => {
+                // console.log("ticketDataItemmm", ticketDataItem);
+                let quickSevenNumber = 0;
+                ticketDataItem.dateSet.map((dateSetItem, dateSetIndex) => {
+                  // console.log("dateSetItemmm", dateSetItem);
+                  // console.log("randomNumberrr", dateSetItem, randomNumber, quickSevenAssigned);
+                  if (dateSetItem.number == randomNumber) {
+                    ticketData[ticketDataIndex].dateSet[dateSetIndex].status = true;
+                  }
+                  if (quickSevenAssigned == false) {
+                    if (dateSetItem.status) {
+                      quickSevenNumber = quickSevenNumber + 1;
+                      // console.log("randomNumbessrrr", quickSevenAssigned, quickSevenNumber); 
+                      if (quickSevenNumber == 7) {
+                        console.log("quick_seven_prizeee", getWinnerPrize(gameIdVar, "quick_seven_prize"));
+                        ticketDataItem.winnerTag = "quick_seven"
+                        ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "quick_seven_prize")
+                        quickSevenAssigned = true
+                      }
+                    }
+                  }
+                })
+              })
+
               // console.log("numberDataaaa", numberData);
               // userRef.set(data)
               ref.set({
@@ -395,8 +432,9 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                 number_set: JSON.stringify(numberData),
                 currentCalledNumber: randomNumber
               })
-              con.query('UPDATE `tbl_game` SET `game_number_set`=? WHERE `game_id`=?',
-                [JSON.stringify(numberData), gameIdVar],
+
+              con.query('UPDATE `tbl_game` SET `game_number_set`=?, `ticket_set`=? WHERE `game_id`=?',
+                [JSON.stringify(numberData), JSON.stringify(ticketData), gameIdVar],
               )
             } else {
               clearInterval(interval); // Stop the timer when 100 unique numbers are generated
@@ -404,7 +442,7 @@ app.post('/matchedTicketForBooking', async (req, res) => {
             }
           }
           // Set a timer to call the function every 100 milliseconds
-          const interval = setInterval(generateUniqueRandomNumber, 20000);
+          const interval = setInterval(generateUniqueRandomNumber, 1000);
           ResponseHandler(res, true, "Successfully..", result)
         } else {
           ResponseHandler(res, false, "Sorry., Unable to..", result)
@@ -412,6 +450,27 @@ app.post('/matchedTicketForBooking', async (req, res) => {
       }
     });
 })
+
+const getWinnerPrize = (gameId, gamePrizeType) => {
+  con.query('SELECT * FROM `tbl_game` WHERE game_id=? ',
+    [gameId],
+    function (error, result, fields) {
+      if (error) throw error;
+      console.log("pppp", result);
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result)
+      } else {
+        if (result) {
+          if (gamePrizeType == "quick_seven_prize") {
+            console.log("resultwinner", result, result[0].quick_seven_prize)
+            return result[0].quick_seven_prize;
+          }
+          // ResponseHandler(res, true, "success", result)
+        }
+      }
+    }
+  )
+}
 
 // ::::::::::::::::::::::::::::::::::::::::: Edit Game
 app.put('/editGame', async (req, res) => {

@@ -62,7 +62,7 @@ const Ticket = (props) => {
   // const ticketNumberUpdate = async () => {
   //   number.map((numberData, index) => {
   //     console.log("one");
-  //     ticket.map((ticketData) => {
+  //     ticket.map((ticketData) => {a
   //       console.log("two");
   //       JSON.parse(ticketData.dateSet).map((ticketDataNumber) => {
   //         console.log("logticketData", JSON.stringify(ticketDataNumber));
@@ -85,10 +85,10 @@ const Ticket = (props) => {
             <div className="container mx-auto mt-8">
               <div className="containerInfo">
                 <div className="containerInfoFirstInnerItem">
-                  <div className="containerInfoInnerItemSerial">1</div>
-                  <div className="containerInfoInnerItem">Abinash</div>
+                  <div className="containerInfoInnerItemSerial">{item.id}</div>
+                  <div className="containerInfoInnerItem">{item.userName}{item.userPhone}</div>
                 </div>
-                <div className="containerInfoInnerItem">Status</div>
+                <div className="containerInfoInnerItem">{item.winnerTag},{item.winnerPrize}</div>
               </div>
               <div className="number-card">
                 {/* {console.log("eeeeewwew1", ticket[0].dateSet)}
