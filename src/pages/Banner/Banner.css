@@ -12,3 +12,15 @@
   height: 100vh;
   width: 100%;
 }
+
+.disclaimerModal {
+  height: 100px;
+  width: 100px;
+  background-color: aliceblue;
+}
+
+@media (max-width: 425px) {
+  .projectImages {
+    height: 70vh;
+  }
+}

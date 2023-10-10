@@ -34,4 +34,4 @@ const ex_query = (sql, req, res, fields) => {
 
 app.listen(3003, function () {
   console.log('Server is up and Rudding on port 3000!');
-});
+}); 

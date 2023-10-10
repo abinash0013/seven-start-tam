@@ -3,6 +3,8 @@ const base = {
     getNumberOneToHundredForCalling: mainUrl + `getNumberOneToHundredForCalling`,
     ticketCardViewForUser: mainUrl + `ticketCardViewForUser`,
     updateTicketStatus: mainUrl + `updateTicketStatus`,
+    disclaimerList: mainUrl + `disclaimerList`,
+    announcementList: mainUrl + `announcementList`,
     // adminLogin: mainUrl + `adminLogin`,
     // saveAgent: mainUrl + `saveAgent`,
     // agentsList: mainUrl + `agentsList`,

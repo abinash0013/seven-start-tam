@@ -167,7 +167,6 @@ app.put('/editUser', async (req, res) => {
     [req.body.name, req.body.email, req.body.phone, req.body.gender, req.body.id],
     function (error, result, fields) {
       if (error) throw error;
-      // console.log("pppp", result);
       if (error) {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
@@ -292,7 +291,6 @@ app.post('/saveGame', async (req, res) => {
       let resultLength = result.length
       gameId = result[resultLength - 1].game_id + 1
       let mainArr = [];
-      // for (i = 1; i <= 10; i++) {
       for (i = 1; i <= req.body.gameMaximumTicketSell; i++) {
         let jsonset = {
           id: i,
@@ -313,7 +311,6 @@ app.post('/saveGame', async (req, res) => {
         status: 'false'
       }));
       const numberSetJsonString = JSON.stringify(numbersWithStatus, null, 2); // The third argument is for pretty formatting (2 spaces for indentation)
-      // console.log("numbersrrrjsonString", numberSetJsonString);
       con.query('INSERT INTO `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_number_set`=?, `game_amount`=?, `game_amount_per_ticket_to_agent`=?, `game_quick_fire`=?, `quick_seven_prize`=?, `game_top_line`=?, `top_line_prize`=?, `game_middle_line`=?, `middle_line_prize`=?, `game_bottom_line`=?, `bottom_line_prize`=?, `game_housefull`=?, `first_full_house_prize`=?, `gameSecondHousefull`=?, `second_full_house_prize`=?, `game_status`=?,`ticket_set`=?',
         [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, numberSetJsonString.toString(), req.body.gameAmount, req.body.gameAmountPerTicketToAgent, req.body.gameQuickFire, req.body.gameQuickSevenPrize, req.body.gameTopLine, req.body.gameTopLinePrize, req.body.gameMiddleLine, req.body.gameMiddleLinePrize, req.body.gameBottomLine, req.body.gameBottomLinePrize, req.body.gameHousefull, req.body.gameHouseFullPrize, req.body.gameSecondHousefull, req.body.gameSecondHouseFullPrize, req.body.gameStatus, JSON.stringify(mainArr)],
         function (error, result, fields) {
@@ -345,6 +342,7 @@ app.post('/matchedTicketForBooking', async (req, res) => {
   let bottomLineAssigned = false;
   let fullHouseCount = 0;
   const currentDate = new Date();
+
   // Extracting Date Components
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth() + 1; // Months are zero-indexed, so add 1
@@ -363,15 +361,16 @@ app.post('/matchedTicketForBooking', async (req, res) => {
     [fullDate, fullTime],
     function (error, result, fields) {
       if (error) throw error;
-      console.log("pppp", result);
+      console.log("ppppw", result);
       if (error) {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
         if (result) {
-          console.log("qqqwwwse", result)
+          console.log("qqqwwwsessw", result)
           console.log("qqqwwwseee", result[0].game_number_set)
           let numberData = JSON.parse(result[0].game_number_set);
           let ticketData = JSON.parse(result[0].ticket_set)
+          // let ticketData = JSON.stringify(result[0].ticket_set)
           console.log("ticketDataaaa", ticketData)
           // let numberData = JSON.stringify(result[0].game_number_set);
           let gameIdVar = result[0].game_id;
@@ -413,7 +412,6 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                 }
               })
 
-              // let residvar = getWinnerPrize(gameIdVar);
               ticketData?.map((ticketDataItem, ticketDataIndex) => {
                 // console.log("ticketDataItemmm", ticketDataItem);
                 if (ticketDataItem.winnerTag == "") {
@@ -435,9 +433,10 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                         // console.log("randomNumbessrrr", quickSevenAssigned, quickSevenNumber); 
                         if (quickSevenNumber == 7) {
                           // let winnerPrizeVar = await getWinnerPrize(gameIdVar, "quick_seven_prize")
-                          console.log("quick_seven_prizeee", getWinnerPrize(gameIdVar, "quick_seven_prize"));
+                          // console.log("quick_seven_prizeee", getWinnerPrize(gameIdVar, "quick_seven_prize"));
                           ticketDataItem.winnerTag = "quick_seven"
-                          ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "quick_seven_prize")
+                          // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "quick_seven_prize")
+                          ticketDataItem.winnerPrize = ""
                           quickSevenAssigned = true
                         }
                       }
@@ -448,7 +447,8 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                       }
                       if (topLineNumber == 5 && dateSetItem.status == true && dateSetItem.line == "top") {
                         ticketDataItem.winnerTag = "top_line"
-                        ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "top_line")
+                        // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "top_line")
+                        ticketDataItem.winnerPrize = ""
                         topLineAssigned = true
                       }
                     }
@@ -458,7 +458,8 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                       }
                       if (middleLineNumber == 5 && dateSetItem.status == true && dateSetItem.line == "middle") {
                         ticketDataItem.winnerTag = "middle_line"
-                        ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "middle_line")
+                        // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "middle_line")
+                        ticketDataItem.winnerPrize = ""
                         middleLineAssigned = true
                       }
                     }
@@ -468,7 +469,8 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                       }
                       if (bottomLineNumber == 5 && dateSetItem.status == true && dateSetItem.line == "bottom") {
                         ticketDataItem.winnerTag = "bottom_line"
-                        ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "bottom_line")
+                        // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "bottom_line")
+                        ticketDataItem.winnerPrize = ""
                         bottomLineAssigned = true
                       }
                     }
@@ -478,7 +480,8 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                       }
                       if (firstFullHouseNumber == 15 && dateSetItem.status == true) {
                         ticketDataItem.winnerTag = "firstFullHouse"
-                        ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "firstFullHouse")
+                        // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "firstFullHouse")
+                        ticketDataItem.winnerPrize = ""
                         fullHouseCount = fullHouseCount + 1
                       }
                     }
@@ -488,7 +491,8 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                       }
                       if (secondFullHouseNumber == 15 && dateSetItem.status == true) {
                         ticketDataItem.winnerTag = "secondFullHouse"
-                        ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "secondFullHouse")
+                        // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "secondFullHouse")
+                        ticketDataItem.winnerPrize = ""
                         fullHouseCount = fullHouseCount + 1
                       }
                     }
@@ -496,14 +500,11 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                 }
               })
 
-              // console.log("numberDataaaa", numberData);
-              // userRef.set(data)
               ref.set({
                 game_id: gameIdVar,
                 number_set: JSON.stringify(numberData),
                 currentCalledNumber: randomNumber
               })
-
               con.query('UPDATE `tbl_game` SET `game_number_set`=?, `ticket_set`=? WHERE `game_id`=?',
                 [JSON.stringify(numberData), JSON.stringify(ticketData), gameIdVar],
               )
@@ -522,46 +523,46 @@ app.post('/matchedTicketForBooking', async (req, res) => {
     });
 })
 
-const getWinnerPrize = async (gameId, gamePrizeType) => {
-  con.query('SELECT * FROM `tbl_game` WHERE game_id=? ',
-    [gameId],
-    function (error, result, fields) {
-      if (error) throw error;
-      console.log("pppp", result);
-      if (error) {
-        ResponseHandler(res, false, "Api Issue", result)
-      } else {
-        if (result) {
-          if (gamePrizeType == "quick_seven_prize") {
-            console.log("resultwinner", result, result[0].quick_seven_prize)
-            return result[0].quick_seven_prize;
-          }
-          if (gamePrizeType == "top_line_prize") {
-            console.log("resultwinner", result, result[0].top_line_prize)
-            return result[0].top_line_prize;
-          }
-          if (gamePrizeType == "middle_line_prize") {
-            console.log("resultwinner", result, result[0].middle_line_prize)
-            return result[0].middle_line_prize;
-          }
-          if (gamePrizeType == "bottom_line_prize") {
-            console.log("resultwinner", result, result[0].bottom_line_prize)
-            return result[0].bottom_line_prize;
-          }
-          // ResponseHandler(res, true, "success", result)
-        }
-      }
-    }
-  )
-}
+// const getWinnerPrize = async (gameId, gamePrizeType) => {
+//   con.query('SELECT * FROM `tbl_game` WHERE game_id=? ',
+//     [gameId],
+//     function (error, result, fields) {
+//       if (error) throw error;
+//       console.log("pppp", result);
+//       if (error) {
+//         ResponseHandler(res, false, "Api Issue", result)
+//       } else {
+//         if (result) {
+//           if (gamePrizeType == "quick_seven_prize") {
+//             console.log("resultwinner", result, result[0].quick_seven_prize)
+//             return result[0].quick_seven_prize;
+//           }
+//           if (gamePrizeType == "top_line_prize") {
+//             console.log("resultwinner", result, result[0].top_line_prize)
+//             return result[0].top_line_prize;
+//           }
+//           if (gamePrizeType == "middle_line_prize") {
+//             console.log("resultwinner", result, result[0].middle_line_prize)
+//             return result[0].middle_line_prize;
+//           }
+//           if (gamePrizeType == "bottom_line_prize") {
+//             console.log("resultwinner", result, result[0].bottom_line_prize)
+//             return result[0].bottom_line_prize;
+//           }
+//           // ResponseHandler(res, true, "success", result)
+//         }
+//       }
+//     }
+//   )
+// }
 
 // ::::::::::::::::::::::::::::::::::::::::: Edit Game
+
 app.put('/editGame', async (req, res) => {
   con.query('UPDATE `tbl_game` SET `game_name`=?, `game_start_date`=?, `game_start_time`=?, `game_maximum_ticket_sell`=?, `game_amount`=?, `game_quick_fire`=?, `game_star`=?, `game_top_line`=?, `game_middle_line`=?, `game_bottom_line`=?, `game_corner`=?, `game_half_sheet`=?, `game_housefull`=?, `game_status`=? WHERE `game_id`=?',
     [req.body.gameName, req.body.gameStartDate, req.body.gameStartTime, req.body.gameMaximumTicketSell, req.body.gameAmount, req.body.gameQuickFire, req.body.gameStar, req.body.gameTopLine, req.body.gameMiddleLine, req.body.gameBottomLine, req.body.gameCorner, req.body.gameHalfSheet, req.body.gameHousefull, req.body.gameStatus, req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;
-      // console.log("pppp", result);
       if (error) {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
@@ -665,7 +666,6 @@ app.put('/editDisclaimer', async (req, res) => {
     [req.body.disclaimerTitle, req.body.disclaimerMessage, req.body.disclaimerId],
     function (error, result, fields) {
       if (error) throw error;
-      // console.log("pppp", result);
       if (error) {
         ResponseHandler(res, false, "Api Issue", result)
       } else {
@@ -723,10 +723,8 @@ app.post('/viewTicketForAgents', async (req, res) => {
 
 // ::::::::::::::::::::::::::::::::::::: Book Ticket By Agents
 app.post('/bookTicketByAgents', async (req, res) => {
-  // console.log("reqeqqew", req.body.gameId, req);
   con.query("SELECT * FROM tbl_game WHERE game_id=?", [req.body.gameId],
     function (error, result, fields) {
-      // if (error) throw error;
       if (error) {
         ResponseHandler(res, false, "Api Issue", result);
       } else {
@@ -778,8 +776,6 @@ app.post('/bookTicketByAgents', async (req, res) => {
     }
   )
 })
-
-// ::::::::::::::::::::::::::::::::::::: 
 
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
 app.post('/ticketCardViewForUser', async (req, res) => {

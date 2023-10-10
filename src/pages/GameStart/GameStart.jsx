@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import "./GameStart.css";
-import { getApiCall, postApiCall } from '../../services/AppSetting';
-import { base } from '../../constants/Data.constant';
-import firebase from 'firebase/compat/app';
 import "firebase/compat/database";
 import Ticket from '../Ticket/Ticket';
+import firebase from 'firebase/compat/app';
+import { base } from '../../constants/Data.constant';
+import { getApiCall, postApiCall } from '../../services/AppSetting';
 
 const GameStart = () => {
   const [number, setNumber] = useState([]);
@@ -37,7 +37,7 @@ const GameStart = () => {
   // Fetch the required data using the get() method
   const fetch_data = () => {
     ref.on("value", snapshot => {
-      console.log("snapshotttt", snapshot.val());
+      // console.log("snapshotttt", snapshot.val());
       if (snapshot.val() != null) {
         setNumber(JSON.parse(snapshot.val().number_set));
         setGameId(snapshot.val().game_id);
@@ -52,15 +52,15 @@ const GameStart = () => {
   }, []);
 
   const ticketCardView = async (gameId) => {
-    console.log("one");
+    // console.log("one");
     let req = {
       gameId: gameId
     }
     let result = await postApiCall(base.ticketCardViewForUser, req)
-    console.log("resultttweww", result);
+    // console.log("resultttweww", result);
     try {
       let convertJSON = JSON.parse(result.data[0].ticket_set);
-      console.log("convertJSONnn", convertJSON);
+      // console.log("convertJSONnn", convertJSON);
       setTicket(convertJSON)
     } catch (error) {
       // console.log("errorjson", error);
@@ -91,7 +91,7 @@ const GameStart = () => {
         <div class="outerContainer">
           <div class="container mx-auto mt-8">
             <div class="number-card">
-              {console.log("testingggga", number)}
+              {/* {console.log("testingggga", number)} */}
               {number?.map((itemNumber, index) => (
                 // console.log("itemNumberrrr", itemNumber.number)
                 <div div class="number" key={index} style={{ backgroundColor: itemNumber.status == "true" ? "red" : "" }}>

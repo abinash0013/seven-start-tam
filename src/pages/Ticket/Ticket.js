@@ -8,7 +8,7 @@ import { base } from '../../constants/Data.constant';
 
 const Ticket = (props) => {
   const { number, gameId, ticket, setTicket } = props;
-  console.log("numberrrrrticket", ticket);
+  // console.log("numberrrrrticket", ticket);
   // const [ticket, setTicket] = useState([]);
   const [ticket1, setTicket1] = useState([]);
 
@@ -27,11 +27,11 @@ const Ticket = (props) => {
             // console.log("ticketDataNumberrrr", ticketDataNumber);
             // console.log("ifcon1", numberData.number, ticketDataNumber.number, numberData.status);
             if (numberData.number == ticketDataNumber.number && numberData.status == "true") {
-              console.log("ifcon", numberData.number, ticketDataNumber.number, numberData.status);
+              // console.log("ifcon", numberData.number, ticketDataNumber.number, numberData.status);
               ticketDataNumber.status = true
             }
           })
-          console.log("ticketDatasetttypoflh", typeof ticketData)
+          // console.log("ticketDatasetttypoflh", typeof ticketData)
           // console.log("ticketDatasetttypoflengthhh", ticketData)
           // setTicket(ticketData)
         })
@@ -80,7 +80,7 @@ const Ticket = (props) => {
       {/* {JSON.stringify(ticket1)} */}
       {ticket1?.length > 0 &&
         ticket1?.map((item, index) => {
-          console.log("itemitemitem22", item);
+          // console.log("itemitemitem22", item);
           return <div className="outerContainer">
             <div className="container mx-auto mt-8">
               <div className="containerInfo">
@@ -95,7 +95,7 @@ const Ticket = (props) => {
               {console.log("eeeeewwew2", JSON.stringify(ticket.dateSet[0]))} */}
                 {/* {ticket?.map((itemData) => { */}
                 {item?.dateSet?.map((item) => {
-                  console.log("itemdatasetitemmnumbetypof", item);
+                  // console.log("itemdatasetitemmnumbetypof", item);
                   return <div className="number" style={{ color: item.status == true ? 'red' : "blue" }}>{item.number}{item.status}</div>
                 })
                 }

@@ -1,0 +1,13 @@
+.announcementOuterContainer {
+  background: radial-gradient(black, transparent);
+  padding: 5px;
+  position: fixed;
+  width: 100%;
+}
+
+.announcementData {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
