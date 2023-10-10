@@ -252,14 +252,20 @@ function generateTambolaTicket() {
     const row = [];
     // Generate nine unique random numbers for each row
     while (row.length < 9) {
-      const randomNumber = getRandomNumber(1, 99); // Assuming Tambola numbers range from 1 to 90
-      if (!row.includes(randomNumber)) {
-        row.push({
-          status: false,
-          number: randomNumber,
-          line: i == 0 ? 'top' : i == 1 ? "middle" : "bottom"
-        });
-      }
+      let randomNumber = ""
+      do {
+        randomNumber = getRandomNumber(1, 90);
+      } while (row.includes(randomNumber));
+      //  uniqueRandomNumbers.push(randomNumber);
+
+      //const randomNumber = getRandomNumber(1, 90); // Assuming Tambola numbers range from 1 to 90
+      // if (!row.includes(randomNumber)) {
+      row.push({
+        status: false,
+        number: randomNumber,
+        line: i == 0 ? 'top' : i == 1 ? "middle" : "bottom"
+      });
+      // }
     }
     let arr = []
     while (arr.length < 4) {
@@ -306,7 +312,7 @@ app.post('/saveGame', async (req, res) => {
         }
         mainArr.push(jsonset);
       }
-      const numbersWithStatus = Array.from({ length: 100 }, (_, i) => ({
+      const numbersWithStatus = Array.from({ length: 90 }, (_, i) => ({
         number: i + 1,
         status: 'false'
       }));
@@ -384,9 +390,9 @@ app.post('/matchedTicketForBooking', async (req, res) => {
           // Function to generate and log unique random numbers
           let randomNumber;
           async function generateUniqueRandomNumber() {
-            if (uniqueRandomNumbers.length < 100) {
+            if (uniqueRandomNumbers.length < 90) {
               do {
-                randomNumber = getRandomNumber(1, 100);
+                randomNumber = getRandomNumber(1, 90);
               } while (uniqueRandomNumbers.includes(randomNumber));
               uniqueRandomNumbers.push(randomNumber);
               // console.log(randomNumber);
@@ -421,7 +427,7 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                   let bottomLineNumber = 0;
                   let firstFullHouseNumber = 0;
                   let secondFullHouseNumber = 0;
-                  ticketDataItem.dateSet.map((dateSetItem, dateSetIndex) => {
+                  ticketDataItem?.dateSet?.map((dateSetItem, dateSetIndex) => {
                     // console.log("dateSetItemmm", dateSetItem);
                     // console.log("randomNumberrr", dateSetItem, randomNumber, quickSevenAssigned);
                     if (dateSetItem.number == randomNumber) {
@@ -509,12 +515,12 @@ app.post('/matchedTicketForBooking', async (req, res) => {
                 [JSON.stringify(numberData), JSON.stringify(ticketData), gameIdVar],
               )
             } else {
-              clearInterval(interval); // Stop the timer when 100 unique numbers are generated
+              clearInterval(interval); // Stop the timer when 90 unique numbers are generated
               // console.log("Timer stopped.");
             }
           }
           // Set a timer to call the function every 100 milliseconds
-          const interval = setInterval(generateUniqueRandomNumber, 1000);
+          const interval = setInterval(generateUniqueRandomNumber, 10000);
           ResponseHandler(res, true, "Successfully..", result)
         } else {
           ResponseHandler(res, false, "Sorry., Unable to..", result)

@@ -9,6 +9,7 @@ import { getApiCall, postApiCall } from '../../services/AppSetting';
 const GameStart = () => {
   const [number, setNumber] = useState([]);
   const [gameId, setGameId] = useState("");
+  const [currentNumberCall, setCurrentNumberCall] = useState("");
   const [ticket, setTicket] = useState([]);
 
   // Initialize Firebase with your config
@@ -37,14 +38,39 @@ const GameStart = () => {
   // Fetch the required data using the get() method
   const fetch_data = () => {
     ref.on("value", snapshot => {
-      // console.log("snapshotttt", snapshot.val());
+      console.log("snapshotttt", snapshot.val());
       if (snapshot.val() != null) {
         setNumber(JSON.parse(snapshot.val().number_set));
         setGameId(snapshot.val().game_id);
+        // setCurrentNumberCall(snapshot.val().currentCalledNumber)
         ticketCardView(snapshot.val().game_id);
+        handleSpeak(snapshot.val().currentCalledNumber)
       }
     })
   }
+
+  const synth = window.speechSynthesis;
+
+  const handleSpeak = (val) => {
+    let seprateNumber = val.toString().split('');
+    let textForCalling = seprateNumber[0] + "and" + seprateNumber[1] + val
+    // Create a new SpeechSynthesisUtterance object
+    const utterance = new SpeechSynthesisUtterance(textForCalling);
+
+    // Specify a female voice (you may need to adjust this based on available voices)
+    const voices = synth.getVoices();
+    const femaleVoice = voices.find((voice) => voice.name.includes('Female'));
+
+    if (femaleVoice) {
+      utterance.voice = femaleVoice;
+    }
+
+    // Set the speech rate (0.5 is slower, 2.0 is faster)
+    utterance.rate = 1; // Adjust the rate as needed
+
+    // Speak the text
+    synth.speak(utterance);
+  };
 
   useEffect(() => {
     fetch_data();
