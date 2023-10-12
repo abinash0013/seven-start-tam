@@ -5,6 +5,8 @@ import Ticket from '../Ticket/Ticket';
 import firebase from 'firebase/compat/app';
 import { base } from '../../constants/Data.constant';
 import { getApiCall, postApiCall } from '../../services/AppSetting';
+import Winner from '../Winner/Winner';
+import Banner from '../Banner/Banner';
 
 const GameStart = () => {
   const [number, setNumber] = useState([]);
@@ -42,7 +44,7 @@ const GameStart = () => {
       if (snapshot.val() != null) {
         setNumber(JSON.parse(snapshot.val().number_set));
         setGameId(snapshot.val().game_id);
-        // setCurrentNumberCall(snapshot.val().currentCalledNumber)
+        setCurrentNumberCall(snapshot.val().currentCalledNumber)
         ticketCardView(snapshot.val().game_id);
         handleSpeak(snapshot.val().currentCalledNumber)
       }
@@ -113,6 +115,8 @@ const GameStart = () => {
 
   return (
     <>
+      <Banner number={currentNumberCall} />
+
       <div class="ticketSection">
         <div class="outerContainer">
           <div class="container mx-auto mt-8">
@@ -129,6 +133,7 @@ const GameStart = () => {
         </div>
       </div>
       <Ticket number={number} gameId={gameId} setTicket={setTicket} ticket={ticket} />
+      <Winner ticket={ticket} />
     </>
   )
 }

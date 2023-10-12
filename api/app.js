@@ -248,24 +248,26 @@ function generateTambolaTicket() {
   const numberArr = [];
   const ticket = [];
   // Generate three rows with nine numbers each
+  const seen = new Set();
   for (let i = 0; i < 3; i++) {
     const row = [];
     // Generate nine unique random numbers for each row
     while (row.length < 9) {
-      let randomNumber = ""
-      do {
-        randomNumber = getRandomNumber(1, 90);
-      } while (row.includes(randomNumber));
+      let randomNumber = getRandomNumber(1, 90);
+      // do {
+      // randomNumber = getRandomNumber(1, 90);
+      // } while (row.includes(randomNumber));
       //  uniqueRandomNumbers.push(randomNumber);
 
       //const randomNumber = getRandomNumber(1, 90); // Assuming Tambola numbers range from 1 to 90
-      // if (!row.includes(randomNumber)) {
-      row.push({
-        status: false,
-        number: randomNumber,
-        line: i == 0 ? 'top' : i == 1 ? "middle" : "bottom"
-      });
-      // }
+      if (!JSON.stringify(row).includes(randomNumber)) {
+
+        row.push({
+          status: false,
+          number: randomNumber,
+          line: i == 0 ? 'top' : i == 1 ? "middle" : "bottom"
+        });
+      }
     }
     let arr = []
     while (arr.length < 4) {
@@ -404,17 +406,19 @@ app.post('/matchedTicketForBooking', async (req, res) => {
               })
 
               ticketData?.map((ticketDataItem, ticketDataIndex) => {
-                if (ticketDataItem.winnerTag == "quick_seven") {
-                  quickSevenAssigned = true;
-                }
-                if (ticketDataItem.winnerTag == "top_line") {
-                  topLineAssigned = true;
-                }
-                if (ticketDataItem.winnerTag == "middle_line") {
-                  middleLineAssigned = true;
-                }
-                if (ticketDataItem.winnerTag == "bottom_line") {
-                  bottomLineAssigned = true;
+                if (ticketDataItem.userName != "") {
+                  if (ticketDataItem.winnerTag == "quick_seven") {
+                    quickSevenAssigned = true;
+                  }
+                  if (ticketDataItem.winnerTag == "top_line") {
+                    topLineAssigned = true;
+                  }
+                  if (ticketDataItem.winnerTag == "middle_line") {
+                    middleLineAssigned = true;
+                  }
+                  if (ticketDataItem.winnerTag == "bottom_line") {
+                    bottomLineAssigned = true;
+                  }
                 }
               })
 

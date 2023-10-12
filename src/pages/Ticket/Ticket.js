@@ -88,7 +88,8 @@ const Ticket = (props) => {
                   <div className="containerInfoInnerItemSerial">{item.id}</div>
                   <div className="containerInfoInnerItem">{item.userName}{item.userPhone}</div>
                 </div>
-                <div className="containerInfoInnerItem">{item.winnerTag},{item.winnerPrize}</div>
+                {/* <div className="containerInfoInnerItem">{item.winnerTag},{item.winnerPrize}</div> */}
+                <div className="containerInfoInnerItem">{item.winnerTag}</div>
               </div>
               <div className="number-card">
                 {/* {console.log("eeeeewwew1", ticket[0].dateSet)}
@@ -106,6 +107,7 @@ const Ticket = (props) => {
         }
         )
       }
+
 
     </div>
   )
