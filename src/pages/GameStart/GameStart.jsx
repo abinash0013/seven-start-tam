@@ -116,7 +116,6 @@ const GameStart = () => {
   return (
     <>
       <Banner number={currentNumberCall} />
-
       <div class="ticketSection">
         <div class="outerContainer">
           <div class="container mx-auto mt-8">

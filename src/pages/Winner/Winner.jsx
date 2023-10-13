@@ -44,31 +44,37 @@ const Winner = (props) => {
   }
 
   return (
-    <>
+    <div className='winnerSectionOuterContainer'>
       {/* <div className='winnerSectionHeadingContainer'>Winner Section{JSON.stringify(ticket)}</div> */}
-      <div className='winnerSectionHeadingContainer'>Winner Section</div>
+      <div className='winnerSectionHeadingContainer'>Winner Announcement</div>
 
       <div className='winnerSectionContainer'>
         <div className='winnerSectionInnerContainer'>
-          <p className='winnerSectionContainerTitle'>Quick Seven : {quickSeven}</p>
+          <p className='winnerSectionContainerTitle'>Quick Seven</p>
+          <p className="winnerName">{quickSeven}</p>
         </div>
         <div className='winnerSectionInnerContainer'>
-          <p className='winnerSectionContainerTitle'>Top Line: {topLine}</p>
+          <p className='winnerSectionContainerTitle'>Top Line</p>
+          <p className="winnerName">{topLine}</p>
         </div>
         <div className='winnerSectionInnerContainer'>
-          <p className='winnerSectionContainerTitle'>Middle Line:{middleLine}</p>
+          <p className='winnerSectionContainerTitle'>Middle Line</p>
+          <p className="winnerName">{middleLine}</p>
         </div>
         <div className='winnerSectionInnerContainer'>
-          <p className='winnerSectionContainerTitle'>Bottom Line:{bottomLine}</p>
+          <p className='winnerSectionContainerTitle'>Bottom Line</p>
+          <p className="winnerName">{bottomLine}</p>
         </div>
         <div className='winnerSectionInnerContainer'>
-          <p className='winnerSectionContainerTitle'>First Full House:{firstFullHouse}</p>
+          <p className='winnerSectionContainerTitle'>First Full House</p>
+          <p className="winnerName">{firstFullHouse}</p>
         </div>
         <div className='winnerSectionInnerContainer'>
-          <p className='winnerSectionContainerTitle'>Second Full House:{secondFullHouse}</p>
+          <p className='winnerSectionContainerTitle'>Second Full House</p>
+          <p className="winnerName">{secondFullHouse}</p>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

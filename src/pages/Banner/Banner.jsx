@@ -4,13 +4,13 @@ import bannerImage from "./../../Images/banner.webp"
 import GameInfo from '../GameInfo/GameInfo'
 import Disclaimer from '../Disclaimer/Disclaimer'
 import Announcement from '../Announcement/Announcement'
-import numberCalled from "./../../Images/numberCalled.gif"
+// import numberCalled from "./../../Images/numberCalled.gif"
 
 const Banner = (props) => {
   return (
     <div className="projectImages">
       <div>{props.number}</div>
-      <img src={numberCalled} alt="loading..." />
+      {/* <img src={numberCalled} alt="loading..." /> */}
       <Announcement />
       <Disclaimer />
       <GameInfo />

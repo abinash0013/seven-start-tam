@@ -1,11 +1,5 @@
-.ticketSection {
-  background: linear-gradient(180deg, rgba(43, 3, 109, 1) 0%, rgba(139, 53, 64, 1) 100%);
-}
-
 .outerContainer {
   padding: 10px;
-  /* margin: 0px 20px; */
-  /* background: linear-gradient(180deg, rgba(43, 3, 109, 1) 0%, rgba(139, 53, 64, 0.3) 100%); */
 }
 
 .container {
