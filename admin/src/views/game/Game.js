@@ -67,10 +67,20 @@ const Game = () => {
   const [gameSecondHouseFullPrize, setGameSecondHouseFullPrize] = useState(false);
   const [gameStatus, setGameStatus] = useState("");
   const [time, setTime] = useState(new Date());
+  const [search, setSearch] = useState([]);
 
   const handleTimeChange = (newTime) => {
     setTime(newTime);
   };
+
+  const clearState = () => {
+    setGameQuickFire(false);
+    setGameTopLine(false);
+    setGameMiddleLine(false);
+    setGameBottomLine(false);
+    setGameHousefull(false);
+    setGameSecondHousefull(false);
+  }
 
   useEffect(() => {
     game_list();
@@ -78,7 +88,9 @@ const Game = () => {
 
   const game_list = async () => {
     let result = await getApiCall(base.gameList)
+    console.log("resultresultresult", result);
     setGameData(result)
+    setSearch(result)
   }
 
   const save_game = async () => {
@@ -94,8 +106,6 @@ const Game = () => {
       toast.error("Game Amount is Mandatory")
     } else if (gameAmountPerTicketToAgent == "") {
       toast.error("Game Amount Per Ticket To Agent is Mandatory")
-    } else if (gameStatus == "") {
-      toast.error("Game Amount Per Ticket To Agent is Mandatory")
     } else {
       let req = {
         gameName: gameName.target.value,
@@ -105,21 +115,21 @@ const Game = () => {
         gameAmount: gameAmount.target.value,
         gameAmountPerTicketToAgent: gameAmountPerTicketToAgent.target.value,
         gameQuickFire: gameQuickFire,
-        gameQuickSevenPrize: gameQuickSevenPrize.target.value,
+        gameQuickSevenPrize: gameQuickFire == false ? "0" : gameQuickSevenPrize.target.value,
         // gameStar: gameStar,
         gameTopLine: gameTopLine,
-        gameTopLinePrize: gameTopLinePrize.target.value,
+        gameTopLinePrize: gameTopLine == false ? "0" : gameTopLinePrize.target.value,
         gameMiddleLine: gameMiddleLine,
-        gameMiddleLinePrize: gameMiddleLinePrize.target.value,
+        gameMiddleLinePrize: gameMiddleLine == false ? "0" : gameMiddleLinePrize.target.value,
         gameBottomLine: gameBottomLine,
-        gameBottomLinePrize: gameBottomLinePrize.target.value,
+        gameBottomLinePrize: gameBottomLine == false ? "0" : gameBottomLinePrize.target.value,
         // gameCorner: gameCorner,
         // gameHalfSheet: gameHalfSheet,
         gameHousefull: gameHousefull,
-        gameHouseFullPrize: gameHouseFullPrize.target.value,
+        gameHouseFullPrize: gameHousefull == false ? "0" : gameHouseFullPrize.target.value,
         gameSecondHousefull: gameSecondHousefull,
-        gameSecondHouseFullPrize: gameSecondHouseFullPrize.target.value,
-        gameStatus: gameStatus
+        gameSecondHouseFullPrize: gameSecondHousefull == false ? "0" : gameSecondHouseFullPrize.target.value,
+        gameStatus: "Deactive"
       }
       console.log("saveGameApiCallreq", req);
       // debugger;
@@ -219,10 +229,21 @@ const Game = () => {
   return (
     <CRow>
       <CCol xs={12} className='mb-4'>
-        {/* <CButton color="primary" onClick={() => { showToasts(); }} onClose={() => setVisible(false)}>Add</CButton> */}
-        <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Create Game</CButton>
+        <div className='d-flex justify-content-between'>
+          <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Create Game</CButton>
+          <div class="w-25">
+            <CFormInput
+              type="text"
+              id="search"
+              placeholder="Search"
+              onChange={(e) => {
+                setSearch(gameData.filter(data => data.game_name.toLowerCase().includes((e.target.value).toLowerCase())))
+              }}
+            />
+          </div>
+        </div>
         <ToastContainer />
-        <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
+        <CModal alignment="center" visible={visible} onClose={() => { setVisible(false); clearState(); }}>
           <CModalHeader>
             <CModalTitle>Add</CModalTitle>
           </CModalHeader>
@@ -391,19 +412,25 @@ const Game = () => {
                     onChange={(e) => { setGameSecondHouseFullPrize(e) }}
                   />
                 }
-                <CFormLabel htmlFor="gameStatus">Game Status</CFormLabel>
-                <CFormSelect defaultValue={gameStatus} id="gameStatus" onChange={(e) => { setGameStatus(e.target.value) }}>
-                  <option value="" selected disabled>Select Status</option>
-                  <option value="Active">Active</option>
-                  <option value="Deactive">Deactive</option>
-                </CFormSelect>
+                <CFormLabel htmlFor="gameStatus">Game Statuss</CFormLabel>
+                <CFormInput
+                  type="text"
+                  id="gameSecondHousefullPrize"
+                  placeholder="Game Second Housefull Prize"
+                  value={"Deactive"}
+                  disabled
+                />
+                {/* <CFormSelect defaultValue={gameStatus} id="gameStatus" onChange={(e) => { setGameStatus(e.target.value) }}>
+                  <option value="Active" >Active</option>
+                  <option selected disabled>Deactive</option>
+                </CFormSelect> */}
               </div>
             </CForm>
           </CModalBody>
           <CModalFooter>
-            <CButton color="secondary" onClick={() => setEditModalVisible(false)}>
+            {/* <CButton color="secondary" onClick={() => setEditModalVisible(false)}>
               Cancel
-            </CButton>
+            </CButton> */}
             <CButton color="primary" onClick={() => save_game()}>Save</CButton>
           </CModalFooter>
         </CModal>
@@ -426,7 +453,7 @@ const Game = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {gameData.map((item, index) => {
+                {search.map((item, index) => {
                   console.log("gameListttt", item);
                   return <CTableRow key={index}>
                     <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
@@ -437,11 +464,7 @@ const Game = () => {
                     <CTableDataCell>{item.game_amount}</CTableDataCell>
                     <CTableDataCell>{item.game_status}</CTableDataCell>
                     <CTableDataCell>
-                      {/* <CButton color="info" className='me-2' onClick={() => { alert(item.game_id) }}>Ticket</CButton> */}
-                      {/* <Link to={`/ticketView`}><CButton color="info" className='me-2'>Ticket</CButton></Link> */}
                       <Link to={`/ticketView/${item.game_id}`}><CButton color="info" className='me-2'>Ticket</CButton></Link>
-                      {/* <Link to={`/ticketView/3` }><CButton color="info" className='me-2'>Ticket</CButton></Link> */}
-                      {/* <CButton color="info" className='me-2' onClick={() => { go_to_ticket_view(item) }}>Ticket</CButton> */}
                     </CTableDataCell>
                     <CTableDataCell>
                       <CButton color="warning" className='me-2' onClick={() => { get_edit_value(item) }}>More</CButton>
@@ -713,7 +736,7 @@ const Game = () => {
           </CCardBody>
         </CCard>
       </CCol>
-    </CRow>
+    </CRow >
   )
 }
 

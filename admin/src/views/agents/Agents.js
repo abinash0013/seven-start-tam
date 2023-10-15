@@ -42,7 +42,7 @@ const Agents = () => {
   const [password, setPassword] = useState("");
   const [gender, setGender] = useState("");
   const [status, setStatus] = useState("");
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState([]);
 
   useEffect(() => {
     agents_list();
@@ -59,6 +59,7 @@ const Agents = () => {
   const agents_list = async () => {
     let result = await getApiCall(base.agentsList)
     setAgentsData(result)
+    setSearch(result)
   }
 
   const save_agent = async () => {
@@ -129,7 +130,7 @@ const Agents = () => {
     }
     // console.log("reqreq", req);
     let result = await putApiCall(base.editAgent, req)
-    console.log("resultresult", result);
+    // console.log("resultresult", result);
     if (result.code == 200) {
       setEditModalVisible(false)
       agents_list();
@@ -146,35 +147,26 @@ const Agents = () => {
     }
     setPassword(newPassword);
     toast.error(newPassword)
-    console.log("newPassworddd", newPassword);
+    // console.log("newPassworddd", newPassword);
   };
 
-  // const _filter = (item, index) => {
-  //   console.log("itemfilter", item);
-  //   if (item.agents_name.toString().toUpperCase().search(search.toString().toUpperCase()) !== -1 ||
-  //     item.agents_email.toString().toUpperCase().search(search.toString().toUpperCase()) !== -1 ||
-  //     item.agents_phone.toString().toUpperCase().search(search.toString().toUpperCase()) !== -1 ||
-  //     item.agents_gender.toString().toUpperCase().search(search.toString().toUpperCase()) !== -1 ||
-  //     item.agents_address.toString().toUpperCase().search(search.toString().toUpperCase()) !== -1
-  //   ) {
-  //     return item;
-  //   }
-  // }
 
   return (
     <CRow>
       <CCol xs={12} className='mb-4'>
-        {/* <div className='d-flex justify-content-between'> */}
-        <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Add</CButton>
-        {/* <div class="w-25">
+        <div className='d-flex justify-content-between'>
+          <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Add</CButton>
+          <div class="w-25">
             <CFormInput
               type="text"
               id="search"
               placeholder="Search"
-              onChange={(e) => { setSearch(e) }}
+              onChange={(e) => {
+                setSearch(agentsData.filter(data => data.agents_name.toLowerCase().includes((e.target.value).toLowerCase())))
+              }}
             />
           </div>
-        </div> */}
+        </div>
         <ToastContainer />
         <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
           <CModalHeader>
@@ -258,9 +250,7 @@ const Agents = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {agentsData.map((item, index) => {
-                  console.log("agentlistitem", item);
-                  // if (_filter(item, search)) {
+                {search.map((item, index) => {
                   return <CTableRow key={index}>
                     <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                     <CTableDataCell>{item.agents_name}</CTableDataCell>
@@ -339,7 +329,6 @@ const Agents = () => {
                       </CModal>
                     </CTableDataCell>
                   </CTableRow>
-                  // }
                 })}
               </CTableBody>
             </CTable>

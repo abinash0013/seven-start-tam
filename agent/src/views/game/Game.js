@@ -31,6 +31,7 @@ import { Link } from 'react-router-dom';
 
 const Game = () => {
   const [gameListData, setGameListData] = useState([])
+  const [search, setSearch] = useState([]);
   useEffect(() => {
     game_list();
   }, []);
@@ -39,6 +40,7 @@ const Game = () => {
     let result = await getApiCall(base.gameList)
     console.log("gamelisttt", result);
     setGameListData(result)
+    setSearch(result)
   }
 
   const get_edit_value = async (item) => {
@@ -52,7 +54,17 @@ const Game = () => {
 
   return (
     <CRow>
-      <CCol xs={12} className='mb-4'>
+      <CCol xs={12} className='mb-4 d-flex flex-row justify-content-end const'>
+        <div class="w-25">
+          <CFormInput
+            type="text"
+            id="search"
+            placeholder="Search"
+            onChange={(e) => {
+              setSearch(gameListData.filter(data => data.game_name.toLowerCase().includes((e.target.value).toLowerCase())))
+            }}
+          />
+        </div>
         <ToastContainer />
       </CCol>
       <CCol xs={12}>
@@ -69,7 +81,7 @@ const Game = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {gameListData.map((item, index) => {
+                {search.map((item, index) => {
                   return <CTableRow key={index}>
                     <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                     <CTableDataCell>{item.game_name}</CTableDataCell>

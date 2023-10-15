@@ -12,6 +12,7 @@ const BookTicket = () => {
   const [userName, setUserName] = useState("");
   const [userPhone, setUserPhone] = useState("");
   const [selectedTicket, setSelectedTicket] = useState([]);
+  const [ticketIdForCondition, setTicketIdForCondition] = useState("");
 
   useEffect(() => {
     console.log("bookticket");
@@ -38,8 +39,10 @@ const BookTicket = () => {
   const selectTicketForBookByAgent = async (data, index) => {
     if (selectedTicket.includes(data.id)) {
       selectedTicket.splice(index, 1)
+      setTicketIdForCondition("")
     } else {
       selectedTicket.push(data.id)
+      setTicketIdForCondition(data.id)
     }
     console.log("selectedTicketByAgent", selectedTicket);
   }
@@ -104,7 +107,7 @@ const BookTicket = () => {
           <CRow className='mb-3'>
             <CCol xs={12} className='m-1' style={{ display: "flex", flexWrap: "wrap" }}>
               {ticketSerialNumber?.map((item, index) => {
-                console.log("ticketSerialNumberrr", typeof item.agentId, item.agentId, item.agentId.length);
+                console.log("ticketSerialNumberrr", item);
                 return <div className='customBox'>
                   {item.agentId !== "" ? (
                     <CFormCheck
@@ -140,9 +143,15 @@ const BookTicket = () => {
               <CFormInput type="text" id="phone" placeholder="Enter Phone" maxLength={10} onChange={(e) => { setUserPhone(e) }} />
             </CCol>
             <CCol xs={2}>
-              <CButton type="submit" className="mb-3" onClick={() => { bookTicketByAgentsFun() }}>
-                Book
-              </CButton>
+              {ticketIdForCondition != "" ? (
+                <CButton type="submit" className="mb-3" onClick={() => { bookTicketByAgentsFun() }}>
+                  Book
+                </CButton>
+              ) : (
+                <CButton type="submit" className="mb-3" onClick={() => { bookTicketByAgentsFun() }}>
+                  Please Select a Ticket
+                </CButton>
+              )}
             </CCol>
           </CForm>
         </CCol>

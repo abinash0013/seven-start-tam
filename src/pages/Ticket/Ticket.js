@@ -97,7 +97,7 @@ const Ticket = (props) => {
                 {/* {ticket?.map((itemData) => { */}
                 {item?.dateSet?.map((item) => {
                   // console.log("itemdatasetitemmnumbetypof", item);
-                  return <div className="number" style={{ color: item.status == true ? 'red' : "blue" }}>{item.number}{item.status}</div>
+                  return <div className="number" style={{ background: item.status == true ? 'red' : "#fff", color: item.status == true ? '#fff' : "#000", borderRadius: item.status == true && '100%' }}>{item.number}{item.status}</div>
                 })
                 }
                 {/* } */}

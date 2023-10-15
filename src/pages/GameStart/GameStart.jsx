@@ -54,10 +54,11 @@ const GameStart = () => {
   const synth = window.speechSynthesis;
 
   const handleSpeak = (val) => {
-    let seprateNumber = val.toString().split('');
-    let textForCalling = seprateNumber[0] + "and" + seprateNumber[1] + val
+    // let seprateNumber = val.toString().split('');
+    // let textForCalling = seprateNumber[0] + "and" + seprateNumber[1] + val
+
     // Create a new SpeechSynthesisUtterance object
-    const utterance = new SpeechSynthesisUtterance(textForCalling);
+    const utterance = new SpeechSynthesisUtterance(val);
 
     // Specify a female voice (you may need to adjust this based on available voices)
     const voices = synth.getVoices();
@@ -123,7 +124,7 @@ const GameStart = () => {
               {/* {console.log("testingggga", number)} */}
               {number?.map((itemNumber, index) => (
                 // console.log("itemNumberrrr", itemNumber.number)
-                <div div class="number" key={index} style={{ backgroundColor: itemNumber.status == "true" ? "red" : "" }}>
+                <div div class="number" key={index} style={{ backgroundColor: itemNumber.status == "true" ? "red" : "#fff", color: itemNumber.status == "true" ? "#fff" : "#000", }}>
                   {itemNumber.number}
                 </div>
               ))}

@@ -248,7 +248,6 @@ function generateTambolaTicket() {
   const numberArr = [];
   const ticket = [];
   // Generate three rows with nine numbers each
-  const seen = new Set();
   for (let i = 0; i < 3; i++) {
     const row = [];
     // Generate nine unique random numbers for each row
@@ -261,7 +260,6 @@ function generateTambolaTicket() {
 
       //const randomNumber = getRandomNumber(1, 90); // Assuming Tambola numbers range from 1 to 90
       if (!JSON.stringify(row).includes(randomNumber)) {
-
         row.push({
           status: false,
           number: randomNumber,
@@ -276,7 +274,7 @@ function generateTambolaTicket() {
         arr.push(r)
     }
     for (let i = 0; i < arr.length; i++) {
-      row[arr[i]].number = 0
+      row[arr[i]].number = 0 // if zero box should be blank, i have set here as a string but error on json
     }
     ticket.push(row);
     for (let j = 0; j < 9; j++) {

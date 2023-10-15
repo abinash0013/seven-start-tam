@@ -39,6 +39,7 @@ const Announcement = () => {
   const [announcementTitle, setAnnouncementTitle] = useState("");
   const [announcementMessage, setAnnouncementMessage] = useState("");
   const [announcementStatus, setAnnouncementStatus] = useState("");
+  // const [search, setSearch] = useState([]);
 
   useEffect(() => {
     announcement_list();
@@ -48,6 +49,7 @@ const Announcement = () => {
     let result = await getApiCall(base.announcementList)
     console.log("resultresultresult", result);
     setAnnouncementData(result)
+    // setSearch(result)
   }
 
   const save_announcement = async () => {
@@ -123,7 +125,19 @@ const Announcement = () => {
   return (
     <CRow>
       <CCol xs={12} className='mb-4'>
+        {/* <div className='d-flex justify-content-between'> */}
         <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Add</CButton>
+        {/* <div class="w-25">
+            <CFormInput
+              type="text"
+              id="search"
+              placeholder="Search"
+              onChange={(e) => {
+                setSearch(announcementData.filter(data => data.announcement_title.toLowerCase().includes((e.target.value).toLowerCase())))
+              }}
+            />
+          </div>
+        </div> */}
         <ToastContainer />
         <CModal alignment="center" visible={visible} onClose={() => setVisible(false)}>
           <CModalHeader>
@@ -178,7 +192,7 @@ const Announcement = () => {
               </CTableHead>
               <CTableBody>
                 {announcementData.map((item, index) => {
-                  console.log("agentlistitemmmm", item);
+                  // console.log("agentlistitemmmm", item);
                   return <CTableRow key={index}>
                     <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
                     <CTableDataCell>{item.announcement_title}</CTableDataCell>

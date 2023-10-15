@@ -11,10 +11,11 @@
 }
 
 .number-card {
-  /* width: 50%; */
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  border: 4px solid #880E69;
+  grid-template-columns: repeat(10, 1fr);
+  /* border: 4px solid #880E69; */
+  border-radius: 10px;
+  padding: 5px;
   box-shadow: 10px 10px 30px 10px rgba(0, 0, 0, 0.7)
 }
 
@@ -55,7 +56,8 @@
   background-color: #f0f0f0;
   font-size: 18px;
   font-weight: bold;
-  border: 1px solid #880E69;
+  margin: 2px;
+  border-radius: 10px;
 }
 
 @media (max-width: 1300px) {}
