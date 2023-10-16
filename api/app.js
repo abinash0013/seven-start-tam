@@ -139,9 +139,9 @@ app.put('/deleteAgent', async (req, res) => {
 })
 
 // ::::::::::::::::::::::::::::::::::::::::: Users List
-app.get('/usersList', async (req, res) => {
-  ex_query("SELECT * FROM tbl_users", req, res)
-})
+// app.get('/usersList', async (req, res) => {
+//   ex_query("SELECT * FROM tbl_users", req, res)
+// })
 
 // ::::::::::::::::::::::::::::::::::::::::: Save User
 app.post('/saveUser', async (req, res) => {
@@ -241,6 +241,7 @@ app.post('/ticketCardView', async (req, res) => {
 app.get('/gameList', async (req, res) => {
   ex_query("SELECT * FROM tbl_game", req, res)
 })
+// testing
 
 // ::::::::::::::::::::::::::::::::::::::::: Save Game
 function generateTambolaTicket() {
