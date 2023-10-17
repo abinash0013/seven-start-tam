@@ -68,6 +68,8 @@ const Game = () => {
   const [gameStatus, setGameStatus] = useState("");
   const [time, setTime] = useState(new Date());
   const [search, setSearch] = useState([]);
+  const [prevPage, setPrevPage] = useState(0);
+  const [nextPage, setNextPage] = useState(10);
 
   const handleTimeChange = (newTime) => {
     setTime(newTime);
@@ -83,14 +85,20 @@ const Game = () => {
   }
 
   useEffect(() => {
-    game_list();
+    game_list(prevPage, nextPage);
   }, []);
 
-  const game_list = async () => {
-    let result = await getApiCall(base.gameList)
+  const game_list = async (min, max) => {
+    // let result = await getApiCall(base.gameList)
+    let req = {
+      min: min,
+      max: max
+    }
+    console.log("reqreqreq", req);
+    let result = await postApiCall(base.gameList, req)
     console.log("resultresultresult", result);
-    setGameData(result)
-    setSearch(result)
+    setGameData(result.data)
+    setSearch(result.data)
   }
 
   const save_game = async () => {
@@ -142,6 +150,21 @@ const Game = () => {
         // <Toast />
       }
     }
+  }
+
+  // const indexOfLastRecord = currentPage * recordsPerPage;
+  // const indexOfFirstRecord = indexOfLastRecord - recordsPerPage;
+  // // Records to be displayed on the current page
+  // const currentRecords = data.slice(indexOfFirstRecord,indexOfLastRecord);
+  // const nPages = Math.ceil(data.length / recordsPerPage)
+
+  const handlePrevFunction = () => {
+    setPrevPage(Number(prevPage) + 10)
+    game_list(Number(prevPage) - 10, nextPage)
+  }
+  const handleNextFunction = () => {
+    setNextPage(Number(nextPage) + 10)
+    game_list(prevPage, Number(nextPage) + 10)
   }
 
   const successToast = () => {
@@ -735,8 +758,12 @@ const Game = () => {
             </CTable>
           </CCardBody>
         </CCard>
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <div style={{ margin: 10 }} onClick={() => { handlePrevFunction() }}>Prev</div>
+          <div style={{ margin: 10 }} onClick={() => { handleNextFunction() }}>Next</div>
+        </div>
       </CCol>
-    </CRow >
+    </CRow>
   )
 }
 

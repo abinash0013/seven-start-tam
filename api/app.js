@@ -238,8 +238,25 @@ app.post('/ticketCardView', async (req, res) => {
   )
 })
 
-app.get('/gameList', async (req, res) => {
-  ex_query("SELECT * FROM tbl_game", req, res)
+// app.get('/gameList', async (req, res) => {
+//   ex_query("SELECT * FROM tbl_game", req, res)
+// })
+
+app.post('/gameList', async (req, res) => {
+  con.query("SELECT * FROM tbl_game Limit ?, ?", [req.body.min, req.body.max],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Fetch Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  )
 })
 // testing
 
