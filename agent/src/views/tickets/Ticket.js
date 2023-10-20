@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react"
 import {
   CButton,
   CCard,
@@ -22,38 +22,38 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-} from '@coreui/react'
-import { getApiCall, postApiCall, putApiCall } from 'src/services/AppSetting';
-import { base } from 'src/constants/Data.constant';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { useParams } from 'react-router-dom';
+} from "@coreui/react"
+import { getApiCall, postApiCall, putApiCall } from "src/services/AppSetting"
+import { base } from "src/constants/Data.constant"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import { useParams } from "react-router-dom"
 
 const Ticket = () => {
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [itemValue, setItemValue] = useState("");
-  const [editModalVisible, setEditModalVisible] = useState(false);
-  const [ticketData, setTicketData] = useState([]);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false)
+  const [itemValue, setItemValue] = useState("")
+  const [editModalVisible, setEditModalVisible] = useState(false)
+  const [ticketData, setTicketData] = useState([])
   const [visible, setVisible] = useState(false)
-  const [id, setId] = useState("");
-  const [ticketSerialNumber, setTicketSerialNumber] = useState("");
-  const [ticketNumber, setTicketNumber] = useState("");
-  const [ticketAmount, setTicketAmount] = useState("");
-  const [ticketStatus, setTicketStatus] = useState("");
-  const [userName, setUserName] = useState("");
-  const [userPhone, setUserPhone] = useState("");
-  const [userDateAndTime, setUserDateAndTime] = useState("");
+  const [id, setId] = useState("")
+  const [ticketSerialNumber, setTicketSerialNumber] = useState("")
+  const [ticketNumber, setTicketNumber] = useState("")
+  const [ticketAmount, setTicketAmount] = useState("")
+  const [ticketStatus, setTicketStatus] = useState("")
+  const [userName, setUserName] = useState("")
+  const [userPhone, setUserPhone] = useState("")
+  const [userDateAndTime, setUserDateAndTime] = useState("")
 
   useEffect(() => {
-    ticket_list();
-  }, []);
+    ticket_list()
+  }, [])
 
-  const { gameIdVar } = useParams();
+  const { gameIdVar } = useParams()
 
   const ticket_list = async () => {
     // let result = await getApiCall(base.ticketList)
     let req = {
-      gameId: gameIdVar
+      gameId: gameIdVar,
     }
     // console.log("resultticketlistreq", req);
     let result = await postApiCall(base.ticketList, req)
@@ -62,7 +62,7 @@ const Ticket = () => {
     // console.log("datamergeeeerrr", datamerge);
     if (datamerge != null) {
       if (datamerge.length > 0) {
-        let filterDataMerge = datamerge.filter(item => item.agentId == "2")
+        let filterDataMerge = datamerge.filter((item) => item.agentId == "2")
         // console.log("filterDataMerge", filterDataMerge);
         setTicketData(filterDataMerge)
       } else {
@@ -76,32 +76,32 @@ const Ticket = () => {
       ticketSerialNumber: ticketSerialNumber.target.value,
       ticketNumber: ticketNumber.target.value,
       ticketAmount: ticketAmount.target.value,
-      ticketStatus: ticketStatus.target.value
+      ticketStatus: ticketStatus.target.value,
     }
     let result = await postApiCall(base.saveTicket, req)
     if (result.code == 200) {
-      setVisible(false);
-      toast.success("Successfully Created..!");
+      setVisible(false)
+      toast.success("Successfully Created..!")
     }
   }
 
   const delete_ticket = async (value) => {
     let req = {
       id: value.ticket_id,
-      status: "1"
+      status: "1",
     }
     let result = await putApiCall(base.deleteTicket, req)
     if (result.code == 200) {
-      toast.success("Updated Successfully..!");
-      setEditModalVisible(false);
+      toast.success("Updated Successfully..!")
+      setEditModalVisible(false)
     }
   }
 
   const get_edit_value = async (item) => {
-    console.log("itemeditvalue", item);
+    console.log("itemeditvalue", item)
     setEditModalVisible(true)
-    setId(item.ticket_id);
-    setTicketSerialNumber(item.bookingDateAndTime);
+    setId(item.ticket_id)
+    setTicketSerialNumber(item.bookingDateAndTime)
     // setTicketNumber(item.ticket_number);
     // setTicketAmount(item.ticket_amount);
     // setTicketStatus(item.ticket_status);
@@ -120,13 +120,13 @@ const Ticket = () => {
     }
     let result = await putApiCall(base.editTicket, req)
     if (result.code == 200) {
-      toast.error("Deleted Successfully..!");
+      toast.error("Deleted Successfully..!")
     }
   }
 
   return (
     <CRow>
-      <CCol xs={12} className='mb-4'>
+      <CCol xs={12} className="mb-4">
         <ToastContainer />
       </CCol>
       <CCol xs={12}>
@@ -145,14 +145,15 @@ const Ticket = () => {
               </CTableHead>
               <CTableBody>
                 {ticketData.map((item, index) => {
-                  console.log("ticketDataitemm", item);
-                  return <CTableRow key={index}>
-                    <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                    <CTableDataCell>{item.ticketUniquieId}</CTableDataCell>
-                    <CTableDataCell>{item.userName}</CTableDataCell>
-                    <CTableDataCell>{item.userPhone}</CTableDataCell>
-                    <CTableDataCell>{item.bookingDateAndTime}</CTableDataCell>
-                    {/* <CTableDataCell>
+                  console.log("ticketDataitemm", item)
+                  return (
+                    <CTableRow key={index}>
+                      <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                      <CTableDataCell>{item.ticketUniquieId}</CTableDataCell>
+                      <CTableDataCell>{item.userName}</CTableDataCell>
+                      <CTableDataCell>{item.userPhone}</CTableDataCell>
+                      <CTableDataCell>{item.bookingDateAndTime}</CTableDataCell>
+                      {/* <CTableDataCell>
                       <CButton color="warning" className='me-2' onClick={() => { get_edit_value(item) }}>Edit</CButton>
                       <CModal alignment="center" visible={editModalVisible}>
                         <CModalHeader>
@@ -211,7 +212,8 @@ const Ticket = () => {
                         </CModalFooter>
                       </CModal>
                     </CTableDataCell> */}
-                  </CTableRow>
+                    </CTableRow>
+                  )
                 })}
               </CTableBody>
             </CTable>

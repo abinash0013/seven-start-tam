@@ -1,35 +1,46 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react"
 import "./BookTicket.css"
-import { CButton, CCard, CCol, CForm, CFormCheck, CFormInput, CFormLabel, CFormTextarea, CRow, CWidgetStatsB } from '@coreui/react';
-import { getApiCall, postApiCall, putApiCall } from 'src/services/AppSetting';
-import { base } from 'src/constants/Data.constant';
-import { useParams } from 'react-router-dom';
+import {
+  CButton,
+  CCard,
+  CCol,
+  CForm,
+  CFormCheck,
+  CFormInput,
+  CFormLabel,
+  CFormTextarea,
+  CRow,
+  CWidgetStatsB,
+} from "@coreui/react"
+import { getApiCall, postApiCall, putApiCall } from "src/services/AppSetting"
+import { base } from "src/constants/Data.constant"
+import { useParams } from "react-router-dom"
 
 const BookTicket = () => {
-  const [bookTicketNumber, setBookTicketNumber] = useState("");
-  const [ticketSerialNumber, setTicketSerialNumber] = useState([]);
-  const [ticketSelectByAgent, setTicketSelectByAgent] = useState([]);
-  const [userName, setUserName] = useState("");
-  const [userPhone, setUserPhone] = useState("");
-  const [selectedTicket, setSelectedTicket] = useState([]);
-  const [ticketIdForCondition, setTicketIdForCondition] = useState("");
+  const [bookTicketNumber, setBookTicketNumber] = useState("")
+  const [ticketSerialNumber, setTicketSerialNumber] = useState([])
+  const [ticketSelectByAgent, setTicketSelectByAgent] = useState([])
+  const [userName, setUserName] = useState("")
+  const [userPhone, setUserPhone] = useState("")
+  const [selectedTicket, setSelectedTicket] = useState([])
+  const [ticketIdForCondition, setTicketIdForCondition] = useState("")
 
   useEffect(() => {
-    console.log("bookticket");
-    viewTicketForAgents();
-  }, []);
+    console.log("bookticket")
+    viewTicketForAgents()
+  }, [])
 
-  const { id } = useParams();
+  const { id } = useParams()
 
   const viewTicketForAgents = async () => {
     let req = {
-      gameId: id
+      gameId: id,
     }
-    console.log("viewTicketForAgentsreqqtt", req);
+    console.log("viewTicketForAgentsreqqtt", req)
     let result = await postApiCall(base.viewTicketForAgents, req)
-    console.log("viewTicketForAgentsresulttt", result);
+    console.log("viewTicketForAgentsresulttt", result)
     let datamerge = JSON.parse(result.data[0].ticket_set)
-    // if (datamerge.length > 0) { 
+    // if (datamerge.length > 0) {
     setTicketSerialNumber(datamerge)
     // } else {
     //   console.log("No Data Foundddd.");
@@ -44,11 +55,11 @@ const BookTicket = () => {
       selectedTicket.push(data.id)
       setTicketIdForCondition(data.id)
     }
-    console.log("selectedTicketByAgent", selectedTicket);
+    console.log("selectedTicketByAgent", selectedTicket)
   }
 
   const bookTicketByAgentsFun = async () => {
-    console.log("selectedTickettt", selectedTicket);
+    console.log("selectedTickettt", selectedTicket)
     // if (ticketSelectByAgent.length == 0) {
     //   alert("Please Select a Ticket")
     // } else if (userName == "") {
@@ -65,14 +76,14 @@ const BookTicket = () => {
       userPhone: userPhone.target.value,
       selectedIdsForTicketBooking: JSON.stringify(selectedTicket),
     }
-    console.log("selectedIdsForTicketBookinggg", req);
+    console.log("selectedIdsForTicketBookinggg", req)
     // let result = await putApiCall(base.bookTicketByAgents, req)
     let result = await postApiCall(base.bookTicketByAgents, req)
-    console.log("resultresulteerrrageagentId", result.agentId);
+    console.log("resultresulteerrrageagentId", result.agentId)
     if (result.status == true) {
       alert("Ticket Booked Successfully.!")
-      setUserName("");
-      setUserPhone("");
+      setUserName("")
+      setUserPhone("")
     } else {
       alert("false")
     }
@@ -82,7 +93,7 @@ const BookTicket = () => {
     // console.log("ticketSerialNumberVallll", ticketSerialNumberVal);
     let req = {
       ticketSet: JSON.stringify(ticketSerialNumberVal),
-      gameId: id
+      gameId: id,
     }
     // console.log("stringreq", req);
     // let result = await putApiCall(base.bookTicketByAgents, req)
@@ -104,28 +115,39 @@ const BookTicket = () => {
             title="Ticket Book isme all ticket aiga per game ka or dusre agent ne jo dicket kata h wo v dikhega"
             value="89.9%"
           /> */}
-          <CRow className='mb-3'>
-            <CCol xs={12} className='m-1' style={{ display: "flex", flexWrap: "wrap" }}>
+          <CRow className="mb-3">
+            <CCol xs={12} className="m-1" style={{ display: "flex", flexWrap: "wrap" }}>
               {ticketSerialNumber?.map((item, index) => {
-                console.log("ticketSerialNumberrr", item);
-                return <div className='customBox'>
-                  {item.agentId !== "" ? (
-                    <CFormCheck
-                      button={{ color: item.agentId != "" ? 'primary' : 'secondary' }}
-                      id={item.id} autoComplete="off"
-                      label={item.id}
-                      onClick={() => { selectTicketForBookByAgent(item, index) }}
-                      disabled
-                    />
-                  ) : (
-                    <CFormCheck
-                      button={{ color: item.agentId != "" ? 'primary' : 'warning', variant: item.agentId != "" ? '' : 'outline' }}
-                      id={item.id} autoComplete="off"
-                      label={item.id}
-                      onClick={() => { selectTicketForBookByAgent(item, index) }}
-                    />
-                  )}
-                </div>
+                console.log("ticketSerialNumberrr", item)
+                return (
+                  <div className="customBox" key={index}>
+                    {item.agentId !== "" ? (
+                      <CFormCheck
+                        button={{ color: item.agentId != "" ? "primary" : "secondary" }}
+                        id={item.id}
+                        autoComplete="off"
+                        label={item.id}
+                        onClick={() => {
+                          selectTicketForBookByAgent(item, index)
+                        }}
+                        disabled
+                      />
+                    ) : (
+                      <CFormCheck
+                        button={{
+                          color: item.agentId != "" ? "primary" : "warning",
+                          variant: item.agentId != "" ? "" : "outline",
+                        }}
+                        id={item.id}
+                        autoComplete="off"
+                        label={item.id}
+                        onClick={() => {
+                          selectTicketForBookByAgent(item, index)
+                        }}
+                      />
+                    )}
+                  </div>
+                )
               })}
             </CCol>
           </CRow>
@@ -134,21 +156,48 @@ const BookTicket = () => {
               <CFormLabel htmlFor="name" className="visually-hidden">
                 Name
               </CFormLabel>
-              <CFormInput type="text" id="name" placeholder="Enter Name" onChange={(e) => { setUserName(e) }} />
+              <CFormInput
+                type="text"
+                id="name"
+                placeholder="Enter Name"
+                onChange={(e) => {
+                  setUserName(e)
+                }}
+              />
             </CCol>
             <CCol xs={5}>
               <CFormLabel htmlFor="phone" className="visually-hidden">
                 Phone
               </CFormLabel>
-              <CFormInput type="text" id="phone" placeholder="Enter Phone" maxLength={10} onChange={(e) => { setUserPhone(e) }} />
+              <CFormInput
+                type="text"
+                id="phone"
+                placeholder="Enter Phone"
+                maxLength={10}
+                onChange={(e) => {
+                  setUserPhone(e)
+                }}
+              />
             </CCol>
             <CCol xs={2}>
               {ticketIdForCondition != "" ? (
-                <CButton type="submit" className="mb-3" onClick={() => { bookTicketByAgentsFun() }}>
+                <CButton
+                  type="submit"
+                  className="mb-3"
+                  onClick={() => {
+                    bookTicketByAgentsFun()
+                  }}
+                >
                   Book
                 </CButton>
               ) : (
-                <CButton type="submit" className="mb-3" onClick={() => { bookTicketByAgentsFun() }}>
+                <CButton
+                  type="submit"
+                  className="mb-3"
+                  onClick={() => {
+                    bookTicketByAgentsFun()
+                  }}
+                >
                   Please Select a Ticket
                 </CButton>
               )}

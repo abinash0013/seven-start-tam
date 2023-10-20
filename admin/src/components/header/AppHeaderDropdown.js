@@ -27,15 +27,15 @@ import { Link, useNavigate } from 'react-router-dom'
 
 const AppHeaderDropdown = () => {
   const navigate = useNavigate();
-  const [loginId, setLoginId] = useState("");
+  const [loginId, setLoginId] = useState('');
 
   useEffect(() => {
     const sessionData = async () => {
-      const loggedInUser = await localStorage.getItem("adminLoginId");
-      console.log("loggedInUserr", loggedInUser);
+      const loggedInUser = await localStorage.getItem('adminLoginId');
+      console.log('loggedInUserr', loggedInUser);
       setLoginId(loggedInUser);
-      if (loggedInUser == null || loggedInUser == "") {
-        navigate("/login");
+      if (loggedInUser == null || loggedInUser == '') {
+        navigate('/login');
       } else {
       }
     }
@@ -45,9 +45,9 @@ const AppHeaderDropdown = () => {
   const clearLocalStorageItem = async () => {
     // Remove a specific item from localStorage
     const sessionClear = await localStorage.removeItem('agentLoginId');
-    console.log("sessionClearrr", sessionClear);
-    if (sessionClear == undefined || sessionClear == null || sessionClear == "") {
-      navigate("/login");
+    console.log('sessionClearrr', sessionClear);
+    if (sessionClear == undefined || sessionClear == null || sessionClear == '') {
+      navigate('/login')
     }
   }
 
@@ -67,7 +67,7 @@ const AppHeaderDropdown = () => {
         </CDropdownItem>
         <CDropdownItem href="#">
           <CIcon icon={cilEnvelopeOpen} className="me-2" />
-          Messages
+          Messages50
           <CBadge color="success" className="ms-2">
             42
           </CBadge>

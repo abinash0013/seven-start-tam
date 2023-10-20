@@ -19,7 +19,8 @@
     "start": "react-scripts start",
     "test": "react-scripts test",
     "test:cov": "npm test -- --coverage --watchAll=false",
-    "test:debug": "react-scripts --inspect-brk test --runInBand"
+    "test:debug": "react-scripts --inspect-brk test --runInBand",
+    "format": "prettier --write 'src/**/*.js'"
   },
   "dependencies": {
     "@coreui/chartjs": "^3.1.2",
@@ -48,11 +49,8 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "2.8.8",
     "react-scripts": "5.0.1",
-    "sass": "^1.63.6",
+    "sass": "^1.69.4",
     "web-vitals": "^3.3.2"
   },
   "engines": {

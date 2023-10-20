@@ -61,7 +61,6 @@ const TicketView = (props) => {
   const _render_ticket_card_view = (data) => {
     {
       return (data?.map((item, index) => {
-        console.log("itemtestingg", item);
         return (
           <CCol sm={6} style={{ margin: "10px 0" }} key={index}>
             <CCard>
@@ -92,7 +91,7 @@ const TicketView = (props) => {
                         alignItems: "center",
                         border: "1px solid #ccc",
                         fontWeight: "bold",
-                      }}>
+                      }} key={index}>
                         {innerItem.number}
                       </div>
                     ))}

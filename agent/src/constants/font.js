@@ -12,5 +12,4 @@ export const fontFamily = {
   // medium: "Poppins-Medium",
   // Regular: "Poppins-Regular",
   // semiBold: "Poppins-SemiBold",
-
-};
+}

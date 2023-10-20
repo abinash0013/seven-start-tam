@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react"
 import {
   CButton,
   CCard,
@@ -22,46 +22,51 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-} from '@coreui/react'
-import { getApiCall, postApiCall, putApiCall } from 'src/services/AppSetting';
-import { base } from 'src/constants/Data.constant';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Link } from 'react-router-dom';
+} from "@coreui/react"
+import { getApiCall, postApiCall, putApiCall } from "src/services/AppSetting"
+import { base } from "src/constants/Data.constant"
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import { Link } from "react-router-dom"
 
 const Game = () => {
   const [gameListData, setGameListData] = useState([])
-  const [search, setSearch] = useState([]);
+  const [search, setSearch] = useState([])
+  const [prevPage, setPrevPage] = useState(0)
+  const [nextPage, setNextPage] = useState(10)
   useEffect(() => {
-    game_list();
-  }, []);
+    game_list(prevPage, nextPage);
+  }, [])
 
-  const game_list = async () => {
-    let result = await getApiCall(base.gameList)
-    console.log("gamelisttt", result);
-    setGameListData(result)
-    setSearch(result)
+  const game_list = async (min, max) => {
+    // let result = await getApiCall(base.gameList)
+    let req = {
+      min: min,
+      max: max
+    }
+    console.log("gamelistttreq", req)
+    let result = await postApiCall(base.gameList, req)
+    console.log("gamelisttt", result)
+    setGameListData(result.data)
+    setSearch(result.data)
   }
 
-  const get_edit_value = async (item) => {
-    setEditModalVisible(true)
-    // setId(item.ticket_id);
-    // setTicketSerialNumber(item.ticket_serial_number);
-    // setTicketNumber(item.ticket_number);
-    // setTicketAmount(item.ticket_amount);
-    // setTicketStatus(item.ticket_status);
-  }
+  // conBookTicket
 
   return (
     <CRow>
-      <CCol xs={12} className='mb-4 d-flex flex-row justify-content-end const'>
-        <div class="w-25">
+      <CCol xs={12} className="mb-4 d-flex flex-row justify-content-end const">
+        <div className="w-25">
           <CFormInput
             type="text"
             id="search"
             placeholder="Search"
             onChange={(e) => {
-              setSearch(gameListData.filter(data => data.game_name.toLowerCase().includes((e.target.value).toLowerCase())))
+              setSearch(
+                gameListData.filter((data) =>
+                  data.game_name.toLowerCase().includes(e.target.value.toLowerCase()),
+                ),
+              )
             }}
           />
         </div>
@@ -81,18 +86,28 @@ const Game = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {search.map((item, index) => {
-                  return <CTableRow key={index}>
-                    <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
-                    <CTableDataCell>{item.game_name}</CTableDataCell>
-                    <CTableDataCell>{item.game_start_date}</CTableDataCell>
-                    <CTableDataCell>{item.game_start_time}</CTableDataCell>
-                    <CTableDataCell>
-                      {/* <CButton color="warning" className='me-2' onClick={() => { get_edit_value(item) }}>More</CButton> */}
-                      <Link to={`/bookTicket/${item.game_id}`}><CButton color="info" className='me-2'>More</CButton></Link>
-                      <Link to={`/ticket/${item.game_id}`}><CButton color="info" className='me-2'>Ticket Booked</CButton></Link>
+                {search?.map((item, index) => {
+                  console.log("itemnnnnnm", item);
+                  return (
+                    <CTableRow key={index}>
+                      <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>
+                      <CTableDataCell>{item.game_name}</CTableDataCell>
+                      <CTableDataCell>{item.game_start_date}</CTableDataCell>
+                      <CTableDataCell>{item.game_start_time}</CTableDataCell>
+                      <CTableDataCell>
+                        {/* <CButton color="warning" className='me-2' onClick={() => { get_edit_value(item) }}>More</CButton> */}
+                        <Link to={`/bookTicket/${item.game_id}`}>
+                          <CButton color="info" className="me-2">
+                            More
+                          </CButton>
+                        </Link>
+                        <Link to={`/ticket/${item.game_id}`}>
+                          <CButton color="info" className="me-2">
+                            Ticket Booked
+                          </CButton>
+                        </Link>
 
-                      {/* <CModal alignment="center" visible={editModalVisible}>
+                        {/* <CModal alignment="center" visible={editModalVisible}>
                         <CModalHeader>
                           <CModalTitle>Edit</CModalTitle>
                         </CModalHeader>
@@ -141,8 +156,9 @@ const Game = () => {
                           <CButton color="primary" onClick={() => edit_ticket()}>Update</CButton>
                         </CModalFooter>
                       </CModal> */}
-                    </CTableDataCell>
-                  </CTableRow>
+                      </CTableDataCell>
+                    </CTableRow>
+                  )
                 })}
               </CTableBody>
             </CTable>

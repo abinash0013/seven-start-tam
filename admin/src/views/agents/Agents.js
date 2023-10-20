@@ -156,7 +156,7 @@ const Agents = () => {
       <CCol xs={12} className='mb-4'>
         <div className='d-flex justify-content-between'>
           <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Add</CButton>
-          <div class="w-25">
+          <div className="w-25">
             <CFormInput
               type="text"
               id="search"

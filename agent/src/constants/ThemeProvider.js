@@ -1,27 +1,27 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { View, StyleSheet, NativeModules } from 'react-native';
-import { darkTheme, lightTheme } from './Colors.constant';
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import React, { createContext, useContext, useEffect, useState } from "react"
+import { View, StyleSheet, NativeModules } from "react-native"
+import { darkTheme, lightTheme } from "./Colors.constant"
 
-const ThemeContext = createContext();
+const ThemeContext = createContext()
 
-let tt = 'light'
+let tt = "light"
 function ThemeProvider({ children }) {
-  const [theme, setTheme] = useState(lightTheme);
-  const [isLoadingTheme, setIsLoadingTheme] = useState(true);
+  const [theme, setTheme] = useState(lightTheme)
+  const [isLoadingTheme, setIsLoadingTheme] = useState(true)
   useEffect(() => {
-    findOldTheme();
-  }, [{ children }]);
+    findOldTheme()
+  }, [{ children }])
   const findOldTheme = async () => {
-    const themeMode = await AsyncStorage.getItem('themeMode');
+    const themeMode = await AsyncStorage.getItem("themeMode")
     console.log("themeMode", themeMode)
     tt = themeMode
     if (themeMode !== null) {
-      themeMode === 'light' ? setTheme(lightTheme) : setTheme(darkTheme);
-      setIsLoadingTheme(false);
+      themeMode === "light" ? setTheme(lightTheme) : setTheme(darkTheme)
+      setIsLoadingTheme(false)
     }
-    setIsLoadingTheme(false);
-  };
+    setIsLoadingTheme(false)
+  }
 
   const updateTheme = (currentThemeMode, type) => {
     // if (type != 'root') {
@@ -29,13 +29,12 @@ function ThemeProvider({ children }) {
     // }
     tt = currentThemeMode
     console.log("dddeeefff", currentThemeMode)
-    const newTheme = currentThemeMode === 'dark' ? darkTheme : lightTheme;
-    setTheme(newTheme);
+    const newTheme = currentThemeMode === "dark" ? darkTheme : lightTheme
+    setTheme(newTheme)
     // console.log(newTheme, "------")
-    AsyncStorage.setItem('themeMode', newTheme.themeMode);
+    AsyncStorage.setItem("themeMode", newTheme.themeMode)
     currentTheme()
-  };
-
+  }
 
   return (
     <ThemeContext.Provider value={{ theme, isLoadingTheme, updateTheme }}>
@@ -43,15 +42,14 @@ function ThemeProvider({ children }) {
     </ThemeContext.Provider>
   )
 }
-export const useTheme = () => useContext(ThemeContext);
+export const useTheme = () => useContext(ThemeContext)
 
 export const currentTheme = () => {
-  const theme = tt === 'light' ? lightTheme : darkTheme;
-  return theme;
+  const theme = tt === "light" ? lightTheme : darkTheme
+  return theme
 }
 
-export default ThemeProvider;
-
+export default ThemeProvider
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 // import React, { createContext, useContext, useEffect, useState } from 'react';
@@ -69,7 +67,6 @@ export default ThemeProvider;
 //   useEffect(() => {
 //     findOldTheme();
 //   }, [{ children }]);
-
 
 //   const findOldTheme = async () => {
 //     const themeMode = await AsyncStorage.getItem('themeMode');

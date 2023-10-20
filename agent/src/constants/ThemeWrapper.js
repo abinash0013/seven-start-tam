@@ -1,10 +1,10 @@
-import React from 'react';
-import { useTheme } from './ThemeProvider';
+import React from "react"
+import { useTheme } from "./ThemeProvider"
 
 const ThemeWrapper = ({ children }) => {
-  const { isLoadingTheme } = useTheme();
-  if (isLoadingTheme) return null;
-  return children;
-};
+  const { isLoadingTheme } = useTheme()
+  if (isLoadingTheme) return null
+  return children
+}
 
-export default ThemeWrapper;
+export default ThemeWrapper

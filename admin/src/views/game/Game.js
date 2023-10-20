@@ -96,7 +96,7 @@ const Game = () => {
     }
     console.log("reqreqreq", req);
     let result = await postApiCall(base.gameList, req)
-    console.log("resultresultresult", result);
+    // console.log("resultresultresult", result);
     setGameData(result.data)
     setSearch(result.data)
   }
@@ -254,7 +254,7 @@ const Game = () => {
       <CCol xs={12} className='mb-4'>
         <div className='d-flex justify-content-between'>
           <CButton color="primary" onClick={() => { setVisible(true) }} onClose={() => setVisible(false)}>Create Game</CButton>
-          <div class="w-25">
+          <div className="w-25">
             <CFormInput
               type="text"
               id="search"

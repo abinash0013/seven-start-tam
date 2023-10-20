@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import {
   CButton,
   CCard,
@@ -12,16 +12,16 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
-import { postApiCall } from 'src/services/AppSetting'
-import { base } from 'src/constants/Data.constant'
+} from "@coreui/react"
+import CIcon from "@coreui/icons-react"
+import { cilLockLocked, cilUser } from "@coreui/icons"
+import { postApiCall } from "src/services/AppSetting"
+import { base } from "src/constants/Data.constant"
 
 const Login = () => {
   const navigate = useNavigate()
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
+  const [userName, setUserName] = useState("")
+  const [password, setPassword] = useState("")
 
   const submitLogin = async () => {
     console.log("first")
@@ -32,17 +32,17 @@ const Login = () => {
     } else {
       let req = {
         username: userName.target.value,
-        password: password.target.value
+        password: password.target.value,
       }
       console.log("first", req)
       let result = await postApiCall(base.agentLogin, req)
-      console.log("logoflogin", result);
+      console.log("logoflogin", result)
       alert("login successfully")
       if (result.status == true) {
         alert("Login successfully")
-        let test = await localStorage.setItem("agentLoginId", result.data[0].agents_id);
-        console.log("testeee", test);
-        navigate("/dashboard");
+        let test = await localStorage.setItem("agentLoginId", result.data[0].agents_id)
+        console.log("testeee", test)
+        navigate("/dashboard")
       } else {
         alert("Login failed")
       }
@@ -64,7 +64,13 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" onChange={(e) => { setUserName(e) }} />
+                      <CFormInput
+                        placeholder="Username"
+                        autoComplete="username"
+                        onChange={(e) => {
+                          setUserName(e)
+                        }}
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -74,7 +80,9 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
-                        onChange={(e) => { setPassword(e) }}
+                        onChange={(e) => {
+                          setPassword(e)
+                        }}
                       />
                     </CInputGroup>
                     <CRow>
