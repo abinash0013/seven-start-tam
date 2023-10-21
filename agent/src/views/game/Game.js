@@ -35,14 +35,14 @@ const Game = () => {
   const [prevPage, setPrevPage] = useState(0)
   const [nextPage, setNextPage] = useState(10)
   useEffect(() => {
-    game_list(prevPage, nextPage);
+    game_list(prevPage, nextPage)
   }, [])
 
   const game_list = async (min, max) => {
     // let result = await getApiCall(base.gameList)
     let req = {
       min: min,
-      max: max
+      max: max,
     }
     console.log("gamelistttreq", req)
     let result = await postApiCall(base.gameList, req)
@@ -87,7 +87,7 @@ const Game = () => {
               </CTableHead>
               <CTableBody>
                 {search?.map((item, index) => {
-                  console.log("itemnnnnnm", item);
+                  console.log("itemnnnnnm", item)
                   return (
                     <CTableRow key={index}>
                       <CTableHeaderCell scope="row">{index + 1}</CTableHeaderCell>

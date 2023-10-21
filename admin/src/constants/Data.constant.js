@@ -1,4 +1,5 @@
-const mainUrl = `http://localhost:8000/`
+// const mainUrl = `http://localhost:8000/`
+const mainUrl = `https://api.sevenstartambola.com/`
 const base = {
     adminLogin: mainUrl + `adminLogin`,
     saveAgent: mainUrl + `saveAgent`,

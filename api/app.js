@@ -823,4 +823,4 @@ app.post('/ticketCardViewForUser', async (req, res) => {
 
 app.listen(8000, function () {
   console.log('Server is up and Rudding on port 8000!');
-});
+}); 
