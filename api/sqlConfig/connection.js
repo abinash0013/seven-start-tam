@@ -1,14 +1,16 @@
-var mysql = require('mysql');
+var mysql = require("mysql");
 
 var con = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
   database: "tambola",
-  // host: process.env.MYSQL_HOST,
-  // user: process.env.MYSQL_USER,
-  // password: process.env.MYSQL_PASSWORD,
-  // database: process.env.MYSQL_DATABASE,
+
+  // :::::::::::::::::::::::::::: for production uncomment for production
+  // host: "localhost",
+  // user: "tambola",
+  // password: "Tambola@123!",
+  // database: "tambola",
 });
 
 con.connect(function (err) {
@@ -17,5 +19,5 @@ con.connect(function (err) {
 });
 
 module.exports = {
-  con
-} 
+  con,
+};

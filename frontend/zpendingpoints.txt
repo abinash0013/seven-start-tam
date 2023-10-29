@@ -1,5 +1,0 @@
-agent and payment details in admin panel
-
-date and time format in ticket booked by agent
-agent id dynamic in agent panel
-agent own details in agent dashboard

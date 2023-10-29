@@ -304,131 +304,45 @@ app.get("/gameList", async (req, res) => {
 // testing
 
 // ::::::::::::::::::::::::::::::::::::::::: Save Game
-// function generateTambolaTicket() {
-//   // Initialize an empty ticket
-//   const numberArr = [];
-//   const ticket = [];
-//   // Generate three rows with nine numbers each
-//   for (let i = 0; i < 3; i++) {
-//     const row = [];
-//     // Generate nine unique random numbers for each row
-//     while (row.length < 9) {
-//       let randomNumber = getRandomNumber(1, 90, row);
-//       console.log("randomNumberrr", randomNumber);
-//       if (!JSON.stringify(row).includes(randomNumber)) {
-//         row.push({
-//           status: false,
-//           number: randomNumber,
-//           line: i == 0 ? "top" : i == 1 ? "middle" : "bottom",
-//         });
-//       }
-//     }
-//     let arr = [];
-//     while (arr.length < 4) {
-//       var r = Math.floor(Math.random() * 8) + 1;
-//       if (arr.indexOf(r) === -1) arr.push(r);
-//     }
-//     for (let i = 0; i < arr.length; i++) {
-//       row[arr[i]].number = 0; // if zero box should be blank, i have set here as a string but error on json
-//     }
-//     ticket.push(row);
-//     for (let j = 0; j < 9; j++) {
-//       numberArr.push(ticket[i][j]);
-//     }
-//   }
-//   return numberArr;
-// }
-
-// ::::::::::::::::::::::::::::::::::::::::: Save Game new code
-const generateTambolaTicket = () => {
-  const minNumber = 1;
-  const maxNumber = 90;
-  const numbersPerRow = 9;
-  const rows = 3;
-
-  // Create an array of all possible numbers
-  const allNumbers = Array.from(
-    { length: maxNumber - minNumber + 1 },
-    (_, index) => index + minNumber
-  );
-
-  // Shuffle the numbers randomly
-  const shuffledNumbers = shuffleArray(allNumbers);
-
-  // Generate the ticket by selecting the first 27 shuffled numbers
-  const ticketNumbers = shuffledNumbers.slice(0, numbersPerRow * rows);
-  return ticketNumbers;
-  //  this.setState({ ticketNumbers });
-};
-
-// Function to shuffle an array randomly
-const shuffleArray = (array) => {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+function generateTambolaTicket() {
+  // Initialize an empty ticket
+  const numberArr = [];
+  const ticket = [];
+  // Generate three rows with nine numbers each
+  for (let i = 0; i < 3; i++) {
+    const row = [];
+    // Generate nine unique random numbers for each row
+    while (row.length < 9) {
+      let randomNumber = getRandomNumber(1, 90);
+      console.log("randomNumberrr", randomNumber);
+      if (!JSON.stringify(row).includes(randomNumber)) {
+        row.push({
+          status: false,
+          number: randomNumber,
+          line: i == 0 ? "top" : i == 1 ? "middle" : "bottom",
+        });
+      }
+    }
+    let arr = [];
+    while (arr.length < 4) {
+      var r = Math.floor(Math.random() * 8) + 1;
+      if (arr.indexOf(r) === -1) arr.push(r);
+    }
+    for (let i = 0; i < arr.length; i++) {
+      row[arr[i]].number = 0; // if zero box should be blank, i have set here as a string but error on json
+    }
+    ticket.push(row);
+    for (let j = 0; j < 9; j++) {
+      numberArr.push(ticket[i][j]);
+    }
   }
-  return array;
-};
-
-const generateTambolaTicketIndex = (minNumber, maxNumber) => {
-  const numbersPerRow = 9;
-  const rows = 3;
-  // Create an array of all possible numbers
-  const allNumbers = Array.from(
-    { length: maxNumber - minNumber + 1 },
-    (_, index) => index + minNumber
-  );
-
-  // Shuffle the numbers randomly
-  const shuffledNumbers = shuffleArray(allNumbers);
-
-  // Generate the ticket by selecting the first 27 shuffled numbers
-  const ticketNumbers = shuffledNumbers.slice(0, numbersPerRow * rows);
-  return ticketNumbers;
-  //  this.setState({ ticketNumbers });
-};
-
-function getRandomValuesFromArray(arr, numValues) {
-  const shuffled = arr.slice(); // Clone the original array to avoid modifying it.
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Shuffle the array
-  }
-  return shuffled.slice(0, numValues);
+  return numberArr;
 }
 
-const rowSet = (allNum, min, max, arr, line) => {
-  let zeroIndexArr = getRandomValuesFromArray([0, 1, 2, 3, 4, 5, 6, 7, 8], 4);
-  let ticketSet = [];
-  let ticket = [];
-
-  for (let i = min; i < max; i++) {
-    ticket.push(allNum[i]);
-  }
-
-  for (let j = 0; j < zeroIndexArr.length; j++) {
-    ticket[zeroIndexArr[j]] = 0;
-  }
-  console.log(ticket);
-  for (let i = 0; i < ticket.length; i++) {
-    ticketSet.push({
-      status: false,
-      number: ticket[i],
-      line: line,
-    });
-  }
-  return ticketSet;
-};
-
-const finalTicketSet = () => {
-  let allNum = generateTambolaTicket();
-  let allTic = [
-    ...rowSet(allNum, 0, 9, [1, 2, 3, 4, 5, 6, 7, 8, 9], "top"),
-    ...rowSet(allNum, 9, 18, [10, 11, 12, 13, 14, 15, 16, 17, 18], "middle"),
-    ...rowSet(allNum, 19, 27, [19, 20, 21, 22, 23, 24, 25, 26, 27], "bottom"),
-  ];
-  return allTic;
-};
+// Function to get a random number between min and max (inclusive)
+function getRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 app.post("/saveGame", async (req, res) => {
   let gameId = "";
@@ -451,7 +365,7 @@ app.post("/saveGame", async (req, res) => {
           bookingDateAndTime: new Date().getTime(),
           winnerTag: "",
           winnerPrize: "",
-          dateSet: finalTicketSet(),
+          dateSet: generateTambolaTicket(),
         };
         mainArr.push(jsonset);
       }
