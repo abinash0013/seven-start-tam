@@ -340,6 +340,7 @@ app.get("/gameList", async (req, res) => {
 // }
 
 // ::::::::::::::::::::::::::::::::::::::::: Save Game new code
+
 const generateTambolaTicket = () => {
   const minNumber = 1;
   const maxNumber = 90;
@@ -503,10 +504,28 @@ app.post("/saveGame", async (req, res) => {
 });
 
 // ::::::::::::::::::::::::::::::::::::::::: Get Number For Calling
-app.get("/getNumberOneToHundredForCalling", async (req, res) => {
-  ex_query("SELECT * FROM `tbl_game` WHERE `game_id`=10", req, res);
-});
+// app.get("/getNumberOneToHundredForCalling", async (req, res) => {
+//   ex_query("SELECT * FROM `tbl_game` WHERE `game_id`=10", req, res);
+// });
 
+app.post("/getNumberToSpeak", async (req, res) => {
+  con.query(
+    "SELECT * FROM `tbl_number_calling` WHERE `number_calling_id`=?",
+    [req.body.number],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Save Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Save..", result);
+        }
+      }
+    }
+  );
+});
 // ::::::::::::::::::::::::::::::::::::::::: Matched Ticket For Booking(calling this api to start game)
 app.post("/matchedTicketForBooking", async (req, res) => {
   let quickSevenAssigned = false;
@@ -1056,6 +1075,66 @@ app.post("/ticketCardViewForUser", async (req, res) => {
   con.query(
     "SELECT * FROM tbl_game WHERE game_id=?",
     [req.body.gameId],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Fetch Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  );
+});
+
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
+app.post("/agentDetails", async (req, res) => {
+  con.query(
+    "SELECT * FROM tbl_agents WHERE agents_id=?",
+    [req.body.agent_id],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Fetch Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  );
+});
+
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
+app.post("/agentPaidAmount", async (req, res) => {
+  con.query(
+    "UPDATE `tbl_agents` SET `wallet`=? WHERE `agents_id`=?",
+    [req.body.amount, req.body.agent_id],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Update Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  );
+});
+
+// :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
+app.post("/agentTransecation", async (req, res) => {
+  con.query(
+    "SELECT * FROM tbl_transection WHERE agents_id=?",
+    [req.body.agents_id],
     function (error, result, fields) {
       if (error) throw error;
       if (error) {

@@ -104,6 +104,15 @@ const Game = () => {
   }
 
   const save_game = async () => {
+    console.log(
+      'gameQuickSevenPrizelength',
+      gameQuickSevenPrize.target.value,
+      gameTopLinePrize.target.value,
+      gameMiddleLinePrize.target.value,
+      gameBottomLinePrize.target.value,
+      gameHouseFullPrize.target.value,
+      gameSecondHouseFullPrize.target.value
+    )
     if (gameName == '') {
       toast.error('Game Name is Mandatory')
     } else if (gameStartDate == '') {
@@ -116,6 +125,18 @@ const Game = () => {
       toast.error('Game Amount is Mandatory')
     } else if (gameAmountPerTicketToAgent == '') {
       toast.error('Game Amount Per Ticket To Agent is Mandatory')
+      // } else if (gameQuickFire == true && gameQuickSevenPrize.target.value == '') {
+      //   toast.error('Quick Seven Prize is Mandatory')
+      // } else if (gameTopLine == true && gameTopLinePrize.target.value == '') {
+      //   toast.error('Quick Seven Prize is Mandatory')
+      // } else if (gameMiddleLine == true && gameMiddleLinePrize.target.value == '') {
+      //   toast.error('Quick Seven Prize is Mandatory')
+      // } else if (gameBottomLine == true && gameBottomLinePrize.target.value == '') {
+      //   toast.error('Quick Seven Prize is Mandatory')
+      // } else if (gameHousefull == true && gameHouseFullPrize.target.value == '') {
+      //   toast.error('Quick Seven Prize is Mandatory')
+      // } else if (gameSecondHousefull == true && gameSecondHouseFullPrize.target.value == '') {
+      //   toast.error('Quick Seven Prize is Mandatory')
     } else {
       let req = {
         gameName: gameName.target.value,
@@ -312,6 +333,7 @@ const Game = () => {
                   onChange={(e) => {
                     setGameStartDate(e)
                   }}
+                  maxDate={new Date()}
                 />
                 {/* <input
                   type="time"

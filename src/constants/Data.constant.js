@@ -2,11 +2,12 @@ const mainUrl = `http://localhost:8000/`;
 // const mainUrl = `https://sevenstartambola.com/`;
 // const mainUrl = `http://sevenstartambola.com/`;
 const base = {
-  getNumberOneToHundredForCalling: mainUrl + `getNumberOneToHundredForCalling`,
+  // getNumberOneToHundredForCalling: mainUrl + `getNumberOneToHundredForCalling`,
   ticketCardViewForUser: mainUrl + `ticketCardViewForUser`,
   updateTicketStatus: mainUrl + `updateTicketStatus`,
   disclaimerList: mainUrl + `disclaimerList`,
   announcementList: mainUrl + `announcementList`,
+  getNumberToSpeak: mainUrl + `getNumberToSpeak`,
   // adminLogin: mainUrl + `adminLogin`,
   // saveAgent: mainUrl + `saveAgent`,
   // agentsList: mainUrl + `agentsList`,

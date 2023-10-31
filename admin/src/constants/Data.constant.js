@@ -25,5 +25,8 @@ const base = {
   deleteAnnouncement: mainUrl + `deleteAnnouncement`,
   disclaimerList: mainUrl + `disclaimerList`,
   editDisclaimer: mainUrl + `editDisclaimer`,
+  agentDetails: mainUrl + 'agentDetails',
+  agentPaidAmount: mainUrl + 'agentPaidAmount',
+  agentTransecation: mainUrl + 'agentTransecation',
 }
 export { base }

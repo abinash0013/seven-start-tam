@@ -2,6 +2,7 @@ import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Agents = React.lazy(() => import('./views/agents/Agents'))
+const Profile = React.lazy(() => import('./views/agents/Profile'))
 const Users = React.lazy(() => import('./views/users/User'))
 const Ticket = React.lazy(() => import('./views/tickets/Ticket'))
 const Game = React.lazy(() => import('./views/game/Game'))
@@ -62,13 +63,13 @@ const routes = [
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/agents', name: 'Agents', element: Agents },
+  { path: '/profile/:id', name: 'Profile', element: Profile },
   { path: '/users', name: 'User', element: Users },
   { path: '/ticket', name: 'Ticket', element: Ticket },
   { path: '/game', name: 'Game', element: Game },
   { path: '/announcement', name: 'Announcement', element: Announcement },
   { path: '/disclaimer', name: 'Disclaimer', element: Disclaimer },
   { path: '/ticketView/:id', name: 'TicketView', element: TicketView },
-
 
   { path: '/theme/colors', name: 'Colors', element: Colors },
   { path: '/theme/typography', name: 'Typography', element: Typography },
