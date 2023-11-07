@@ -12,17 +12,20 @@ const Announcement = () => {
   })
 
   const announcementList = async () => {
-    let result = await getApiCall(base.announcementList)
-    // console.log("announcementAnnouncementData", result[0].announcement_message);
-    setAnnouncementTitle(result[0].announcement_title)
-    setAnnouncementData(result[0].announcement_message)
-
+    let result = await getApiCall(base.activeAnnouncement)
+    console.log("announcementAnnouncementData", result);
+    if(result.length>0){
+      setAnnouncementTitle(result[0].announcement_title)
+      setAnnouncementData(result[0].announcement_message)
+    }
   }
   return (
     <div className='announcementOuterContainer'>
+    {announcementTitle!=="" && announcementData!==""?(
       <marquee>
         <p className='announcementData'>{announcementTitle} : {announcementData}</p>
       </marquee>
+    ):(<></>)}
     </div>
   )
 }

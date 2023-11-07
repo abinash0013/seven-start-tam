@@ -15,7 +15,7 @@ var ref = db.ref("game");
 const express = require("express");
 
 // const app = express.Router();
-const { con } = require("./sqlConfig/connection");
+const { con } = require("../admin/sqlConfig/connection");
 var bodyParser = require("body-parser");
 var app = express();
 var cors = require("cors");
@@ -120,13 +120,14 @@ app.post("/saveAgent", async (req, res) => {
 // ::::::::::::::::::::::::::::::::::::::::: Edit Agent
 app.put("/editAgent", async (req, res) => {
   con.query(
-    "UPDATE `tbl_agents` SET  `agents_name`=?, `agents_email`=?, `agents_phone`=?, `agents_gender`=?,`agents_active_status`=?  WHERE `agents_id`=?",
+    "UPDATE `tbl_agents` SET  `agents_name`=?, `agents_email`=?, `agents_phone`=?, `agents_gender`=?,`agents_active_status`=?,`agents_status_remarks`=? WHERE `agents_id`=?",
     [
       req.body.name,
       req.body.email,
       req.body.phone,
       req.body.gender,
       req.body.status,
+      req.body.statusRemarks,
       req.body.id,
     ],
     function (error, result, fields) {
@@ -855,6 +856,14 @@ app.get("/announcementList", async (req, res) => {
   ex_query("SELECT * FROM tbl_announcement", req, res);
 });
 
+app.get("/activeAnnouncement", async (req, res) => {
+  ex_query(
+    "SELECT * FROM tbl_announcement WHERE `announcement_status` = 'Active'",
+    req,
+    res
+  );
+});
+
 // ::::::::::::::::::::::::::::::::::::::::: Save Announcement
 app.post("/saveAnnouncement", async (req, res) => {
   con.query(
@@ -933,10 +942,11 @@ app.get("/disclaimerList", async (req, res) => {
 // ::::::::::::::::::::::::::::::::::::::::: Edit Disclaimer
 app.put("/editDisclaimer", async (req, res) => {
   con.query(
-    "UPDATE `tbl_disclaimer` SET `disclaimer_title`=?, `disclaimer_message`=? WHERE `disclaimer_id`=?",
+    "UPDATE `tbl_disclaimer` SET `disclaimer_title`=?, `disclaimer_message`=?, `disclaimer_status`=? WHERE `disclaimer_id`=?",
     [
       req.body.disclaimerTitle,
       req.body.disclaimerMessage,
+      req.body.disclaimerStatus,
       req.body.disclaimerId,
     ],
     function (error, result, fields) {
@@ -961,7 +971,7 @@ app.put("/editDisclaimer", async (req, res) => {
 // ::::::::::::::::::::::::::::::::::::::::: admin api code // not working for now let us see at the end
 app.post("/agentLogin", async (req, res) => {
   con.query(
-    "SELECT * FROM `tbl_agents` Where `agents_email`=? And `agents_password`=?",
+    "SELECT * FROM `tbl_agents` Where `agents_email`=? AND `agents_password`=? AND `agents_active_status`='Active'",
     [req.body.username, req.body.password],
     function (error, result, fields) {
       if (error) throw error;
@@ -1131,7 +1141,7 @@ app.post("/agentPaidAmount", async (req, res) => {
 });
 
 // :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: website api
-app.post("/agentTransecation", async (req, res) => {
+app.post("/agentTransacationList", async (req, res) => {
   con.query(
     "SELECT * FROM tbl_transection WHERE agents_id=?",
     [req.body.agents_id],

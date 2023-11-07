@@ -31,24 +31,30 @@ import { Link } from "react-router-dom"
 
 const Game = () => {
   const [gameListData, setGameListData] = useState([])
-  const [search, setSearch] = useState([])
+  // const [search, setSearch] = useState([])
   const [prevPage, setPrevPage] = useState(0)
   const [nextPage, setNextPage] = useState(10)
   useEffect(() => {
     game_list(prevPage, nextPage)
   }, [])
 
+  // const game_list = async (min, max) => {
+  //   // let result = await getApiCall(base.gameList)
+  //   let req = {
+  //     min: min,
+  //     max: max,
+  //   }
+  //   console.log("gamelistttreq", req)
+  //   let result = await postApiCall(base.gameList, req)
+  //   console.log("gamelisttt", result)
+  //   setGameListData(result.data)
+  //   setSearch(result.data)
+  // }
+
   const game_list = async (min, max) => {
-    // let result = await getApiCall(base.gameList)
-    let req = {
-      min: min,
-      max: max,
-    }
-    console.log("gamelistttreq", req)
-    let result = await postApiCall(base.gameList, req)
+    let result = await getApiCall(base.gameList)
     console.log("gamelisttt", result)
-    setGameListData(result.data)
-    setSearch(result.data)
+    setGameListData(result)
   }
 
   // conBookTicket
@@ -56,7 +62,7 @@ const Game = () => {
   return (
     <CRow>
       <CCol xs={12} className="mb-4 d-flex flex-row justify-content-end const">
-        <div className="w-25">
+        {/* <div className="w-25">
           <CFormInput
             type="text"
             id="search"
@@ -69,7 +75,7 @@ const Game = () => {
               )
             }}
           />
-        </div>
+        </div> */}
         <ToastContainer />
       </CCol>
       <CCol xs={12}>
@@ -86,7 +92,7 @@ const Game = () => {
                 </CTableRow>
               </CTableHead>
               <CTableBody>
-                {search?.map((item, index) => {
+                {gameListData?.map((item, index) => {
                   console.log("itemnnnnnm", item)
                   return (
                     <CTableRow key={index}>

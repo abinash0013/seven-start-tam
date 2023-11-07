@@ -43,6 +43,7 @@ const Agents = () => {
   const [password, setPassword] = useState('')
   const [gender, setGender] = useState('')
   const [status, setStatus] = useState('')
+  const [statusRemarks, setStatusRemarks] = useState('')
   const [search, setSearch] = useState('')
 
   useEffect(() => {
@@ -117,24 +118,38 @@ const Agents = () => {
     setPhone(item.agents_phone)
     setGender(item.agents_gender)
     setStatus(item.agents_active_status)
+    setStatusRemarks(item.agents_status_remarks)
   }
 
   const edit_agent = async () => {
-    let req = {
-      id: id,
-      name: name,
-      email: email,
-      phone: phone,
-      gender: gender,
-      status: status,
-    }
-    // console.log("reqreq", req);
-    let result = await putApiCall(base.editAgent, req)
-    console.log('resultresult', result)
-    if (result.code == 200) {
-      setEditModalVisible(false)
-      agents_list()
-      toast.success('Updated Successfully..!')
+    if (name == 0) {
+      alert('Name Field is Mandatory.!!')
+    } else if (email == 0) {
+      alert('Email is Mandatory..!')
+    } else if (phone == 0) {
+      alert('Phone is Mandatory..!')
+    } else if (gender == 0) {
+      alert('Gender is Mandatory..!')
+    } else if (status == 0) {
+      alert('Status is Mandatory..!')
+    } else {
+      let req = {
+        id: id,
+        name: name,
+        email: email,
+        phone: phone,
+        gender: gender,
+        status: status,
+        statusRemarks: statusRemarks,
+      }
+      // console.log("reqreq", req);
+      let result = await putApiCall(base.editAgent, req)
+      console.log('resultresult', result)
+      if (result.code == 200) {
+        setEditModalVisible(false)
+        agents_list()
+        toast.success('Updated Successfully..!')
+      }
     }
   }
 
@@ -291,6 +306,8 @@ const Agents = () => {
                   <CTableHeaderCell scope="col">Email</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Phone</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Gender</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Status</CTableHeaderCell>
+                  <CTableHeaderCell scope="col">Status Remarks</CTableHeaderCell>
                   <CTableHeaderCell scope="col">Action</CTableHeaderCell>
                 </CTableRow>
               </CTableHead>
@@ -305,6 +322,8 @@ const Agents = () => {
                       <CTableDataCell>{item.agents_email}</CTableDataCell>
                       <CTableDataCell>{item.agents_phone}</CTableDataCell>
                       <CTableDataCell>{item.agents_gender}</CTableDataCell>
+                      <CTableDataCell>{item.agents_active_status}</CTableDataCell>
+                      <CTableDataCell>{item.agents_status_remarks}</CTableDataCell>
                       <CTableDataCell>
                         <CButton
                           color="warning"
@@ -383,6 +402,17 @@ const Agents = () => {
                                   <option value="Active">Active</option>
                                   <option value="Deactive">Deactive</option>
                                 </CFormSelect>
+                                <CFormLabel htmlFor="gender">Gender</CFormLabel>
+                                <CFormInput
+                                  type="text"
+                                  id="remark"
+                                  placeholder="Agent Status Remark"
+                                  onChange={(e) => {
+                                    setStatusRemarks(e.target.value)
+                                  }}
+                                  // name={name}
+                                  defaultValue={statusRemarks}
+                                />
                               </div>
                             </CForm>
                           </CModalBody>
@@ -395,7 +425,7 @@ const Agents = () => {
                             </CButton>
                           </CModalFooter>
                         </CModal>
-                        <CButton
+                        {/* <CButton
                           color="danger"
                           onClick={() => {
                             setItemValue(item)
@@ -403,7 +433,7 @@ const Agents = () => {
                           }}
                         >
                           Delete
-                        </CButton>
+                        </CButton> */}
                         <CModal
                           alignment="center"
                           visible={deleteModalVisible}

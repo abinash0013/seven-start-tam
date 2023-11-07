@@ -60,32 +60,31 @@ const BookTicket = () => {
 
   const bookTicketByAgentsFun = async () => {
     console.log("selectedTickettt", selectedTicket)
-    // if (ticketSelectByAgent.length == 0) {
-    //   alert("Please Select a Ticket")
-    // } else if (userName == "") {
-    //   alert("Please Enter Username")
-    // } else if (userPhone == "") {
-    //   alert("Please Enter Userphone")
-    //   // } else if (userPhone.length != 10) {
-    //   //   alert("Phone Number Should be atleast 10 digit")
-    // } else {
-    let req = {
-      agentId: "2",
-      gameId: id,
-      userName: userName.target.value,
-      userPhone: userPhone.target.value,
-      selectedIdsForTicketBooking: JSON.stringify(selectedTicket),
-    }
-    console.log("selectedIdsForTicketBookinggg", req)
-    // let result = await putApiCall(base.bookTicketByAgents, req)
-    let result = await postApiCall(base.bookTicketByAgents, req)
-    console.log("resultresulteerrrageagentId", result.agentId)
-    if (result.status == true) {
-      alert("Ticket Booked Successfully.!")
-      setUserName("")
-      setUserPhone("")
+    if (userName.target.value == "") {
+      alert("Please Enter Username")
+    } else if (userPhone.target.value == "") {
+      alert("Please Enter Userphone")
+    } else if (userPhone.target.value != 10) {
+      alert("Phone Number Should be atleast 10 digit")
     } else {
-      alert("false")
+      let req = {
+        agentId: "2",
+        gameId: id,
+        userName: userName.target.value,
+        userPhone: userPhone.target.value,
+        selectedIdsForTicketBooking: JSON.stringify(selectedTicket),
+      }
+      console.log("selectedIdsForTicketBookinggg", req)
+      // let result = await putApiCall(base.bookTicketByAgents, req)
+      let result = await postApiCall(base.bookTicketByAgents, req)
+      console.log("resultresulteerrrageagentId", result.agentId)
+      if (result.status == true) {
+        alert("Ticket Booked Successfully.!")
+        setUserName("")
+        setUserPhone("")
+      } else {
+        alert("false")
+      }
     }
   }
 
@@ -195,7 +194,7 @@ const BookTicket = () => {
                   type="submit"
                   className="mb-3"
                   onClick={() => {
-                    bookTicketByAgentsFun()
+                    alert("Please Select a Ticket")
                   }}
                 >
                   Please Select a Ticket

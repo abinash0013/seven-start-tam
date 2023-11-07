@@ -9,7 +9,7 @@ import Announcement from '../Announcement/Announcement'
 const Banner = (props) => {
   return (
     <div className="projectImages">
-      <div>{props.number}</div>
+      {/* <div>{props.number}</div> */}
       {/* <img src={numberCalled} alt="loading..." /> */}
       <Announcement />
       <Disclaimer />

@@ -6,8 +6,7 @@ import firebase from 'firebase/compat/app';
 import { base } from '../../constants/Data.constant';
 import { getApiCall, postApiCall } from '../../services/AppSetting';
 import Winner from '../Winner/Winner';
-import Banner from '../Banner/Banner';
-// import Speech from 'react-speech';
+import Banner from '../Banner/Banner'; 
 
 const GameStart = () => {
   const [number, setNumber] = useState([]);
@@ -110,8 +109,7 @@ const GameStart = () => {
             <div class="number-card"> 
               {number?.map((itemNumber, index) => ( 
                 <div div class="number" key={index} style={{ backgroundColor: itemNumber.status == "true" ? "red" : "#fff", color: itemNumber.status == "true" ? "#fff" : "#000", }}>
-                  {itemNumber.number}
-                  {/* <Speech /> */}
+                  {itemNumber.number} 
                 </div>
               ))}
             </div>

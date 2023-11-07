@@ -7,6 +7,7 @@ const base = {
   updateTicketStatus: mainUrl + `updateTicketStatus`,
   disclaimerList: mainUrl + `disclaimerList`,
   announcementList: mainUrl + `announcementList`,
+  activeAnnouncement: mainUrl + `activeAnnouncement`,
   getNumberToSpeak: mainUrl + `getNumberToSpeak`,
   // adminLogin: mainUrl + `adminLogin`,
   // saveAgent: mainUrl + `saveAgent`,

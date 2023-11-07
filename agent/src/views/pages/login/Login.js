@@ -14,34 +14,42 @@ import {
   CRow,
 } from "@coreui/react"
 import CIcon from "@coreui/icons-react"
-import { cilLockLocked, cilUser } from "@coreui/icons"
-import { postApiCall } from "src/services/AppSetting"
+import Toast from "src/components/toast/Toast"
+import "react-toastify/dist/ReactToastify.css"
 import { base } from "src/constants/Data.constant"
+import { postApiCall } from "src/services/AppSetting"
+import { ToastContainer, toast } from "react-toastify"
+import { cilLockLocked, cilUser } from "@coreui/icons"
 
 const Login = () => {
   const navigate = useNavigate()
   const [userName, setUserName] = useState("")
   const [password, setPassword] = useState("")
 
+  const successToast = () => {
+    toast.success("Success !", {
+      position: toast.POSITION.TOP_RIGHT,
+    })
+  }
+
   const submitLogin = async () => {
-    console.log("first")
-    if (userName == "") {
+    if (userName.target.value == 0) {
       alert("username is mandatory")
-    } else if (password == "") {
+    } else if (password.target.value == 0) {
       alert("password is mandatory")
     } else {
       let req = {
         username: userName.target.value,
         password: password.target.value,
       }
-      console.log("first", req)
+      // console.log("first", req)
       let result = await postApiCall(base.agentLogin, req)
-      console.log("logoflogin", result)
-      alert("login successfully")
+      // console.log("logoflogin", result)
       if (result.status == true) {
-        alert("Login successfully")
+        // alert("Login successfully")
+        successToast()
         let test = await localStorage.setItem("agentLoginId", result.data[0].agents_id)
-        console.log("testeee", test)
+        // console.log("testeee", test)
         navigate("/dashboard")
       } else {
         alert("Login failed")

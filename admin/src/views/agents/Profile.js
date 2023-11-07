@@ -16,11 +16,12 @@ const profile = () => {
   const { id } = useParams()
 
   const [agentsDetails, setAgentsDetails] = useState([])
-  const [agentsTransection, setAgentsTransection] = useState([])
+  const [agentsTransaction, setAgentsTransaction] = useState([])
   const [paidAmount, setPaidAmount] = useState('')
 
   useEffect(() => {
     agents_details()
+    agents_transection_list()
   }, [])
 
   const agents_details = async () => {
@@ -29,24 +30,33 @@ const profile = () => {
         agent_id: id,
       }
       let result = await postApiCall(base.agentDetails, body)
+      console.log('resultttee', result)
       setPaidAmount('')
       setAgentsDetails(result.data[0])
     } catch (e) {}
   }
 
-  useEffect(() => {
-    agents_transection()
-  }, [])
-
-  const agents_transection = async () => {
+  const agents_transection_list = async () => {
     try {
       let body = {
-        agent_id: id,
+        agents_id: id,
       }
-      let result = await postApiCall(base.agentTransecation, body)
-      setAgentsTransection(result.data[0])
+      let result = await postApiCall(base.agentTransacationList, body)
+      console.log('resulttttt', result.data)
+      setAgentsTransaction(result.data)
     } catch (e) {}
   }
+
+  // const agents_transection_list = async () => {
+  //   try {
+  //     let body = {
+  //       agents_id: id,
+  //     }
+  //     let result = await postApiCall(base.agentTransacationList, body)
+  //     console.log('resulttttt', result)
+  //     setAgentsTransaction(result.data[0])
+  //   } catch (e) {}
+  // }
 
   const agent_paid_amount = async () => {
     let amount = Number(agentsDetails.wallet) - Number(paidAmount.target.value)
@@ -104,29 +114,24 @@ const profile = () => {
             </CModalBody>
           </CCol>
         </CRow>
-        <CRow className="transection">
-          <CModalTitle>Transection</CModalTitle>
-          <CRow className="trans-inner">
-            <CCol xs={6}>
-              <CModalTitle>#123456</CModalTitle>
-              <CModalTitle>200</CModalTitle>
-            </CCol>
-            <CCol xs={6}>
-              <CModalTitle>Game Name</CModalTitle>
-              <CModalTitle>Credit</CModalTitle>
-            </CCol>
-          </CRow>
-          <CRow className="trans-inner">
-            <CCol xs={6}>
-              <CModalTitle>#123456</CModalTitle>
-              <CModalTitle>200</CModalTitle>
-            </CCol>
-            <CCol xs={6}>
-              <CModalTitle>Game Name</CModalTitle>
-              <CModalTitle>Debit</CModalTitle>
-            </CCol>
-          </CRow>
-        </CRow>
+        {agentsTransaction?.map((item, index) => {
+          console.log('itemmm', item)
+          return (
+            <CRow className="transection">
+              <CModalTitle>Transaction</CModalTitle>
+              <CRow className="trans-inner">
+                <CCol xs={6}>
+                  <CModalTitle>#{item.payment_id}</CModalTitle>
+                  <CModalTitle>{item.amount}</CModalTitle>
+                </CCol>
+                <CCol xs={6}>
+                  <CModalTitle>{item.create_at}</CModalTitle>
+                  <CModalTitle>{item.type_cr_dr}</CModalTitle>
+                </CCol>
+              </CRow>
+            </CRow>
+          )
+        })}
       </CRow>
     </>
   )
