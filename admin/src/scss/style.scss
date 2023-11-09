@@ -15,6 +15,18 @@ $enable-rtl: true;
 
 // If you want to add custom CSS you can put it here.
 @import "custom";
+
+//::::::::::::::::::::::::::::::::: ticket style
+.ticket-container{
+    flex: 1;
+    display: 'flex';
+    flex-direction: 'row';
+    justify-content: 'space-between';
+}
+.ticket-inner-container{
+    text-align: 'center'; 
+    font-weight: 'bold';
+}
 .wallent-agent {
     border: 1px solid #ccc;
     padding: 20px 15px;
@@ -48,15 +60,13 @@ $enable-rtl: true;
 .trans-inner {
     border: 1px solid #ccc;
     margin-bottom: 10px;
-   
     margin-left: 15px;
     padding: 5px 10px;
 }
-
 @media (max-width: 767px) {
     .send-money button {
         margin-left: 0px;
         width: 100px;
         margin-top: 15px;
     }
-  }
+}

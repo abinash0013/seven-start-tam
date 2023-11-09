@@ -59,12 +59,12 @@ const BookTicket = () => {
   }
 
   const bookTicketByAgentsFun = async () => {
-    console.log("selectedTickettt", selectedTicket)
-    if (userName.target.value == "") {
+    console.log("selectedTickettt", userPhone.target.value.length)
+    if (userName == "") {
       alert("Please Enter Username")
-    } else if (userPhone.target.value == "") {
+    } else if (userPhone == "") {
       alert("Please Enter Userphone")
-    } else if (userPhone.target.value != 10) {
+    } else if (userPhone.target.value.length > 9) {
       alert("Phone Number Should be atleast 10 digit")
     } else {
       let req = {
@@ -82,6 +82,7 @@ const BookTicket = () => {
         alert("Ticket Booked Successfully.!")
         setUserName("")
         setUserPhone("")
+        viewTicketForAgents()
       } else {
         alert("false")
       }
@@ -135,7 +136,8 @@ const BookTicket = () => {
                       <CFormCheck
                         button={{
                           color: item.agentId != "" ? "primary" : "warning",
-                          variant: item.agentId != "" ? "" : "outline",
+                          // variant: item.agentId != "" ? "filled" : "outline",
+                          variant: ticketIdForCondition != "" ? "" : "outline",
                         }}
                         id={item.id}
                         autoComplete="off"

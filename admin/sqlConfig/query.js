@@ -3,12 +3,12 @@
 const { con } = require('./connection')
 
 const ex_query = (sql) => {
-  console.log("-------", con)
+  console.log('-------', con)
   con.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log("Result: " + result);
+    if (err) throw err
+    console.log('Result: ' + result)
     return result
-  });
+  })
 }
 
 module.exports = { ex_query }
