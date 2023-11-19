@@ -17,27 +17,38 @@ const Winner = (props) => {
 
   const setWinnerPrize = async () => {
     try {
+      // let totalWinner = "";
       ticket.map((ticketItem, ticketIndex) => {
         console.log("ticketItemee", ticketItem.winnerTag, ticketItem.userName);
         if (ticketItem.winnerTag == 'quick_seven') {
           setQuickSeven(ticketItem.userName)
+          // totalWinner = totalWinner+1
         }
         if (ticketItem.winnerTag == 'top_line') {
           setTopLine(ticketItem.userName)
+          // totalWinner=totalWinner+2
         }
         if (ticketItem.winnerTag == 'middle_line') {
           setMiddleLine(ticketItem.userName)
+          // totalWinner=totalWinner+3
         }
         if (ticketItem.winnerTag == 'bottom_line') {
           setBottomLine(ticketItem.userName)
+          // totalWinner=totalWinner+4
         }
         if (ticketItem.winnerTag == 'firstFullHouse') {
           setFirstFullHouse(ticketItem.userName)
+          // totalWinner=totalWinner+5
         }
         if (ticketItem.winnerTag == 'secondFullHouse') {
           setSecondFullHouse(ticketItem.userName)
+          // totalWinner=totalWinner+6
         }
+
       })
+      // if(totalWinner == 6){
+      //   alert("GAMEOVER")
+      // }
     } catch (e) {
       console.log("errorlog", e);
     }

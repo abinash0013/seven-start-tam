@@ -48,13 +48,19 @@ const BookTicket = () => {
   }
 
   const selectTicketForBookByAgent = async (data, index) => {
-    if (selectedTicket.includes(data.id)) {
-      selectedTicket.splice(index, 1)
-      setTicketIdForCondition("")
-    } else {
-      selectedTicket.push(data.id)
-      setTicketIdForCondition(data.id)
-    }
+    let dataArr = [...ticketSerialNumber]
+    dataArr[index].is_select = !dataArr[index].is_select
+    setTicketSerialNumber(dataArr)
+
+    // if (selectedTicket.includes(data.id)) {
+    //   // selectedTicket.splice(index, 1)
+    //   // setTicketIdForCondition("")
+    //   console.log("if", index, selectedTicket)
+    // } else {
+    // selectedTicket.push(data.id)
+    setTicketIdForCondition(data.id)
+    //   console.log("else")
+    // }
     console.log("selectedTicketByAgent", selectedTicket)
   }
 
@@ -64,9 +70,15 @@ const BookTicket = () => {
       alert("Please Enter Username")
     } else if (userPhone == "") {
       alert("Please Enter Userphone")
-    } else if (userPhone.target.value.length > 9) {
+    } else if (userPhone.target.value.length != 10) {
       alert("Phone Number Should be atleast 10 digit")
     } else {
+      let selectedTicket = []
+      ticketSerialNumber.map((item, index) => {
+        if (item.is_select) {
+          selectedTicket.push(item.id)
+        }
+      })
       let req = {
         agentId: "2",
         gameId: id,
@@ -127,19 +139,17 @@ const BookTicket = () => {
                         id={item.id}
                         autoComplete="off"
                         label={item.id}
-                        onClick={() => {
-                          selectTicketForBookByAgent(item, index)
-                        }}
                         disabled
                       />
                     ) : (
                       <CFormCheck
                         button={{
-                          color: item.agentId != "" ? "primary" : "warning",
-                          // variant: item.agentId != "" ? "filled" : "outline",
-                          variant: ticketIdForCondition != "" ? "" : "outline",
+                          color:
+                            item.agentId != "" ? "red" : item.is_select ? "primary" : "warning",
+                          variant: item.agentId != "" ? "filled" : item.is_select ? "outline" : "",
+                          // variant: ticketIdForCondition != "" ? "" : "outline",
                         }}
-                        id={item.id}
+                        id={item.id + "," + item.agentId}
                         autoComplete="off"
                         label={item.id}
                         onClick={() => {

@@ -427,7 +427,7 @@ const finalTicketSet = () => {
   let allTic = [
     ...rowSet(allNum, 0, 9, [1, 2, 3, 4, 5, 6, 7, 8, 9], "top"),
     ...rowSet(allNum, 9, 18, [10, 11, 12, 13, 14, 15, 16, 17, 18], "middle"),
-    ...rowSet(allNum, 19, 27, [19, 20, 21, 22, 23, 24, 25, 26, 27], "bottom"),
+    ...rowSet(allNum, 18, 27, [19, 20, 21, 22, 23, 24, 25, 26, 27], "bottom"),
   ];
   return allTic;
 };
@@ -594,7 +594,10 @@ app.post("/matchedTicketForBooking", async (req, res) => {
               });
 
               ticketData?.map((ticketDataItem, ticketDataIndex) => {
-                if (ticketDataItem.userName != "") {
+                if (
+                  ticketDataItem.userName != "" &&
+                  ticketDataItem.userName != null
+                ) {
                   if (ticketDataItem.winnerTag == "quick_seven") {
                     quickSevenAssigned = true;
                   }
@@ -609,127 +612,147 @@ app.post("/matchedTicketForBooking", async (req, res) => {
                   }
                 }
               });
-
+              let count = 0;
               ticketData?.map((ticketDataItem, ticketDataIndex) => {
-                // console.log("ticketDataItemmm", ticketDataItem);
-                if (ticketDataItem.winnerTag == "") {
-                  let quickSevenNumber = 0;
-                  let topLineNumber = 0;
-                  let middleLineNumber = 0;
-                  let bottomLineNumber = 0;
-                  let firstFullHouseNumber = 0;
-                  let secondFullHouseNumber = 0;
-                  ticketDataItem?.dateSet?.map((dateSetItem, dateSetIndex) => {
-                    // console.log("dateSetItemmm", dateSetItem);
-                    // console.log("randomNumberrr", dateSetItem, randomNumber, quickSevenAssigned);
-                    if (dateSetItem.number == randomNumber) {
-                      ticketData[ticketDataIndex].dateSet[
-                        dateSetIndex
-                      ].status = true;
-                    }
-                    if (quickSevenAssigned == false) {
-                      if (dateSetItem.status) {
-                        quickSevenNumber = quickSevenNumber + 1;
-                        // console.log("randomNumbessrrr", quickSevenAssigned, quickSevenNumber);
-                        if (quickSevenNumber == 7) {
-                          // let winnerPrizeVar = await getWinnerPrize(gameIdVar, "quick_seven_prize")
-                          // console.log("quick_seven_prizeee", getWinnerPrize(gameIdVar, "quick_seven_prize"));
-                          ticketDataItem.winnerTag = "quick_seven";
-                          // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "quick_seven_prize")
-                          ticketDataItem.winnerPrize = "";
-                          quickSevenAssigned = true;
+                if (
+                  ticketDataItem.winnerTag == "quick_seven" ||
+                  ticketDataItem.winnerTag == "top_line" ||
+                  ticketDataItem.winnerTag == "middle_line" ||
+                  ticketDataItem.winnerTag == "bottom_line" ||
+                  ticketDataItem.winnerTag == "firstFullHouse" ||
+                  ticketDataItem.winnerTag == "secondFullHouse"
+                ) {
+                  count = count + 1;
+                }
+                if (count == 6) {
+                  clearInterval(interval);
+                }
+                if (
+                  ticketDataItem.userName != "" &&
+                  ticketDataItem.userName != null
+                ) {
+                  // console.log("ticketDataItemmm", ticketDataItem);
+                  if (ticketDataItem.winnerTag == "") {
+                    let quickSevenNumber = 0;
+                    let topLineNumber = 0;
+                    let middleLineNumber = 0;
+                    let bottomLineNumber = 0;
+                    let firstFullHouseNumber = 0;
+                    let secondFullHouseNumber = 0;
+                    ticketDataItem?.dateSet?.map(
+                      (dateSetItem, dateSetIndex) => {
+                        // console.log("dateSetItemmm", dateSetItem);
+                        // console.log("randomNumberrr", dateSetItem, randomNumber, quickSevenAssigned);
+                        if (dateSetItem.number == randomNumber) {
+                          ticketData[ticketDataIndex].dateSet[
+                            dateSetIndex
+                          ].status = true;
+                        }
+                        if (quickSevenAssigned == false) {
+                          if (dateSetItem.status) {
+                            quickSevenNumber = quickSevenNumber + 1;
+                            // console.log("randomNumbessrrr", quickSevenAssigned, quickSevenNumber);
+                            if (quickSevenNumber == 7) {
+                              // let winnerPrizeVar = await getWinnerPrize(gameIdVar, "quick_seven_prize")
+                              // console.log("quick_seven_prizeee", getWinnerPrize(gameIdVar, "quick_seven_prize"));
+                              ticketDataItem.winnerTag = "quick_seven";
+                              // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "quick_seven_prize")
+                              ticketDataItem.winnerPrize = "";
+                              quickSevenAssigned = true;
+                            }
+                          }
+                        }
+                        if (topLineAssigned == false) {
+                          if (
+                            dateSetItem.status == true &&
+                            dateSetItem.line == "top"
+                          ) {
+                            topLineNumber = topLineNumber + 1;
+                          }
+                          if (
+                            topLineNumber == 5 &&
+                            dateSetItem.status == true &&
+                            dateSetItem.line == "top"
+                          ) {
+                            ticketDataItem.winnerTag = "top_line";
+                            // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "top_line")
+                            ticketDataItem.winnerPrize = "";
+                            topLineAssigned = true;
+                          }
+                        }
+                        if (middleLineAssigned == false) {
+                          if (
+                            dateSetItem.status == true &&
+                            dateSetItem.line == "middle"
+                          ) {
+                            middleLineNumber = middleLineNumber + 1;
+                          }
+                          if (
+                            middleLineNumber == 5 &&
+                            dateSetItem.status == true &&
+                            dateSetItem.line == "middle"
+                          ) {
+                            ticketDataItem.winnerTag = "middle_line";
+                            // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "middle_line")
+                            ticketDataItem.winnerPrize = "";
+                            middleLineAssigned = true;
+                          }
+                        }
+                        if (bottomLineAssigned == false) {
+                          if (
+                            dateSetItem.status == true &&
+                            dateSetItem.line == "bottom"
+                          ) {
+                            bottomLineNumber = bottomLineNumber + 1;
+                          }
+                          if (
+                            bottomLineNumber == 5 &&
+                            dateSetItem.status == true &&
+                            dateSetItem.line == "bottom"
+                          ) {
+                            ticketDataItem.winnerTag = "bottom_line";
+                            // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "bottom_line")
+                            ticketDataItem.winnerPrize = "";
+                            bottomLineAssigned = true;
+                          }
+                        }
+                        if (
+                          fullHouseCount == 0 &&
+                          ticketDataItem.winnerTag != "firstFullHouse"
+                        ) {
+                          if (dateSetItem.status == true) {
+                            firstFullHouseNumber = firstFullHouseNumber + 1;
+                          }
+                          if (
+                            firstFullHouseNumber == 15 &&
+                            dateSetItem.status == true
+                          ) {
+                            ticketDataItem.winnerTag = "firstFullHouse";
+                            // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "firstFullHouse")
+                            ticketDataItem.winnerPrize = "";
+                            fullHouseCount = fullHouseCount + 1;
+                          }
+                        }
+                        if (
+                          fullHouseCount == 1 &&
+                          ticketDataItem.winnerTag != "secondFullHouse"
+                        ) {
+                          if (dateSetItem.status == true) {
+                            secondFullHouseNumber = secondFullHouseNumber + 1;
+                          }
+                          if (
+                            secondFullHouseNumber == 15 &&
+                            dateSetItem.status == true
+                          ) {
+                            ticketDataItem.winnerTag = "secondFullHouse";
+                            // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "secondFullHouse")
+                            ticketDataItem.winnerPrize = "";
+                            fullHouseCount = fullHouseCount + 1;
+                          }
                         }
                       }
-                    }
-                    if (topLineAssigned == false) {
-                      if (
-                        dateSetItem.status == true &&
-                        dateSetItem.line == "top"
-                      ) {
-                        topLineNumber = topLineNumber + 1;
-                      }
-                      if (
-                        topLineNumber == 5 &&
-                        dateSetItem.status == true &&
-                        dateSetItem.line == "top"
-                      ) {
-                        ticketDataItem.winnerTag = "top_line";
-                        // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "top_line")
-                        ticketDataItem.winnerPrize = "";
-                        topLineAssigned = true;
-                      }
-                    }
-                    if (middleLineAssigned == false) {
-                      if (
-                        dateSetItem.status == true &&
-                        dateSetItem.line == "middle"
-                      ) {
-                        middleLineNumber = middleLineNumber + 1;
-                      }
-                      if (
-                        middleLineNumber == 5 &&
-                        dateSetItem.status == true &&
-                        dateSetItem.line == "middle"
-                      ) {
-                        ticketDataItem.winnerTag = "middle_line";
-                        // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "middle_line")
-                        ticketDataItem.winnerPrize = "";
-                        middleLineAssigned = true;
-                      }
-                    }
-                    if (bottomLineAssigned == false) {
-                      if (
-                        dateSetItem.status == true &&
-                        dateSetItem.line == "bottom"
-                      ) {
-                        bottomLineNumber = bottomLineNumber + 1;
-                      }
-                      if (
-                        bottomLineNumber == 5 &&
-                        dateSetItem.status == true &&
-                        dateSetItem.line == "bottom"
-                      ) {
-                        ticketDataItem.winnerTag = "bottom_line";
-                        // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "bottom_line")
-                        ticketDataItem.winnerPrize = "";
-                        bottomLineAssigned = true;
-                      }
-                    }
-                    if (
-                      fullHouseCount == 0 &&
-                      ticketDataItem.winnerTag != "firstFullHouse"
-                    ) {
-                      if (dateSetItem.status == true) {
-                        firstFullHouseNumber = firstFullHouseNumber + 1;
-                      }
-                      if (
-                        firstFullHouseNumber == 15 &&
-                        dateSetItem.status == true
-                      ) {
-                        ticketDataItem.winnerTag = "firstFullHouse";
-                        // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "firstFullHouse")
-                        ticketDataItem.winnerPrize = "";
-                        fullHouseCount = fullHouseCount + 1;
-                      }
-                    }
-                    if (
-                      fullHouseCount == 1 &&
-                      ticketDataItem.winnerTag != "secondFullHouse"
-                    ) {
-                      if (dateSetItem.status == true) {
-                        secondFullHouseNumber = secondFullHouseNumber + 1;
-                      }
-                      if (
-                        secondFullHouseNumber == 15 &&
-                        dateSetItem.status == true
-                      ) {
-                        ticketDataItem.winnerTag = "secondFullHouse";
-                        // ticketDataItem.winnerPrize = getWinnerPrize(gameIdVar, "secondFullHouse")
-                        ticketDataItem.winnerPrize = "";
-                        fullHouseCount = fullHouseCount + 1;
-                      }
-                    }
-                  });
+                    );
+                  }
                 }
               });
               ref.set({
@@ -751,7 +774,7 @@ app.post("/matchedTicketForBooking", async (req, res) => {
             }
           }
           // Set a timer to call the function every 100 milliseconds
-          const interval = setInterval(generateUniqueRandomNumber, 10000);
+          const interval = setInterval(generateUniqueRandomNumber, 8000);
           ResponseHandler(res, true, "Successfully..", result);
         } else {
           ResponseHandler(res, false, "Sorry., Unable to..", result);
@@ -1154,6 +1177,31 @@ app.post("/agentTransacationList", async (req, res) => {
           ResponseHandler(res, true, "Fetch Successfully..", result);
         } else {
           ResponseHandler(res, false, "Sorry., Unable to Deleted", result);
+        }
+      }
+    }
+  );
+});
+
+// ::::::::::::::::::::::::::::::::::::::::: Add Wallet Action
+app.post("/walletAction", async (req, res) => {
+  con.query(
+    "INSERT INTO `tbl_transection` SET `agents_id`=?, `type_cr_dr`=?, `remarks`=?,`amount`=?",
+    [
+      req.body.agentId,
+      req.body.transactionType,
+      req.body.remarks,
+      req.body.amount,
+    ],
+    function (error, result, fields) {
+      if (error) throw error;
+      if (error) {
+        ResponseHandler(res, false, "Api Issue", result);
+      } else {
+        if (result) {
+          ResponseHandler(res, true, "Save Successfully..", result);
+        } else {
+          ResponseHandler(res, false, "Sorry., Unable to Save..", result);
         }
       }
     }

@@ -30,6 +30,7 @@ $enable-rtl: true;
 .wallent-agent {
     border: 1px solid #ccc;
     padding: 20px 15px;
+    background-color: #fff
 }
 .wallet-amount {
     border: 1px solid #ccc;
@@ -49,12 +50,11 @@ $enable-rtl: true;
     width: 100%;
 }
 
-.modal-body input#amount {
-    width: 80%;
+.modal-body input#amount { 
     float: left;
 }
 .send-money button {
-    margin-left: 10px;
+    margin: 15px 0;
     width: 100px;
 }
 .trans-inner {

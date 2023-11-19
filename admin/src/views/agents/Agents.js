@@ -402,7 +402,7 @@ const Agents = () => {
                                   <option value="Active">Active</option>
                                   <option value="Deactive">Deactive</option>
                                 </CFormSelect>
-                                <CFormLabel htmlFor="gender">Gender</CFormLabel>
+                                <CFormLabel htmlFor="gender">Agent Status Remark</CFormLabel>
                                 <CFormInput
                                   type="text"
                                   id="remark"

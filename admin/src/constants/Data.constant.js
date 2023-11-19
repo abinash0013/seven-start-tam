@@ -28,5 +28,6 @@ const base = {
   agentDetails: mainUrl + 'agentDetails',
   agentPaidAmount: mainUrl + 'agentPaidAmount',
   agentTransacationList: mainUrl + 'agentTransacationList',
+  walletAction: mainUrl + 'walletAction',
 }
 export { base }

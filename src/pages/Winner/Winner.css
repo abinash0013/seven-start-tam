@@ -54,18 +54,22 @@
 }
 
 @media (max-width: 425px) {
+  
+.winnerSectionHeadingContainer {
+  margin: 15px 0;
+  font-size: 15px;
+}
   .winnerSectionContainer {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 5px;
-
   }
 }
 
 @media (max-width: 375px) {
   .winnerSectionContainer {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 5px;
 
   }

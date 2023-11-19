@@ -11,3 +11,9 @@
   font-weight: bold;
   letter-spacing: 2px;
 }
+
+@media (max-width: 947px) {
+  .announcementData{ 
+    font-size: 13px;
+  }
+}

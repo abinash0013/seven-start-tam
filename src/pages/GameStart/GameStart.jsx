@@ -33,14 +33,13 @@ const GameStart = () => {
   const fetch_data = () => {
     console.log("fetchdataaa");
     ref.on("value", snapshot => {
-      // console.log("snapshotttt", snapshot.val());
       if (snapshot.val() != null) {
+        console.log("snapshotttt", snapshot?.val().currentCalledNumber);
         setNumber(JSON.parse(snapshot.val().number_set));
         setGameId(snapshot.val().game_id);
         setCurrentNumberCall(snapshot.val().currentCalledNumber)
         ticketCardView(snapshot.val().game_id);
-        numberSpeakDynamic(snapshot.val().currentCalledNumber)
-        // handleSpeak(snapshot.val().currentCalledNumber)
+        numberSpeakDynamic(snapshot?.val().currentCalledNumber) 
       }
     })
   }
@@ -48,6 +47,7 @@ const GameStart = () => {
   const synth = window.speechSynthesis;
 
   const handleSpeak = (val) => {
+    console.log("handlespeakVal",val);
     // let seprateNumber = val.toString().split('');
     // let textForCalling = seprateNumber[0] + "and" + seprateNumber[1] + val
     // Create a new SpeechSynthesisUtterance object
@@ -57,6 +57,7 @@ const GameStart = () => {
     // const femaleVoice = voices.find((voice) => voice.name.includes('Female'));
     const femaleVoice = voices.find((voice) => voice.name.includes('Male'));
     if (femaleVoice) {
+    console.log("femaleVoicehandlespeakVal",femaleVoice);
       utterance.voice = femaleVoice;
     }
     // Set the speech rate (0.5 is slower, 2.0 is faster)
@@ -77,35 +78,33 @@ const GameStart = () => {
     let result = await postApiCall(base.ticketCardViewForUser, req)
     try {
       let convertJSON = JSON.parse(result.data[0].ticket_set);
+      console.log("testingtes",convertJSON)
       setTicket(convertJSON)
     } catch (error) {
     }
   }
 
+  let lastNumber = "";
   const numberSpeakDynamic = async (getNumber) =>{
+    console.log("numberSpeakDynamicCalling");
     let req = {
       number: getNumber
     }
     // console.log("reqreqreqqw", req);
     let result = await postApiCall(base.getNumberToSpeak, req)
-    console.log("resulttttw", result.data[0].Number_in_text);
-    handleSpeak(result.data[0].Number_in_text) 
-  }
-
-  // const cutTicketNumberIfMatched = async () => {
-  //   // let result = await getApiCall(base.getNumberOneToHundredForCalling)
-  //   // console.log("resulttt", result[0].game_number_set);
-  //   // let convertJSON = JSON.parse(result[0].game_number_set);
-  //   // console.log("resultcardvieweeqqq", convertJSON);
-  //   // setNumber(convertJSON)
-  // } 
+    console.log("resulttttw", result.data[0]?.Number_in_text);
+    if(lastNumber!=result.data[0]?.Number_in_text){
+      handleSpeak(result.data[0]?.Number_in_text) 
+      lastNumber = result.data[0]?.Number_in_text
+    }
+  } 
 
   return (
     <>
       <Banner number={currentNumberCall} />
       <div class="ticketSection">
         <div class="outerContainer">
-          <div class="container mx-auto mt-8">
+          <div class="container mx-auto mt-1">
             <div class="number-card"> 
               {number?.map((itemNumber, index) => ( 
                 <div div class="number" key={index} style={{ backgroundColor: itemNumber.status == "true" ? "red" : "#fff", color: itemNumber.status == "true" ? "#fff" : "#000", }}>

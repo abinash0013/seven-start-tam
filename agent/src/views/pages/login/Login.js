@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { base } from "src/constants/Data.constant"
 import { postApiCall } from "src/services/AppSetting"
 import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 import { cilLockLocked, cilUser } from "@coreui/icons"
 
 const Login = () => {
@@ -44,15 +45,15 @@ const Login = () => {
       }
       // console.log("first", req)
       let result = await postApiCall(base.agentLogin, req)
-      // console.log("logoflogin", result)
-      if (result.status == true) {
+      console.log("logoflogin", result.data[0].agents_active_status)
+      if (result.status == true && result.data[0].agents_active_status == "Active") {
         // alert("Login successfully")
         successToast()
         let test = await localStorage.setItem("agentLoginId", result.data[0].agents_id)
         // console.log("testeee", test)
         navigate("/dashboard")
       } else {
-        alert("Login failed")
+        toast.error(result.data[0].agents_status_remarks)
       }
     }
   }
@@ -60,6 +61,7 @@ const Login = () => {
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
+        <ToastContainer />
         <CRow className="justify-content-center">
           <CCol md={4}>
             <CCardGroup>

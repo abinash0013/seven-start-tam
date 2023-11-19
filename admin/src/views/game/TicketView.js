@@ -121,7 +121,7 @@ const TicketView = (props) => {
                           alignItems: 'center',
                           border: '1px solid #ccc',
                           fontWeight: 'bold',
-                          color: innerItem.number == 0 ? '#fff' : '',
+                          // color: innerItem.number == 0 ? '#fff' : '',
                         }}
                         key={index}
                       >
