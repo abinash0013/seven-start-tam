@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react'
 import {
   CRow,
   CCol,
@@ -10,11 +11,10 @@ import {
   CFormSelect,
 } from '@coreui/react'
 import { useParams } from 'react-router-dom'
-import React, { useState, useEffect } from 'react'
 import { base } from 'src/constants/Data.constant'
 import { postApiCall } from 'src/services/AppSetting'
 
-const profile = () => {
+const Profile = () => {
   const { id } = useParams()
   const [agentsDetails, setAgentsDetails] = useState([])
   const [agentsTransaction, setAgentsTransaction] = useState([])
@@ -168,7 +168,7 @@ const profile = () => {
         {agentsTransaction?.map((item, index) => {
           console.log('itemmm', item)
           return (
-            <CRow className="transection">
+            <CRow className="transection" key={index}>
               <CModalTitle>Transaction</CModalTitle>
               <CRow className="trans-inner">
                 <CCol xs={6}>
@@ -188,4 +188,4 @@ const profile = () => {
     </>
   )
 }
-export default profile
+export default Profile
