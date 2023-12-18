@@ -1,4 +1,5 @@
-const mainUrl = `http://localhost:8000/`
+// const mainUrl = `http://localhost:8000/`
+const mainUrl = `http://178.16.137.208:8000/`
 // const mainUrl = `https://api.sevenstartambola.com/`
 // const mainUrl = `http://api.sevenstartambola.com/`
 const base = {
@@ -29,5 +30,6 @@ const base = {
   agentPaidAmount: mainUrl + 'agentPaidAmount',
   agentTransacationList: mainUrl + 'agentTransacationList',
   walletAction: mainUrl + 'walletAction',
+  startGame: mainUrl + 'matchedTicketForBooking',
 }
 export { base }

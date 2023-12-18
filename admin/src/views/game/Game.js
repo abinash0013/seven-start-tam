@@ -37,6 +37,7 @@ import { Link } from 'react-router-dom'
 import TimePicker from 'react-time-picker'
 
 const Game = () => {
+  const [gameStartId, setGameStartId] = useState('')
   const [deleteModalVisible, setDeleteModalVisible] = useState(false)
   const [editModalVisible, setEditModalVisible] = useState(false)
   const [editOption, setEditOption] = useState(false)
@@ -91,7 +92,7 @@ const Game = () => {
 
   const game_list = async (min, max) => {
     let result = await getApiCall(base.gameList)
-    console.log('resulttttList', result)
+    // console.log('resulttttList', result)
     // let req = {
     //   min: min,
     //   max: max,
@@ -101,6 +102,19 @@ const Game = () => {
     // console.log('resultresultresult', result)
     setGameData(result)
     // setSearch(result.data)
+  }
+
+  const game_start = async () => {
+    // let req = {
+    //   gameId: id,
+    // }
+    // console.log('reqgamestartid', req)
+    // let result = await postApiCall(base.startGame, req)
+    let result = await getApiCall(base.startGame)
+    console.log('resultofstartgame', result)
+    if (result.code == 200) {
+      setEditModalVisible(false)
+    }
   }
 
   const save_game = async () => {
@@ -186,6 +200,7 @@ const Game = () => {
     setPrevPage(Number(prevPage) + 10)
     game_list(Number(prevPage) - 10, nextPage)
   }
+
   const handleNextFunction = () => {
     setNextPage(Number(nextPage) + 10)
     game_list(prevPage, Number(nextPage) + 10)
@@ -569,6 +584,7 @@ const Game = () => {
                           color="warning"
                           className="me-2"
                           onClick={() => {
+                            setGameStartId(item.game_id)
                             get_edit_value(item)
                           }}
                         >
@@ -813,6 +829,11 @@ const Game = () => {
                                   </CFormSelect>
                                 </div>
                               )}
+                              <div className="d-flex justify-center">
+                                <CButton color="primary" onClick={() => game_start()}>
+                                  Start Game
+                                </CButton>
+                              </div>
                             </CForm>
                           </CModalBody>
                           <CModalFooter>
