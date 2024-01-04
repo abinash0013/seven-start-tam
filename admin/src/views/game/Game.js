@@ -105,12 +105,12 @@ const Game = () => {
   }
 
   const game_start = async () => {
-    // let req = {
-    //   gameId: id,
-    // }
-    // console.log('reqgamestartid', req)
-    // let result = await postApiCall(base.startGame, req)
-    let result = await getApiCall(base.startGame)
+    let req = {
+      gameId: gameStartId,
+    }
+    console.log('reqgamestartid', req)
+    let result = await postApiCall(base.startGame, req)
+    // let result = await getApiCall(base.startGame)
     console.log('resultofstartgame', result)
     if (result.code == 200) {
       setEditModalVisible(false)

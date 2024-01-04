@@ -1,5 +1,5 @@
-// const mainUrl = `http://localhost:8000/`;
-const mainUrl = `http://178.16.137.208:8000/`;
+const mainUrl = `http://localhost:8000/`;
+// const mainUrl = `http://178.16.137.208:8000/`;
 // const mainUrl = `https://sevenstartambola.com/`;
 // const mainUrl = `http://sevenstartambola.com/`;
 const base = {

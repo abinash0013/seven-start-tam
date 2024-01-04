@@ -529,7 +529,7 @@ app.post("/getNumberToSpeak", async (req, res) => {
 });
 
 // ::::::::::::::::::::::::::::::::::::::::: Matched Ticket For Booking(calling this api to start game)
-app.get("/matchedTicketForBooking", async (req, res) => {
+app.post("/matchedTicketForBooking", async (req, res) => {
   let quickSevenAssigned = false;
   let topLineAssigned = false;
   let middleLineAssigned = false;
@@ -554,8 +554,8 @@ app.get("/matchedTicketForBooking", async (req, res) => {
   const fullTime = `${hours}:${minutes}`;
   console.log("Date & Time:", fullDate, fullTime);
   con.query(
-    "SELECT `game_id`,`game_number_set`,`ticket_set` FROM `tbl_game` WHERE game_start_date=? AND game_start_time < ?",
-    [fullDate, fullTime],
+    "SELECT `game_id`,`game_number_set`,`ticket_set` FROM `tbl_game` WHERE game_start_date=? AND game_start_time < ? AND game_id=?",
+    [fullDate, fullTime, req.body.gameId],
     function (error, result, fields) {
       if (error) throw error;
       console.log("ppppw", result);
